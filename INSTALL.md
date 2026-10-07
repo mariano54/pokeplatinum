@@ -233,6 +233,18 @@ to install these, run:
     brew install --cask wine-stable
     ```
 
+    > [!NOTE]
+    > Homebrew disabled the `wine-stable` cask on 2026-09-01. If it refuses to
+    > install, download the same build (`wine-stable-*-osx64.tar.xz`) from
+    > [Gcenx/macOS_Wine_builds](https://github.com/Gcenx/macOS_Wine_builds/releases),
+    > extract it anywhere, and point the build at it:
+    >
+    > ```zsh
+    > export WINE="/path/to/Wine Stable.app/Contents/Resources/wine/bin/wine"
+    > ```
+    >
+    > On Apple Silicon, Wine also needs Rosetta 2 (`softwareupdate --install-rosetta`).
+
 4. You may need to authorize the Wine installation to satisfy macOS security
 requirements. To do this, open the Applications folder in Finder and locate the
 Wine Stable application. Control-Click on this icon to open the context menu,
@@ -260,6 +272,13 @@ GNU `coreutils` installed to run the build scripts:
 > When trying to build the repository, the first invocation of `make` may hang
 > on compiling a file. If that happens, hit Control+C to interrupt the build,
 > and run `make` again.
+>
+> This happens because the first Wine call starts background services that keep
+> the build's output pipe open. Starting them yourself first avoids it:
+>
+> ```zsh
+> wineserver -p && wine cmd /c exit >/dev/null 2>&1 </dev/null
+> ```
 >
 > If you need to stop the Wine server, run the following command:
 >

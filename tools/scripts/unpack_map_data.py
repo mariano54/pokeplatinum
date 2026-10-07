@@ -114,6 +114,27 @@ def unpack_bdhc(blob: bytes) -> dict:
     return {'plates': out}
 
 
+def unpack_terrain_attributes(blob: bytes, behavior_names: dict[int, str]) -> dict:
+    """Terrain attributes section -> the "collision", "tileBehaviorLegend" and "tileBehaviors" keys."""
+    if len(blob) != map_data.TERRAIN_ATTRIBUTES_SIZE:
+        raise map_data.MapDataError(f'terrain attributes must be {map_data.TERRAIN_ATTRIBUTES_SIZE} bytes, not {len(blob)}')
+    attributes = struct.unpack('<1024H', blob)
+    for attribute in attributes:
+        if attribute & ~(map_data.TILE_COLLISION_BIT | map_data.TILE_BEHAVIOR_MASK):
+            raise map_data.MapDataError(f'unknown terrain attribute bits in {attribute:#06x}')
+        if attribute & map_data.TILE_BEHAVIOR_MASK not in behavior_names:
+            raise map_data.MapDataError(f'unknown tile behavior {attribute & map_data.TILE_BEHAVIOR_MASK:#04x}')
+
+    legend = assign_legend({a & map_data.TILE_BEHAVIOR_MASK for a in attributes}, behavior_names)
+    rows = range(map_data.MAP_TILES_COUNT_Z)
+    cols = range(map_data.MAP_TILES_COUNT_X)
+    return {
+        'collision': [''.join('#' if attributes[z * 32 + x] & map_data.TILE_COLLISION_BIT else '.' for x in cols) for z in rows],
+        'tileBehaviorLegend': {char: behavior_names[value] for value, char in legend.items()},
+        'tileBehaviors': [''.join(legend[attributes[z * 32 + x] & map_data.TILE_BEHAVIOR_MASK] for x in cols) for z in rows],
+    }
+
+
 def unpack_map_data(blob: bytes, model_name: str, behavior_names: dict[int, str], prop_model_names: dict[int, str]):
     attrs_size, props_size, model_size, bdhc_size = struct.unpack_from('<4I', blob, 0)
     if attrs_size != map_data.TERRAIN_ATTRIBUTES_SIZE:
@@ -121,16 +142,7 @@ def unpack_map_data(blob: bytes, model_name: str, behavior_names: dict[int, str]
     if 16 + attrs_size + props_size + model_size + bdhc_size != len(blob):
         raise map_data.MapDataError('section sizes do not add up to the file size')
 
-    attributes = struct.unpack_from('<1024H', blob, 16)
-    for attribute in attributes:
-        if attribute & ~(map_data.TILE_COLLISION_BIT | map_data.TILE_BEHAVIOR_MASK):
-            raise map_data.MapDataError(f'unknown terrain attribute bits in {attribute:#06x}')
-
-    legend = assign_legend({a & map_data.TILE_BEHAVIOR_MASK for a in attributes}, behavior_names)
-    rows = range(map_data.MAP_TILES_COUNT_Z)
-    cols = range(map_data.MAP_TILES_COUNT_X)
-    collision = [''.join('#' if attributes[z * 32 + x] & map_data.TILE_COLLISION_BIT else '.' for x in cols) for z in rows]
-    tiles = [''.join(legend[attributes[z * 32 + x] & map_data.TILE_BEHAVIOR_MASK] for x in cols) for z in rows]
+    terrain = unpack_terrain_attributes(blob[16:16 + attrs_size], behavior_names)
 
     props = []
     props_offset = 16 + attrs_size
@@ -149,13 +161,7 @@ def unpack_map_data(blob: bytes, model_name: str, behavior_names: dict[int, str]
             prop['dummy'] = list(values[10:12])
         props.append(prop)
 
-    data = {
-        'model': model_name,
-        'collision': collision,
-        'tileBehaviorLegend': {char: behavior_names[value] for value, char in legend.items()},
-        'tileBehaviors': tiles,
-        'props': props,
-    }
+    data = {'model': model_name, **terrain, 'props': props}
     trailing = blob[props_offset + count * map_data.MAP_PROP_SIZE:props_offset + props_size]
     if trailing:
         data['propsTrailingBytes'] = trailing.hex()

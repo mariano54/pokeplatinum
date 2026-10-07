@@ -123,7 +123,9 @@ Here's the structure of each file:
 
 ## Land data (`land_data.narc`)
 
-This NARC contains 666 files.
+This NARC contains 666 files. In this repository, they are built from
+`res/field/maps/data/*.json` and `res/field/maps/models/*.nsbmd` by
+`tools/jsoncnv/map_data.py` (see [editing_maps.md](editing_maps.md)).
 
 Here's the structure of each file:
 

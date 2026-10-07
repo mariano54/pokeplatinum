@@ -133,7 +133,7 @@ def pack_props(data: dict, prop_models: dict[str, int]) -> bytes:
     for i, prop in enumerate(props):
         model = prop['model']
         if model not in prop_models:
-            raise MapDataError(f'prop {i}: unknown prop model "{model}" (see res/field/props/models)')
+            raise MapDataError(f'prop {i}: unknown prop model "{model}" (see docs/maps/prop_models.md)')
         rotation = prop.get('rotation', [0, 0, 0])
         scale = prop.get('scale', [1, 1, 1])
         dummy = prop.get('dummy', [0, 0])

@@ -46,6 +46,10 @@ in which the player moves.
   store map data
 - [dynamic_map_features.md](dynamic_map_features.md): a description of the dynamic map
   features system used to make dynamic maps
+- [editing_maps.md](editing_maps.md): a practical guide to editing maps (buildings,
+  collision, heights, warps...) in this repository
+- [prop_models.md](prop_models.md): the list of map prop models, with their internal
+  names and the maps using them
 
 ## Credits
 

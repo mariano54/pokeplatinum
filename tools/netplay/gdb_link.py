@@ -91,6 +91,17 @@ class GdbLink:
             if reply != 'OK':
                 raise IOError(f'write {addr + i:#x} failed: {reply}')
 
+    def monitor(self, text: str) -> str:
+        """Runs a `monitor` command and returns the final reply ('OK' on success).
+
+        Stock melonDS only knows `reset`; the patched build (tools/build_melonds.sh in the
+        NDS folder) adds `savestate PATH`, `loadstate PATH` and `fps N` (0 = unlimited).
+        It replies once the command is done, and stays halted if it was halted."""
+        reply = self.command('qRcmd,' + text.encode().hex())
+        while reply.startswith('O') and reply != 'OK':  # console output packets
+            reply = self._recv_packet()
+        return reply
+
     def close(self):
         try:
             self.resume()

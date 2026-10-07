@@ -1,0 +1,335 @@
+melonDS 1.1 + GDB "monitor" commands for savestates and emulation speed (ARM9 stub).
+Apply to tag 1.1 with `git apply`; build_melonds.sh (next to this file) clones, patches and builds it.
+
+  monitor savestate <abs path>   -> OK | E.savestate failed
+  monitor loadstate <abs path>   -> OK | E.state file not found | E.loadstate failed
+  monitor fps <n>                -> OK | E01   (n > 0: limit to n frames/s, 0: unlimited)
+  monitor reset                  -> OK         (stock)
+  anything else                  -> E01
+
+savestate/loadstate run on the emulator thread at the end of the current frame (like the
+menu items), and the reply is only sent once the state is written/loaded. If the target
+was halted when the command arrived, it runs to the end of that frame, does the operation
+and halts again without sending a stop reply: the client keeps reading/writing memory and
+resumes with `c` as usual. fps applies immediately (it does not persist to the config and
+needs AudioSync off, the default).
+
+The GDB stub also works with the JIT enabled now, minus breakpoints/watchpoints/stepping:
+requests are served and halts happen at the start of each frame.
+
+diff --git a/src/ARM.cpp b/src/ARM.cpp
+index 827fcb01..e73b078f 100644
+--- a/src/ARM.cpp
++++ b/src/ARM.cpp
+@@ -115,7 +115,7 @@ ARM::ARM(u32 num, bool jit, std::optional<GDBArgs> gdb, melonDS::NDS& nds) :
+     Num(num), // well uh
+     NDS(nds)
+ {
+-    SetGdbArgs(jit ? std::nullopt : gdb);
++    SetGdbArgs(gdb);
+ }
+ 
+ ARM::~ARM()
+@@ -584,9 +584,10 @@ void ARMv5::DataAbort()
+     JumpTo(ExceptionBase + 0x10);
+ }
+ 
+-void ARM::CheckGdbIncoming()
++void ARM::CheckGdbIncoming(bool haltHere)
+ {
+     GdbCheckA();
++    if (haltHere) GdbCheckB();
+ }
+ 
+ template <CPUExecuteMode mode>
+@@ -1074,9 +1075,21 @@ int ARM::RemoteCmd(const u8* cmd, size_t len)
+         return 0;
+     }
+ 
++    if (Num == 0)
++        return Platform::GdbRemoteCmd((const char*)cmd, NDS.UserData);
++
+     return 1; // not implemented (yet)
+ }
+ 
++void ARM::GdbFinishRemoteCmd(const char* reply)
++{
++    Gdb::StubState st = GdbStub.FinishRemoteCmd(reply);
++    if (st == Gdb::StubState::None) return;
++
++    IsSingleStep = st == Gdb::StubState::Step;
++    BreakReq = st == Gdb::StubState::Attach || st == Gdb::StubState::Break;
++}
++
+ void ARMv5::WriteMem(u32 addr, int size, u32 v)
+ {
+     if (addr < ITCMSize)
+diff --git a/src/ARM.h b/src/ARM.h
+index 96ed66f0..ddc992d8 100644
+--- a/src/ARM.h
++++ b/src/ARM.h
+@@ -149,7 +149,7 @@ public:
+     virtual void AddCycles_CDI() = 0;
+     virtual void AddCycles_CD() = 0;
+ 
+-    void CheckGdbIncoming();
++    void CheckGdbIncoming(bool haltHere = false);
+ 
+     u32 Num;
+ 
+@@ -220,6 +220,7 @@ public:
+ 
+     void ResetGdb() override;
+     int RemoteCmd(const u8* cmd, size_t len) override;
++    void GdbFinishRemoteCmd(const char* reply);
+ 
+ protected:
+ #endif
+diff --git a/src/NDS.cpp b/src/NDS.cpp
+index f45051e2..b1708180 100644
+--- a/src/NDS.cpp
++++ b/src/NDS.cpp
+@@ -967,6 +967,15 @@ u32 NDS::RunFrame()
+                 ARM9.CheckGdbIncoming();
+                 ARM7.CheckGdbIncoming();
+             }
++#ifdef GDBSTUB_ENABLED
++            else if (cpuMode == CPUExecuteMode::JIT && EnableGDBStub)
++            {
++                // the JIT has no per-instruction checks (no breakpoints or single-stepping):
++                // the stub serves requests and halts here, at the start of the frame
++                ARM9.CheckGdbIncoming(true);
++                ARM7.CheckGdbIncoming(true);
++            }
++#endif
+ 
+             if (!(CPUStop & CPUStop_Wakeup))
+             {
+diff --git a/src/Platform.h b/src/Platform.h
+index c83a007d..f006bf4b 100644
+--- a/src/Platform.h
++++ b/src/Platform.h
+@@ -71,6 +71,16 @@ enum StopReason {
+  */
+ void SignalStop(StopReason reason, void* userdata);
+ 
++#ifdef GDBSTUB_ENABLED
++/**
++ * Handles a GDB "monitor" command sent to the ARM9 stub that the core doesn't know.
++ * Called on the emulator thread, from within NDS::RunFrame.
++ * @return 0 on success, an error code (sent as "Exx"), or Gdb::RemoteCmdDeferred
++ * if the frontend finishes it later by calling NDS::ARM9.GdbFinishRemoteCmd().
++ */
++int GdbRemoteCmd(const char* cmd, void* userdata);
++#endif
++
+ 
+ /**
+  * Denotes how a file will be opened and accessed.
+diff --git a/src/debug/GdbCmds.cpp b/src/debug/GdbCmds.cpp
+index 1730efcf..f9a7a96a 100644
+--- a/src/debug/GdbCmds.cpp
++++ b/src/debug/GdbCmds.cpp
+@@ -728,7 +728,14 @@ ExecResult GdbStub::Handle_q_Rcmd(GdbStub* stub, const u8* cmd, ssize_t len)
+ 
+ 	int r = stub->Cb->RemoteCmd(tempdatabuf, len/2);
+ 
+-	if (r) stub->RespFmt("E%02X", r&0xff);
++	if (r == RemoteCmdDeferred)
++	{
++		// no reply yet: the target runs until the command is done (see FinishRemoteCmd)
++		stub->RcmdPending = true;
++		stub->RcmdHalted = stub->Stat != TgtStatus::Running;
++		return ExecResult::Continue;
++	}
++	else if (r) stub->RespFmt("E%02X", r&0xff);
+ 	else stub->RespStr("OK");
+ 
+ 	return ExecResult::Ok;
+diff --git a/src/debug/GdbStub.cpp b/src/debug/GdbStub.cpp
+index b1dcea4d..16e84280 100644
+--- a/src/debug/GdbStub.cpp
++++ b/src/debug/GdbStub.cpp
+@@ -330,6 +330,7 @@ StubState GdbStub::Poll(bool wait)
+ 
+ 		Stat = TgtStatus::Running; // on connected
+ 		StatFlag = false;
++		RcmdPending = false;
+ 	}
+ 
+ 	if (StatFlag)
+@@ -655,6 +656,18 @@ StubState GdbStub::CheckWatchpt(u32 addr, int kind, bool enter, bool stay)
+ 	return StubState::CheckNoHit;
+ }
+ 
++StubState GdbStub::FinishRemoteCmd(const char* reply)
++{
++	if (!RcmdPending || !IsConnected()) return StubState::None;
++	RcmdPending = false;
++
++	RespStr(reply);
++	if (!RcmdHalted) return StubState::Continue;
++
++	Stat = TgtStatus::BreakReq;
++	return Enter(true);
++}
++
+ int GdbStub::Resp(const u8* data1, size_t len1, const u8* data2, size_t len2)
+ {
+ 	return Resp(data1, len1, data2, len2, NoAck);
+diff --git a/src/debug/GdbStub.h b/src/debug/GdbStub.h
+index 85934327..0a5a2ac6 100644
+--- a/src/debug/GdbStub.h
++++ b/src/debug/GdbStub.h
+@@ -49,9 +49,13 @@ public:
+ 	virtual void WriteMem(u32 addr, int len, u32 value) = 0;
+ 
+ 	virtual void ResetGdb() = 0;
++	// "monitor <cmd>": returns 0 (reply OK), an error code (reply Exx) or RemoteCmdDeferred
+ 	virtual int RemoteCmd(const u8* cmd, size_t len) = 0;
+ };
+ 
++// The command finishes later: the target resumes until the frontend calls FinishRemoteCmd().
++constexpr int RemoteCmdDeferred = -1;
++
+ enum class StubState
+ {
+ 	NoConn,
+@@ -137,6 +141,10 @@ public:
+ 	StubState CheckBkpt(u32 addr, bool enter, bool stay);
+ 	StubState CheckWatchpt(u32 addr, int kind, bool enter, bool stay);
+ 
++	// Sends the reply to a deferred "monitor" command. If the target was halted when the
++	// command arrived, it halts again (without a stop reply) until the client resumes it.
++	StubState FinishRemoteCmd(const char* reply);
++
+ #include "GdbCmds.h"
+ 
+ 	Gdb::ExecResult SubcmdExec(const u8* cmd, ssize_t len, const SubcmdHandler* handlers);
+@@ -183,6 +191,7 @@ private:
+ 	u32 CurBkpt, CurWatchpt;
+ 	bool StatFlag;
+ 	bool NoAck;
++	bool RcmdPending = false, RcmdHalted = false;
+ 
+ 	std::array<u8, GDBPROTO_BUFFER_CAPACITY> RecvBuffer;
+ 	u32 RecvBufferFilled = 0;
+diff --git a/src/frontend/qt_sdl/EmuInstance.cpp b/src/frontend/qt_sdl/EmuInstance.cpp
+index d6d662fa..82d37722 100755
+--- a/src/frontend/qt_sdl/EmuInstance.cpp
++++ b/src/frontend/qt_sdl/EmuInstance.cpp
+@@ -839,6 +839,54 @@ void EmuInstance::undoStateLoad()
+     }
+ }
+ 
++#ifdef GDBSTUB_ENABLED
++// "monitor fps <n>": limit emulation to n frames per second, or 0 for unlimited.
++// "monitor savestate <path>" / "monitor loadstate <path>": run once the current frame ends,
++// and the reply (OK or E.<message>) is sent once the state is written/loaded.
++int EmuInstance::gdbCommand(const std::string& cmd)
++{
++    size_t space = cmd.find(' ');
++    std::string name = cmd.substr(0, space);
++    std::string arg = (space == std::string::npos) ? "" : cmd.substr(space + 1);
++
++    if (name == "fps")
++    {
++        char* end;
++        double fps = strtod(arg.c_str(), &end);
++        if (arg.empty() || *end || !(fps >= 0)) return 1;
++
++        doLimitFPS = fps > 0;
++        if (doLimitFPS) targetFPS = fps;
++        return 0;
++    }
++    if ((name == "savestate" || name == "loadstate") && !arg.empty())
++    {
++        gdbStateCmd = cmd;
++        return Gdb::RemoteCmdDeferred;
++    }
++    return 1;
++}
++
++void EmuInstance::gdbFinishCommand()
++{
++    if (gdbStateCmd.empty()) return;
++
++    std::string cmd;
++    std::swap(cmd, gdbStateCmd);
++    std::string path = cmd.substr(cmd.find(' ') + 1);
++
++    const char* reply = "OK";
++    if (cmd[0] == 's')
++    {
++        if (!saveState(path)) reply = "E.savestate failed";
++    }
++    else if (!Platform::FileExists(path)) reply = "E.state file not found";
++    else if (!loadState(path)) reply = "E.loadstate failed";
++
++    nds->ARM9.GdbFinishRemoteCmd(reply);
++}
++#endif
++
+ 
+ void EmuInstance::unloadCheats()
+ {
+diff --git a/src/frontend/qt_sdl/EmuInstance.h b/src/frontend/qt_sdl/EmuInstance.h
+index f1434965..11cbf059 100755
+--- a/src/frontend/qt_sdl/EmuInstance.h
++++ b/src/frontend/qt_sdl/EmuInstance.h
+@@ -165,6 +165,12 @@ public:
+     void micStop();
+     int micReadInput(melonDS::s16* data, int maxlength);
+ 
++#ifdef GDBSTUB_ENABLED
++    // GDB "monitor" commands: fps applies at once, savestate/loadstate run after the frame
++    int gdbCommand(const std::string& cmd);
++    void gdbFinishCommand();
++#endif
++
+     QMutex renderLock;
+ 
+ private:
+@@ -305,6 +311,9 @@ private:
+     std::unique_ptr<melonDS::Savestate> backupState;
+     bool savestateLoaded;
+     std::string previousSaveFile;
++#ifdef GDBSTUB_ENABLED
++    std::string gdbStateCmd;
++#endif
+ 
+     std::unique_ptr<melonDS::ARCodeFile> cheatFile;
+     bool cheatsOn;
+diff --git a/src/frontend/qt_sdl/EmuThread.cpp b/src/frontend/qt_sdl/EmuThread.cpp
+index e754d982..9c895c66 100755
+--- a/src/frontend/qt_sdl/EmuThread.cpp
++++ b/src/frontend/qt_sdl/EmuThread.cpp
+@@ -307,6 +307,9 @@ void EmuThread::run()
+             else
+             {
+                 nlines = emuInstance->nds->RunFrame();
++#ifdef GDBSTUB_ENABLED
++                emuInstance->gdbFinishCommand(); // pending "monitor savestate/loadstate"
++#endif
+             }
+ 
+             if (emuInstance->ndsSave)
+diff --git a/src/frontend/qt_sdl/Platform.cpp b/src/frontend/qt_sdl/Platform.cpp
+index 6ad06e59..ba6a08f5 100644
+--- a/src/frontend/qt_sdl/Platform.cpp
++++ b/src/frontend/qt_sdl/Platform.cpp
+@@ -62,6 +62,14 @@ void SignalStop(StopReason reason, void* userdata)
+     inst->emuStop(reason);
+ }
+ 
++#ifdef GDBSTUB_ENABLED
++int GdbRemoteCmd(const char* cmd, void* userdata)
++{
++    EmuInstance* inst = (EmuInstance*)userdata;
++    return inst->gdbCommand(cmd);
++}
++#endif
++
+ 
+ static QIODevice::OpenMode GetQMode(FileMode mode)
+ {

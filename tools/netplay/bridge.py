@@ -4,11 +4,12 @@
     python3 tools/netplay/bridge.py --gdb-port 3333 --nef build/main.nef [--server 127.0.0.1:4545]
 
 The game keeps its side of the conversation in `gNetPlay` (include/netplay.h). This
-bridge reads and writes that struct through the emulator's GDB stub ~15 times a
+bridge reads and writes that struct through the emulator's GDB stub ~30 times a
 second and exchanges it with the other player's bridge through server.py.
 
 It also listens on a control port (default: GDB port + 1000) for JSON lines, used
-to drive the game from scripts: {"press": ["A"], "frames": 6} holds buttons, and
+to drive the game from scripts (times are in game frames; see README.md):
+{"press": ["A"], "frames": 6, "wait": true} holds buttons, {"wait": 60} waits, and
 {"status": true} returns the decoded mailbox.
 """
 import argparse
@@ -28,26 +29,33 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from gdb_link import GdbLink  # noqa: E402
 
 MAGIC = 0x594C504E
-STATE_SIZE = 0xD48
+VERSION = 2
+STATE_SIZE = 0xDD0
 
-# Offsets inside NetPlayState
+# Offsets inside NetPlayState (include/netplay.h)
 OFF_MAGIC = 0x00
+OFF_VERSION = 0x04
 OFF_FRAME = 0x08
 OFF_INJECT_KEYS = 0x0C
 OFF_REMOTE_CONNECTED = 0x0E
+OFF_INJECT_FRAMES = 0x0F
 OFF_LOCAL = 0x10
-OFF_REMOTE = 0x2C
-PLAYER_SIZE = 0x1C
-OFF_OUT_REQUEST = 0x48
-OFF_IN_RESPONSE = 0x49
-OFF_IN_REQUEST = 0x4A
-OFF_OUT_RESPONSE = 0x4B
-OFF_OUT_MON = 0x50
-OFF_IN_MON = 0x13C
+OFF_REMOTE = 0x70
+PLAYER_SIZE = 0x60
+OFF_OUT_REQUEST = 0xD0
+OFF_IN_RESPONSE = 0xD1
+OFF_IN_REQUEST = 0xD2
+OFF_OUT_RESPONSE = 0xD3
+OFF_REPLAY_LATE_STEPS = 0xD5
+OFF_REPLAY_MAX_LATE = 0xD6
+HEADER_SIZE = 0xD8  # everything up to the Pokémon data
+OFF_OUT_MON = 0xD8
+OFF_IN_MON = 0x1C4
 MON_SIZE = 0xEC
-OFF_OUT_PARTY = 0x228
-OFF_IN_PARTY = 0x7B8
+OFF_OUT_PARTY = 0x2B0
+OFF_IN_PARTY = 0x840
 PARTY_SIZE = 0x590
+STEP_HISTORY = 8
 
 REQUEST_BATTLE, REQUEST_TRADE, REQUEST_CANCEL = 1, 2, 3
 RESPONSE_ACCEPT = 1
@@ -73,9 +81,9 @@ def decode_name(raw: bytes) -> str:
 
 
 def decode_player(raw: bytes) -> dict:
-    header, matrix, x, z, direction, gender, in_field, seq = struct.unpack_from('<HHhhBBBB', raw)
+    header, matrix, x, z, direction, gender, in_field, _, graphics, steps = struct.unpack_from('<HHhhBBBBHH', raw)
     return {'map': header, 'matrix': matrix, 'x': x, 'z': z, 'dir': direction, 'gender': gender,
-            'inField': in_field, 'seq': seq, 'name': decode_name(raw[12:28])}
+            'inField': in_field, 'graphics': graphics, 'steps': steps, 'name': decode_name(raw[0x50:0x60])}
 
 
 def find_symbol(nef: pathlib.Path, symbol: str) -> tuple[int, int]:
@@ -97,9 +105,11 @@ class Bridge:
         self.commands = queue.Queue()  # (command, reply queue) from the control port
         self.server = None
         self.last_local = None
+        self.last_remote = None  # the other player's latest state, to put back after loading a savestate
         self.pending_in = 0  # request type the other player sent us
         self.pending_out = 0  # request type we sent
-        self.keys_until = 0.0
+        self.waiters = []  # (frame, reply queue): commands waiting for the game to reach a frame
+        self.tick_ms = 0.0  # how long a poll takes, on average (mostly waiting for the emulator to stop)
         self.status = {}
 
     def log(self, *args):
@@ -154,10 +164,11 @@ class Bridge:
         hello_sent = False
 
         while True:
+            started = time.perf_counter()
             link.halt()
             try:
-                state = link.read(self.addr, 0x50)
-                if struct.unpack_from('<I', state, OFF_MAGIC)[0] == MAGIC:
+                state = link.read(self.addr, HEADER_SIZE)
+                if struct.unpack_from('<II', state, OFF_MAGIC) == (MAGIC, VERSION):
                     if not hello_sent:
                         self.send({'type': 'hello', 'name': f'port {self.args.gdb_port}'})
                         hello_sent = True
@@ -170,7 +181,9 @@ class Bridge:
                 traceback.print_exc()
             finally:
                 link.resume()
-            time.sleep(1 / 15)
+            elapsed = time.perf_counter() - started
+            self.tick_ms = 0.9 * self.tick_ms + 0.1 * elapsed * 1000
+            time.sleep(max(0.0, 1 / self.args.poll_hz - elapsed))
 
     def sync(self, link: GdbLink, state: bytes):
         local_raw = state[OFF_LOCAL:OFF_LOCAL + PLAYER_SIZE]
@@ -180,7 +193,8 @@ class Bridge:
             self.last_local = local_raw
         self.status = {'frame': struct.unpack_from('<I', state, OFF_FRAME)[0], 'local': local,
                        'remote': decode_player(state[OFF_REMOTE:OFF_REMOTE + PLAYER_SIZE]),
-                       'remoteConnected': state[OFF_REMOTE_CONNECTED]}
+                       'remoteConnected': state[OFF_REMOTE_CONNECTED], 'tickMs': round(self.tick_ms, 2),
+                       'replayLateSteps': state[OFF_REPLAY_LATE_STEPS], 'replayMaxLate': state[OFF_REPLAY_MAX_LATE]}
 
         out_request = state[OFF_OUT_REQUEST]
         if out_request:
@@ -211,7 +225,8 @@ class Bridge:
             message = self.incoming.get()
             kind = message.get('type')
             if kind == 'state':
-                link.write(self.addr + OFF_REMOTE, bytes.fromhex(message['player']))
+                self.last_remote = bytes.fromhex(message['player'])
+                link.write(self.addr + OFF_REMOTE, self.last_remote)
                 link.write(self.addr + OFF_REMOTE_CONNECTED, b'\1')
             elif kind == 'peer_left':
                 link.write(self.addr + OFF_REMOTE_CONNECTED, b'\0')
@@ -232,22 +247,67 @@ class Bridge:
                 self.pending_out = 0
 
     def handle_commands(self, link: GdbLink, state: bytes):
-        if self.keys_until and time.time() >= self.keys_until:
-            link.write(self.addr + OFF_INJECT_KEYS, b'\0\0')
-            self.keys_until = 0.0
+        frame = struct.unpack_from('<I', state, OFF_FRAME)[0]
+        for waiter in [w for w in self.waiters if frame >= w[0]]:
+            self.waiters.remove(waiter)
+            waiter[1].put({'ok': True, 'frame': frame})
+
         while not self.commands.empty():
             command, reply = self.commands.get()
-            if 'press' in command:
-                mask = 0
-                for key in command['press']:
-                    mask |= KEYS[key.upper()]
-                link.write(self.addr + OFF_INJECT_KEYS, struct.pack('<H', mask))
-                self.keys_until = time.time() + command.get('frames', 6) / 60
-                reply.put({'ok': True})
-            elif command.get('status'):
-                reply.put(self.status or {'magic': struct.unpack_from('<I', state, OFF_MAGIC)[0] == MAGIC})
+            try:
+                self.handle_command(link, command, reply, frame, state)
+            except Exception as e:
+                reply.put({'error': repr(e)})
+
+    def handle_command(self, link: GdbLink, command: dict, reply: queue.Queue, frame: int, state: bytes):
+        if 'press' in command:
+            # The game holds the keys for this many frames, however fast the emulator runs.
+            mask = 0
+            for key in command['press']:
+                mask |= KEYS[key.upper()]
+            frames = min(command.get('frames', 6), 255)
+            link.write(self.addr + OFF_INJECT_KEYS, struct.pack('<H', mask))
+            link.write(self.addr + OFF_INJECT_FRAMES, bytes([frames]))
+            if command.get('wait'):
+                self.waiters.append((frame + frames, reply))
             else:
-                reply.put({'error': 'unknown command'})
+                reply.put({'ok': True, 'frame': frame})
+        elif 'wait' in command:
+            self.waiters.append((frame + command['wait'], reply))
+        elif 'savestate' in command:
+            reply.put(self.monitor_reply(link.monitor(f'savestate {pathlib.Path(command["savestate"]).resolve()}')))
+        elif 'loadstate' in command:
+            result = link.monitor(f'loadstate {pathlib.Path(command["loadstate"]).resolve()}')
+            if result == 'OK':
+                self.after_load(link, command.get('keepRemote', True))
+            reply.put(self.monitor_reply(result))
+        elif 'speed' in command:
+            reply.put(self.monitor_reply(link.monitor(f'fps {round(60 * command["speed"])}')))
+        elif command.get('status'):
+            reply.put(self.status or {'magic': struct.unpack_from('<I', state, OFF_MAGIC)[0] == MAGIC})
+        else:
+            reply.put({'error': 'unknown command'})
+
+
+    def monitor_reply(self, result: str) -> dict:
+        if result == 'OK':
+            return {'ok': True}
+        if result.startswith('E.'):
+            return {'error': result[2:]}
+        return {'error': f'{result} (savestates and speed need the patched melonDS, see README.md)'}
+
+    def after_load(self, link: GdbLink, keep_remote: bool):
+        # The loaded RAM holds an old copy of the other player: put their current state
+        # back (unless they're loading a matching state too, see checkpoint.py), and
+        # resend ours so they see where we are now.
+        if keep_remote and self.last_remote is not None:
+            link.write(self.addr + OFF_REMOTE, self.last_remote)
+            link.write(self.addr + OFF_REMOTE_CONNECTED, b'\1')
+        self.last_local = None
+        self.pending_in = self.pending_out = 0
+        for _, reply in self.waiters:
+            reply.put({'ok': True, 'interrupted': 'loadstate'})
+        self.waiters = []
 
 
 def main():
@@ -256,6 +316,7 @@ def main():
     parser.add_argument('--nef', type=pathlib.Path, required=True, help='build/main.nef of the ROM being played')
     parser.add_argument('--server', default='127.0.0.1:4545')
     parser.add_argument('--control-port', type=int)
+    parser.add_argument('--poll-hz', type=float, default=30, help='how often to sync with the emulator')
     args = parser.parse_args()
     if args.control_port is None:
         args.control_port = args.gdb_port + 1000

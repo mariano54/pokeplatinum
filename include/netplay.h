@@ -22,7 +22,7 @@
 // through the emulator's GDB stub and relays it between the two games.
 
 #define NETPLAY_MAGIC 0x594C504E // "NPLY"
-#define NETPLAY_VERSION 1
+#define NETPLAY_VERSION 2
 
 // Local ID given to the map object showing the other player.
 #define NETPLAY_REMOTE_LOCAL_ID 0xF0
@@ -40,6 +40,18 @@ enum NetPlayResponse {
     NETPLAY_RESPONSE_DECLINE,
 };
 
+// How many of a player's latest steps are kept, so the other game can replay
+// every step even if it only hears about them a few at a time.
+#define NETPLAY_STEP_HISTORY 8
+
+typedef struct NetPlayStep {
+    s16 x; // where the step ends
+    s16 z;
+    u16 frame; // gNetPlay.frame when the step started, to replay steps with the same rhythm
+    u8 action; // the movement action used, turned to face north (e.g. MOVEMENT_ACTION_RUN_NORTH)
+    u8 dir; // the direction of the step
+} NetPlayStep;
+
 typedef struct NetPlayPlayer {
     u16 mapHeaderID;
     u16 mapMatrixID;
@@ -48,7 +60,10 @@ typedef struct NetPlayPlayer {
     u8 dir;
     u8 gender;
     u8 inField;
-    u8 seq; // bumped every time the player state changes
+    u8 unused;
+    u16 graphicsID; // the player's current overworld sprite: walking, cycling, surfing...
+    u16 stepCount; // steps taken so far; step n is in steps[n % NETPLAY_STEP_HISTORY]
+    NetPlayStep steps[NETPLAY_STEP_HISTORY];
     charcode_t name[TRAINER_NAME_LEN + 1];
 } NetPlayPlayer;
 
@@ -56,9 +71,9 @@ typedef struct NetPlayState {
     u32 magic;
     u32 version;
     u32 frame;
-    u16 injectKeys; // written by the bridge, ORed into the keypad every frame
+    u16 injectKeys; // written by the bridge, ORed into the keypad...
     u8 remoteConnected;
-    u8 unused;
+    u8 injectFrames; // ...for this many more frames
 
     NetPlayPlayer local; // written by the game
     NetPlayPlayer remote; // written by the bridge
@@ -71,7 +86,11 @@ typedef struct NetPlayState {
     u8 outResponse; // set by the game, cleared by the bridge once sent
 
     u8 tradeSlot; // the party slot we put up for trade
-    u8 pad[3];
+    // How smoothly the other player's steps play back: steps started later than
+    // planned (so there was a pause before them), and the worst delay in frames.
+    u8 replayLateSteps;
+    u8 replayMaxLate;
+    u8 pad;
 
     Pokemon outMon; // our Pokémon offered in a trade
     Pokemon inMon; // their Pokémon

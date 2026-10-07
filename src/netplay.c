@@ -20,6 +20,7 @@
 #include "field/field_system_sub2_t.h"
 #include "overlay005/map_name_popup.h"
 
+#include "bag.h"
 #include "charcode.h"
 #include "charcode_util.h"
 #include "encounter.h"
@@ -54,6 +55,9 @@
 
 NetPlayState gNetPlay;
 
+// tools/netplay/bridge.py knows this layout by heart: update it along with this.
+typedef char NetPlayStateSizeCheck[sizeof(NetPlayState) == 0xDD0 ? 1 : -1];
+
 static u16 sRemoteAvatarHeader;
 static BOOL sRemoteVisible; // whether the other player has been announced since they came into view
 
@@ -75,28 +79,66 @@ u16 NetPlay_GetInjectedKeys(void)
 {
     NetPlay_EnsureInit();
     gNetPlay.frame++;
+
+    if (gNetPlay.injectFrames == 0) {
+        return 0;
+    }
+
+    gNetPlay.injectFrames--;
     return gNetPlay.injectKeys;
+}
+
+static int NetPlay_DirTowards(int dx, int dz)
+{
+    if (dx > 0) {
+        return DIR_EAST;
+    } else if (dx < 0) {
+        return DIR_WEST;
+    } else if (dz > 0) {
+        return DIR_SOUTH;
+    }
+
+    return DIR_NORTH;
+}
+
+// Remembers a step the player just started, with the movement action they used
+// (walking, running, cycling, jumping a ledge...), for the other game to replay.
+static void NetPlay_RecordStep(NetPlayPlayer *local, MapObject *playerObj, s16 x, s16 z, int dir)
+{
+    NetPlayStep *step = &local->steps[local->stepCount % NETPLAY_STEP_HISTORY];
+    enum MovementAction action = MapObject_GetMovementAction(playerObj);
+
+    step->frame = gNetPlay.frame;
+    step->x = x;
+    step->z = z;
+    step->dir = dir;
+    step->action = MovementAction_GetDirFromAction(action) != DIR_NONE ? MovementAction_TurnActionTowardsDir(DIR_NORTH, action) : MOVEMENT_ACTION_WALK_NORMAL_NORTH;
+    local->stepCount++;
 }
 
 static void NetPlay_UpdateLocalPlayer(FieldSystem *fieldSystem)
 {
     NetPlayPlayer *local = &gNetPlay.local;
     TrainerInfo *trainerInfo = SaveData_GetTrainerInfo(fieldSystem->saveData);
+    MapObject *playerObj = PlayerAvatar_GetMapObject(fieldSystem->playerAvatar);
     u16 mapHeaderID = fieldSystem->location->mapHeaderID;
     s16 x = PlayerAvatar_GetXPos(fieldSystem->playerAvatar);
     s16 z = PlayerAvatar_GetZPos(fieldSystem->playerAvatar);
-    u8 dir = PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar);
+    int dx = x - local->x;
+    int dz = z - local->z;
 
-    if (local->mapHeaderID != mapHeaderID || local->x != x || local->z != z || local->dir != dir || !local->inField) {
-        local->mapHeaderID = mapHeaderID;
-        local->mapMatrixID = MapHeader_GetMapMatrixID(mapHeaderID);
-        local->x = x;
-        local->z = z;
-        local->dir = dir;
-        local->inField = TRUE;
-        local->seq++;
+    // A step moves one tile, or two for a ledge jump; anything else is a warp.
+    if (local->inField && local->mapHeaderID == mapHeaderID && (dx != 0 || dz != 0) && (dx == 0 || dz == 0) && dx * dx + dz * dz <= 4) {
+        NetPlay_RecordStep(local, playerObj, x, z, NetPlay_DirTowards(dx, dz));
     }
 
+    local->mapHeaderID = mapHeaderID;
+    local->mapMatrixID = MapHeader_GetMapMatrixID(mapHeaderID);
+    local->x = x;
+    local->z = z;
+    local->dir = PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar);
+    local->inField = TRUE;
+    local->graphicsID = MapObject_GetGraphicsID(playerObj);
     local->gender = TrainerInfo_Gender(trainerInfo);
     CharCode_Copy(local->name, TrainerInfo_Name(trainerInfo));
 }
@@ -115,19 +157,6 @@ static BOOL NetPlay_IsRemoteVisible(FieldSystem *fieldSystem)
     }
 
     return remote->mapMatrixID == OVERWORLD_MAP_MATRIX && MapHeader_GetMapMatrixID(mapHeaderID) == OVERWORLD_MAP_MATRIX;
-}
-
-static int NetPlay_DirTowards(int dx, int dz)
-{
-    if (dx > 0) {
-        return DIR_EAST;
-    } else if (dx < 0) {
-        return DIR_WEST;
-    } else if (dz > 0) {
-        return DIR_SOUTH;
-    }
-
-    return DIR_NORTH;
 }
 
 // Shows "<name> is here!" in the location name banner. Returns FALSE if the banner is busy.
@@ -153,13 +182,91 @@ static BOOL NetPlay_AnnounceRemote(FieldSystem *fieldSystem)
     return shown;
 }
 
-// Shows the other player as a map object that walks to wherever they are.
+static void NetPlay_PlaceAvatar(MapObject *mapObj, int x, int z, int dir)
+{
+    MapObject_SetPosDirFromCoords(mapObj, x, MapObject_GetY(mapObj), z, dir);
+}
+
+// Starts walking the avatar through one of the other player's steps, with the
+// movement action they used, from the tile the step started on.
+static void NetPlay_ReplayStep(MapObject *mapObj, const NetPlayStep *step, BOOL hurry)
+{
+    enum MovementAction action = step->action;
+    int tiles = action == MOVEMENT_ACTION_JUMP_FAR_NORTH ? 2 : 1;
+    int startX = step->x;
+    int startZ = step->z;
+
+    switch (step->dir) {
+    case DIR_NORTH:
+        startZ += tiles;
+        break;
+    case DIR_SOUTH:
+        startZ -= tiles;
+        break;
+    case DIR_WEST:
+        startX += tiles;
+        break;
+    case DIR_EAST:
+        startX -= tiles;
+        break;
+    }
+
+    if (MapObject_GetX(mapObj) != startX || MapObject_GetZ(mapObj) != startZ) {
+        NetPlay_PlaceAvatar(mapObj, startX, startZ, step->dir);
+    }
+
+    // Catch up by moving one speed faster.
+    if (hurry) {
+        if (action == MOVEMENT_ACTION_WALK_NORMAL_NORTH) {
+            action = MOVEMENT_ACTION_WALK_FAST_NORTH;
+        } else if (action == MOVEMENT_ACTION_WALK_FAST_NORTH || action == MOVEMENT_ACTION_RUN_NORTH) {
+            action = MOVEMENT_ACTION_WALK_FASTER_NORTH;
+        }
+    }
+
+    LocalMapObj_SetAnimationCode(mapObj, MovementAction_TurnActionTowardsDir(step->dir, action));
+}
+
+// The avatar replays the other player's steps a few frames behind them, keeping
+// the rhythm they were taken at so that steps arriving at uneven times (the bridge
+// only polls the games now and then) still play back without pauses in between.
+#define NETPLAY_REPLAY_MARGIN 4 // frames
+
+static u16 sRemoteStepsShown; // how many of the other player's steps the avatar has replayed
+static u16 sRemoteStepsSeen; // how many of them have arrived so far
+static u16 sRemoteClockOffset; // our frame counter minus theirs, at the fastest a step has arrived
+static BOOL sRemoteClockKnown;
+
+static void NetPlay_TrackRemoteClock(const NetPlayPlayer *remote)
+{
+    while (sRemoteStepsSeen != remote->stepCount) {
+        if ((u16)(remote->stepCount - sRemoteStepsSeen) <= NETPLAY_STEP_HISTORY) {
+            u16 offset = gNetPlay.frame - remote->steps[sRemoteStepsSeen % NETPLAY_STEP_HISTORY].frame;
+
+            if (!sRemoteClockKnown || (s16)(offset - sRemoteClockOffset) < 0) {
+                sRemoteClockOffset = offset;
+                sRemoteClockKnown = TRUE;
+            }
+        }
+
+        sRemoteStepsSeen++;
+    }
+}
+
+static void NetPlay_ResetReplay(const NetPlayPlayer *remote)
+{
+    sRemoteStepsShown = remote->stepCount;
+    sRemoteStepsSeen = remote->stepCount;
+    sRemoteClockKnown = FALSE;
+}
+
+// Shows the other player as a map object that walks wherever they walk.
 static void NetPlay_UpdateRemoteAvatar(FieldSystem *fieldSystem, BOOL playerHasControl)
 {
     const NetPlayPlayer *remote = &gNetPlay.remote;
     MapObject *mapObj = MapObjMan_LocalMapObjByIndex(fieldSystem->mapObjMan, NETPLAY_REMOTE_LOCAL_ID);
     u16 mapHeaderID = fieldSystem->location->mapHeaderID;
-    int graphicsID = remote->gender == GENDER_FEMALE ? OBJ_EVENT_GFX_PLAYER_F : OBJ_EVENT_GFX_PLAYER_M;
+    int graphicsID = remote->graphicsID;
 
     if (!NetPlay_IsRemoteVisible(fieldSystem)) {
         if (mapObj != NULL) {
@@ -187,26 +294,44 @@ static void NetPlay_UpdateRemoteAvatar(FieldSystem *fieldSystem, BOOL playerHasC
             MapObject_SetLocalID(mapObj, NETPLAY_REMOTE_LOCAL_ID);
             MapObject_SetScript(mapObj, SCRIPT_ID_NETPLAY_TALK);
             sRemoteAvatarHeader = mapHeaderID;
+            NetPlay_ResetReplay(remote);
         }
         return;
     }
+
+    NetPlay_TrackRemoteClock(remote);
 
     if (!LocalMapObj_IsAnimationSet(mapObj)) {
         return; // still walking
     }
 
-    int dx = remote->x - MapObject_GetX(mapObj);
-    int dz = remote->z - MapObject_GetZ(mapObj);
+    u16 behind = remote->stepCount - sRemoteStepsShown;
 
-    if (dx == 0 && dz == 0) {
-        if (MapObject_GetFacingDir(mapObj) != remote->dir) {
-            MapObject_Face(mapObj, remote->dir);
+    if (behind > NETPLAY_STEP_HISTORY) {
+        // Lost track of their steps: jump to where they are.
+        NetPlay_PlaceAvatar(mapObj, remote->x, remote->z, remote->dir);
+        sRemoteStepsShown = remote->stepCount;
+    } else if (behind > 0) {
+        const NetPlayStep *step = &remote->steps[sRemoteStepsShown % NETPLAY_STEP_HISTORY];
+        s16 untilDue = (u16)(step->frame + sRemoteClockOffset + NETPLAY_REPLAY_MARGIN - gNetPlay.frame);
+
+        if (untilDue <= 0 || behind > 2) {
+            NetPlay_ReplayStep(mapObj, step, behind > 2);
+            sRemoteStepsShown++;
+
+            if (untilDue < -1 && gNetPlay.replayLateSteps < 255) {
+                int late = -untilDue > 255 ? 255 : -untilDue;
+
+                gNetPlay.replayLateSteps++;
+                if (late > gNetPlay.replayMaxLate) {
+                    gNetPlay.replayMaxLate = late;
+                }
+            }
         }
-    } else if (dx * dx + dz * dz == 1) {
-        LocalMapObj_SetAnimationCode(mapObj, MovementAction_TurnActionTowardsDir(NetPlay_DirTowards(dx, dz), MOVEMENT_ACTION_WALK_FAST_NORTH));
-    } else {
-        // Too far behind (or warped): jump straight there.
-        MapObject_SetPosDirFromCoords(mapObj, remote->x, MapObject_GetY(mapObj), remote->z, remote->dir);
+    } else if (MapObject_GetX(mapObj) != remote->x || MapObject_GetZ(mapObj) != remote->z) {
+        NetPlay_PlaceAvatar(mapObj, remote->x, remote->z, remote->dir);
+    } else if (MapObject_GetFacingDir(mapObj) != remote->dir) {
+        MapObject_Face(mapObj, remote->dir);
     }
 }
 
@@ -304,6 +429,11 @@ void NetPlay_QuickStartGame(SaveData *saveData, enum HeapID heapID)
 
     // Skip the rival bumping into the player on their way out of town.
     *VarsFlags_GetVarAddress(SaveData_GetVarsFlags(saveData), VAR_TWINLEAF_TOWN_RIVAL_TRIGGER_STATE) = 1;
+
+    // Running shoes (hold B) and a Bicycle registered to Y, to get around quickly.
+    PlayerData_SetRunningShoes(FieldOverworldState_GetPlayerData(SaveData_GetFieldOverworldState(saveData)), TRUE);
+    Bag_TryAddItem(SaveData_GetBag(saveData), ITEM_BICYCLE, 1, heapID);
+    Bag_RegisterItem(SaveData_GetBag(saveData), ITEM_BICYCLE);
 }
 
 // --- script commands ------------------------------------------------------

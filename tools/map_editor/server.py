@@ -184,6 +184,9 @@ class Converter:
         with lock:
             model = g3d_sources.binary_path(model, CACHE / 'packed')
             textures = g3d_sources.binary_path(textures, CACHE / 'packed')
+            if kind != 'terrain' and textures.exists():
+                # The game binds the area texture set over the model's own TEX0.
+                model = g3d_sources.without_textures(model, CACHE / 'untextured')
             stamp = f'{model.stat().st_mtime_ns}:{textures.stat().st_mtime_ns if textures.exists() else 0}'
             stale = not out.exists() or (out / '.stamp').read_text() != stamp
             if stale:

@@ -266,7 +266,7 @@ f49c6992b8caf5fea13831789fe4bfb026beb967 *res/field/props/build_model_matshp.dat
 a2cd6f636960544440b489e827e5e16dcaa7f014 *res/field/props/model_sets/prop_model_sets.narc
 8174da67845c24f377f56e84a0f5f0e890e765ec *res/field/props/texture_sets/prop_texture_sets.narc
 74aded294b971d68f10554f86fd795b072a0b01f *res/field/maps/texture_sets/map_tex_set.narc
-2fb9b73d29f2577fdbd385daf961749794969d72 *res/prebuilt/fielddata/areadata/area_move_model/move_model_list.narc
+2fb9b73d29f2577fdbd385daf961749794969d72 *res/field/map_object_preloads/area_move_model_list.narc
 fa044bf2e0599ed2bf42d3b632776af3b7e8452e *res/field/maps/data/land_data.narc
 f477dce1ffaf2db070ef0f31f422b51433463485 *res/prebuilt/contest/data/contest_data.narc
 e03ff29bc200e233217ad7a8f068ec77b33e6472 *res/prebuilt/particledata/particledata.narc
@@ -277,7 +277,7 @@ e171ea4a5b54d4e68fe7e0031a2edc0d561c7e7c *res/prebuilt/application/wifi_earth/wi
 3e420c904e49c441a22210726e7017e4ee0f607f *res/prebuilt/application/custom_ball/data/cb_data.narc
 4357303bd09370350bb2fdd8324bed6e5b87ea39 *res/graphics/egg_hatch/egg_graphics.narc
 fc33b6a3e954c139eae32244b2991cf280ab54a4 *res/graphics/egg_hatch/egg_particles.narc
-205a3d2db44040f4fafa6cb15301f3d9e77e5109 *res/prebuilt/fielddata/mm_list/move_model_list.narc
+205a3d2db44040f4fafa6cb15301f3d9e77e5109 *res/field/map_object_preloads/move_model_list.narc
 b37a0c1e61ba1b2ceb905bad16476f1fb5966f18 *res/prebuilt/pokeanime/poke_anm.narc
 dc6caed3c4b1a0b04bebfcf6627a668e37ae6f2c *res/pokemon_anims/pokemon_anims.narc
 e8c96b0f5b6d59820e7201f7881183e3aff1b35f *res/prebuilt/battle/tr_ai/tr_ai_seq.narc

@@ -24,6 +24,8 @@ matches the original, which it no longer will).
 | Area data | `res/field/area_data/area_data_NNN.json` | picks the prop model set, texture set and lighting |
 | Props (buildings, trees, signs...) available in an area | `res/field/props/model_sets/prop_model_set_NNN.json` | |
 | Prop 3D models | `res/field/props/models/*.nsbmd` | list: [prop_models.md](prop_models.md) |
+| Prop material/shape IDs | `res/field/props/material_shapes.json` | which parts of each prop model are drawn |
+| NPC graphics loaded with a map | `res/field/map_object_preloads/map_object_preloads.json` | picked by the map header's `preloadedMapObjectsArchiveID` |
 
 Map names come from the map headers that use them:
 

@@ -267,7 +267,7 @@ res/field/area_data/area_data.narc,/fielddata/areadata/area_data.narc
 res/field/props/model_sets/prop_model_sets.narc,/fielddata/areadata/area_build_model/area_build.narc
 res/field/props/texture_sets/prop_texture_sets.narc,/fielddata/areadata/area_build_model/areabm_texset.narc
 res/field/maps/texture_sets/map_tex_set.narc,/fielddata/areadata/area_map_tex/map_tex_set.narc
-res/prebuilt/fielddata/areadata/area_move_model/move_model_list.narc,/fielddata/areadata/area_move_model/move_model_list.narc
+res/field/map_object_preloads/area_move_model_list.narc,/fielddata/areadata/area_move_model/move_model_list.narc
 res/field/maps/data/land_data.narc,/fielddata/land_data/land_data.narc
 res/prebuilt/contest/data/contest_data.narc,/contest/data/contest_data.narc
 res/prebuilt/particledata/particledata.narc,/particledata/particledata.narc
@@ -278,7 +278,7 @@ res/prebuilt/application/wifi_earth/wifi_earth_place.narc,/application/wifi_eart
 res/prebuilt/application/custom_ball/data/cb_data.narc,/application/custom_ball/data/cb_data.narc
 res/graphics/egg_hatch/egg_graphics.narc,/demo/egg/data/egg_data.narc
 res/graphics/egg_hatch/egg_particles.narc,/demo/egg/data/particle/egg_demo_particle.narc
-res/prebuilt/fielddata/mm_list/move_model_list.narc,/fielddata/mm_list/move_model_list.narc
+res/field/map_object_preloads/move_model_list.narc,/fielddata/mm_list/move_model_list.narc
 res/prebuilt/pokeanime/poke_anm.narc,/pokeanime/poke_anm.narc
 res/pokemon_anims/pokemon_anims.narc,/pokeanime/pl_poke_anm.narc
 res/prebuilt/battle/tr_ai/tr_ai_seq.narc,/battle/tr_ai/tr_ai_seq.narc

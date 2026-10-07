@@ -1,5 +1,3 @@
-subdir('areadata')
 subdir('encountdata')
 subdir('maptable')
-subdir('mm_list')
 subdir('tornworld')

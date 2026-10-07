@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_639", "MAP_640"],
-        ["MAP_641", "MAP_642"]
+        ["MAP_SPEAR_PILLAR_PALKIA_X00_Y00", "MAP_SPEAR_PILLAR_PALKIA_X01_Y00"],
+        ["MAP_SPEAR_PILLAR_PALKIA_X00_Y01", "MAP_SPEAR_PILLAR_PALKIA_X01_Y01"]
     ]
 }

@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_544", "MAP_545"],
-        ["MAP_546", "MAP_547"]
+        ["MAP_LAKE_VALOR_DRAINED_X00_Y00", "MAP_LAKE_VALOR_DRAINED_X01_Y00"],
+        ["MAP_LAKE_VALOR_DRAINED_X00_Y01", "MAP_LAKE_VALOR_DRAINED_X01_Y01"]
     ]
 }

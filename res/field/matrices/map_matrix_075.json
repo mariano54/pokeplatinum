@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_489", "MAP_490"],
-        ["MAP_491", "MAP_492"]
+        ["MAP_WAYWARD_CAVE_B1F_X00_Y00", "MAP_WAYWARD_CAVE_B1F_X01_Y00"],
+        ["MAP_WAYWARD_CAVE_B1F_X00_Y01", "MAP_WAYWARD_CAVE_B1F_X01_Y01"]
     ]
 }

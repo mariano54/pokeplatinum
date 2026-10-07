@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_379", "MAP_380"],
-        ["MAP_381", "MAP_382"]
+        ["MAP_SPEAR_PILLAR_DISTORTED_X00_Y00", "MAP_SPEAR_PILLAR_DISTORTED_X01_Y00"],
+        ["MAP_SPEAR_PILLAR_DISTORTED_X00_Y01", "MAP_SPEAR_PILLAR_DISTORTED_X01_Y01"]
     ]
 }

@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_413", "MAP_414"],
-        ["MAP_415", "MAP_416"]
+        ["MAP_VICTORY_ROAD_2F_X00_Y00", "MAP_VICTORY_ROAD_2F_X01_Y00"],
+        ["MAP_VICTORY_ROAD_2F_X00_Y01", "MAP_VICTORY_ROAD_2F_X01_Y01"]
     ]
 }

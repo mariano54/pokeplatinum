@@ -3,6 +3,6 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_527", "MAP_528", "MAP_529"]
+        ["MAP_GALACTIC_HQ_B2F_X00_Y00", "MAP_GALACTIC_HQ_B2F_X01_Y00", "MAP_GALACTIC_HQ_B2F_X02_Y00"]
     ]
 }

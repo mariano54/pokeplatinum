@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_598", "MAP_599"],
-        ["MAP_600", "MAP_601"]
+        ["MAP_DISTORTION_WORLD_1F_X00_Y00", "MAP_DISTORTION_WORLD_1F_X01_Y00"],
+        ["MAP_DISTORTION_WORLD_1F_X00_Y01", "MAP_DISTORTION_WORLD_1F_X01_Y01"]
     ]
 }

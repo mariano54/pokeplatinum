@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_437", "MAP_438"],
-        ["MAP_439", "MAP_440"]
+        ["MAP_FLOAROMA_MEADOW_X00_Y00", "MAP_FLOAROMA_MEADOW_X01_Y00"],
+        ["MAP_FLOAROMA_MEADOW_X00_Y01", "MAP_FLOAROMA_MEADOW_X01_Y01"]
     ]
 }

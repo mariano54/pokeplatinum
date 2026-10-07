@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_580", "MAP_581"],
-        ["MAP_582", "MAP_583"]
+        ["MAP_UNKNOWN_511_X00_Y00", "MAP_UNKNOWN_511_X01_Y00"],
+        ["MAP_UNKNOWN_511_X00_Y01", "MAP_UNKNOWN_511_X01_Y01"]
     ]
 }

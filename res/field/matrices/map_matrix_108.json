@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_557", "MAP_558"],
-        ["MAP_559", "MAP_560"]
+        ["MAP_LAKE_ACUITY_X00_Y00", "MAP_LAKE_ACUITY_X01_Y00"],
+        ["MAP_LAKE_ACUITY_X00_Y01", "MAP_LAKE_ACUITY_X01_Y01"]
     ]
 }

@@ -3,7 +3,7 @@
     "headers": [],
     "altitudes": [],
     "maps": [
-        ["MAP_537", "MAP_538", "MAP_539"],
-        ["MAP_540", "MAP_541", "MAP_542"]
+        ["MAP_LAKE_VERITY_X00_Y00", "MAP_LAKE_VERITY_X01_Y00", "MAP_LAKE_VERITY_X02_Y00"],
+        ["MAP_LAKE_VERITY_X00_Y01", "MAP_LAKE_VERITY_X01_Y01", "MAP_LAKE_VERITY_X02_Y01"]
     ]
 }

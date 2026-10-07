@@ -234,7 +234,7 @@ NetPlay_OfferTrade:
     SelectPokemonToTrade
     FadeScreenIn
     WaitFadeScreen
-    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_End
+    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_Release
     NetPlaySendRequest NETPLAY_REQUEST_TRADE, VAR_RESULT
     NetPlayBufferRemoteName 0
     Message CommonStrings_Text_NetPlayWaiting
@@ -277,7 +277,7 @@ NetPlay_IncomingTrade:
     SelectPokemonToTrade
     FadeScreenIn
     WaitFadeScreen
-    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_RefuseRequest
+    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_RefuseAfterPicker
     NetPlayRespond TRUE, VAR_RESULT
     GoTo NetPlay_Trade
     End
@@ -285,6 +285,13 @@ NetPlay_IncomingTrade:
 NetPlay_RefuseRequest:
     NetPlayRespond FALSE, 0
     GoTo NetPlay_End
+    End
+
+// The party picker was cancelled. Its message box is already closed, and closing
+// it again would free the window twice, so skip NetPlay_End's CloseMessage.
+NetPlay_RefuseAfterPicker:
+    NetPlayRespond FALSE, 0
+    GoTo NetPlay_Release
     End
 
 // Both players battle the other's team, played by the AI.
@@ -309,5 +316,6 @@ NetPlay_Trade:
 
 NetPlay_End:
     CloseMessage
+NetPlay_Release:
     ReleaseAll
     End

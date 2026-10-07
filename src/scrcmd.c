@@ -132,6 +132,7 @@
 #include "menu.h"
 #include "message.h"
 #include "message_util.h"
+#include "netplay.h"
 #include "network_icon.h"
 #include "npc_trade_task.h"
 #include "party.h"

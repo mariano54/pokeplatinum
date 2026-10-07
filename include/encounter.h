@@ -3,6 +3,7 @@
 
 #include "field/field_system_decl.h"
 
+#include "charcode.h"
 #include "field_battle_data_transfer.h"
 #include "field_task.h"
 #include "party.h"
@@ -16,6 +17,7 @@ void Encounter_NewVsPalParkTransfer(FieldSystem *fieldSystem, FieldBattleDTO *dt
 void Encounter_NewVsFirstBattle(FieldTask *task, int trainerID, enum HeapID heapID, int *resultMaskPtr);
 void Encounter_NewCatchingTutorial(FieldTask *task);
 void Encounter_NewVsTrainer(FieldTask *taskMan, int enemyTrainer1ID, int enemyTrainer2ID, int partnerTrainerID, enum HeapID heapID, int *resultMaskPtr);
+void Encounter_NewVsNetPlay(FieldTask *task, const Party *opponentParty, const charcode_t *opponentName, int opponentGender, int *resultMaskPtr);
 void Encounter_NewVsLink(FieldTask *task, const u8 *partyOrder, int battleType);
 void Encounter_NewVsWiFi(FieldTask *task, int param1, int normalizedLevel, int wifiBattleType);
 void Encounter_NewVsLinkWithRecording(FieldSystem *fieldSystem, const u8 *partyOrder, int battleType);

@@ -64,6 +64,7 @@ pokeplatinum_c = files(
     'play_time_manager.c',
     'unk_02017498.c',
     'system.c',
+    'netplay.c',
     'bg_window.c',
     'easy3d.c',
     'sys_task_manager.c',

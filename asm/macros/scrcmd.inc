@@ -5355,6 +5355,53 @@
     CallCommonScript 0x809
     .endm
 
+    // Netplay (see include/netplay.h)
+    .macro NetPlayBufferRemoteName templateArg
+    .short SCRCMD_NETPLAYBUFFERREMOTENAME
+    .byte \templateArg
+    .endm
+
+    .macro NetPlayBufferTradeMons sentArg, receivedArg
+    .short SCRCMD_NETPLAYBUFFERTRADEMONS
+    .byte \sentArg
+    .byte \receivedArg
+    .endm
+
+    .macro NetPlayBufferIncomingMon templateArg
+    .short SCRCMD_NETPLAYBUFFERINCOMINGMON
+    .byte \templateArg
+    .endm
+
+    .macro NetPlaySendRequest request, partySlot
+    .short SCRCMD_NETPLAYSENDREQUEST
+    .byte \request
+    .short \partySlot
+    .endm
+
+    .macro NetPlayWaitForResponse destVar
+    .short SCRCMD_NETPLAYWAITFORRESPONSE
+    .short \destVar
+    .endm
+
+    .macro NetPlayGetIncomingRequest destVar
+    .short SCRCMD_NETPLAYGETINCOMINGREQUEST
+    .short \destVar
+    .endm
+
+    .macro NetPlayRespond accept, partySlot
+    .short SCRCMD_NETPLAYRESPOND
+    .byte \accept
+    .short \partySlot
+    .endm
+
+    .macro NetPlayCompleteTrade
+    .short SCRCMD_NETPLAYCOMPLETETRADE
+    .endm
+
+    .macro NetPlayStartBattle
+    .short SCRCMD_NETPLAYSTARTBATTLE
+    .endm
+
     .text
     .globl _start
 _start:

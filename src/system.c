@@ -9,6 +9,7 @@
 #include "boot.h"
 #include "heap.h"
 #include "math_util.h"
+#include "netplay.h"
 #include "sys_task_manager.h"
 
 #define MAIN_TASK_MAX        160
@@ -308,7 +309,7 @@ void ReadKeypadAndTouchpad(void)
         return;
     }
 
-    padRead = PAD_Read();
+    padRead = PAD_Read() | NetPlay_GetInjectedKeys();
 
     gSystem.pressedKeysRaw = padRead & (padRead ^ gSystem.heldKeysRaw);
     gSystem.pressedKeysRepeatableRaw = gSystem.pressedKeysRaw;

@@ -845,6 +845,15 @@ ScriptCommand(SCRCMD_BUFFERTRAINERCLASSNAMEWITHARTICLE,                    ScrCm
 ScriptCommand(SCRCMD_BUFFERBALLSEALNAMEPLURAL,                             ScrCmd_BufferBallSealNamePlural)
 ScriptCommand(SCRCMD_CAPITALIZEFIRSTLETTER,                                ScrCmd_CapitalizeFirstLetter)
 ScriptCommand(SCRCMD_BUFFERFLOORNUMBER,                                    ScrCmd_BufferFloorNumber)
+ScriptCommand(SCRCMD_NETPLAYBUFFERREMOTENAME,                              ScrCmd_NetPlayBufferRemoteName)
+ScriptCommand(SCRCMD_NETPLAYBUFFERTRADEMONS,                               ScrCmd_NetPlayBufferTradeMons)
+ScriptCommand(SCRCMD_NETPLAYBUFFERINCOMINGMON,                             ScrCmd_NetPlayBufferIncomingMon)
+ScriptCommand(SCRCMD_NETPLAYSENDREQUEST,                                   ScrCmd_NetPlaySendRequest)
+ScriptCommand(SCRCMD_NETPLAYWAITFORRESPONSE,                               ScrCmd_NetPlayWaitForResponse)
+ScriptCommand(SCRCMD_NETPLAYGETINCOMINGREQUEST,                            ScrCmd_NetPlayGetIncomingRequest)
+ScriptCommand(SCRCMD_NETPLAYRESPOND,                                       ScrCmd_NetPlayRespond)
+ScriptCommand(SCRCMD_NETPLAYCOMPLETETRADE,                                 ScrCmd_NetPlayCompleteTrade)
+ScriptCommand(SCRCMD_NETPLAYSTARTBATTLE,                                   ScrCmd_NetPlayStartBattle)
 
 // clang-format on
 

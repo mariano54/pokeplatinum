@@ -1,5 +1,6 @@
 #include "macros/scrcmd.inc"
 #include "res/text/bank/common_strings.h"
+#include "res/text/bank/menu_entries.h"
 
 
     ScriptEntry Unused397_Dummy1
@@ -10,6 +11,8 @@
     ScriptEntry Unused397_Dummy6
     ScriptEntry Unused397_Dummy7
     ScriptEntry Unused397_Dummy8
+    ScriptEntry NetPlay_TalkToPlayer
+    ScriptEntry NetPlay_IncomingRequest
     ScriptEntryEnd
 
 Unused397_Dummy1:
@@ -190,3 +193,121 @@ Unused397_Unused22:
 Unused397_Unused23:
     Message 5
     Return
+
+// Netplay (see include/netplay.h). Values of enum NetPlayRequest / NetPlayResponse:
+.set NETPLAY_REQUEST_BATTLE, 1
+.set NETPLAY_REQUEST_TRADE, 2
+.set NETPLAY_RESPONSE_ACCEPT, 1
+
+// Talking to the other player's map object.
+NetPlay_TalkToPlayer:
+    LockAll
+    FacePlayer
+    NetPlayBufferRemoteName 0
+    Message CommonStrings_Text_NetPlayGreeting
+    InitGlobalTextMenu 30, 1, 0, VAR_RESULT
+    SetMenuXOriginToRight
+    AddMenuEntryImm MenuEntries_Text_UnionRoom_Battle, 0
+    AddMenuEntryImm MenuEntries_Text_UnionRoom_Trade, 1
+    AddMenuEntryImm MenuEntries_Text_UnionRoom_Cancel, 2
+    ShowMenu
+    GoToIfEq VAR_RESULT, 0, NetPlay_ChallengeToBattle
+    GoToIfEq VAR_RESULT, 1, NetPlay_OfferTrade
+    GoTo NetPlay_End
+    End
+
+NetPlay_ChallengeToBattle:
+    NetPlaySendRequest NETPLAY_REQUEST_BATTLE, 0
+    Message CommonStrings_Text_NetPlayWaiting
+    NetPlayWaitForResponse VAR_RESULT
+    GoToIfNe VAR_RESULT, NETPLAY_RESPONSE_ACCEPT, NetPlay_Declined
+    CloseMessage
+    GoTo NetPlay_Battle
+    End
+
+NetPlay_OfferTrade:
+    Message CommonStrings_Text_NetPlayChooseMonToOffer
+    WaitABPress
+    CloseMessage
+    FadeScreenOut
+    WaitFadeScreen
+    SelectPokemonToTrade
+    FadeScreenIn
+    WaitFadeScreen
+    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_End
+    NetPlaySendRequest NETPLAY_REQUEST_TRADE, VAR_RESULT
+    NetPlayBufferRemoteName 0
+    Message CommonStrings_Text_NetPlayWaiting
+    NetPlayWaitForResponse VAR_RESULT
+    GoToIfNe VAR_RESULT, NETPLAY_RESPONSE_ACCEPT, NetPlay_Declined
+    GoTo NetPlay_Trade
+    End
+
+NetPlay_Declined:
+    NetPlayBufferRemoteName 0
+    Message CommonStrings_Text_NetPlayDeclined
+    WaitABPress
+    GoTo NetPlay_End
+    End
+
+// The other player asked us to battle or trade.
+NetPlay_IncomingRequest:
+    LockAll
+    NetPlayBufferRemoteName 0
+    NetPlayGetIncomingRequest VAR_0x8004
+    GoToIfEq VAR_0x8004, NETPLAY_REQUEST_TRADE, NetPlay_IncomingTrade
+    Message CommonStrings_Text_NetPlayBattleChallenge
+    ShowYesNoMenu VAR_RESULT
+    GoToIfEq VAR_RESULT, MENU_NO, NetPlay_RefuseRequest
+    CloseMessage
+    NetPlayRespond TRUE, 0
+    GoTo NetPlay_Battle
+    End
+
+NetPlay_IncomingTrade:
+    NetPlayBufferIncomingMon 1
+    Message CommonStrings_Text_NetPlayTradeOffer
+    ShowYesNoMenu VAR_RESULT
+    GoToIfEq VAR_RESULT, MENU_NO, NetPlay_RefuseRequest
+    Message CommonStrings_Text_NetPlayChooseMonToSend
+    WaitABPress
+    CloseMessage
+    FadeScreenOut
+    WaitFadeScreen
+    SelectPokemonToTrade
+    FadeScreenIn
+    WaitFadeScreen
+    GoToIfEq VAR_RESULT, PARTY_SLOT_NONE, NetPlay_RefuseRequest
+    NetPlayRespond TRUE, VAR_RESULT
+    GoTo NetPlay_Trade
+    End
+
+NetPlay_RefuseRequest:
+    NetPlayRespond FALSE, 0
+    GoTo NetPlay_End
+    End
+
+// Both players battle the other's team, played by the AI.
+NetPlay_Battle:
+    NetPlayStartBattle
+    HealParty
+    NetPlayBufferRemoteName 0
+    Message CommonStrings_Text_NetPlayBattleOver
+    WaitABPress
+    GoTo NetPlay_End
+    End
+
+NetPlay_Trade:
+    NetPlayBufferTradeMons 1, 2
+    NetPlayCompleteTrade
+    PlayFanfare SEQ_FANFA1_sseq
+    Message CommonStrings_Text_NetPlayTraded
+    WaitFanfare
+    WaitABPress
+    GoTo NetPlay_End
+    End
+
+NetPlay_End:
+    CloseMessage
+    ReleaseAll
+    End

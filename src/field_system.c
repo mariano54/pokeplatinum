@@ -31,6 +31,7 @@
 #include "main.h"
 #include "map_header_data.h"
 #include "map_matrix.h"
+#include "netplay.h"
 #include "overlay_manager.h"
 #include "player_move.h"
 #include "pokedex_memory.h"
@@ -235,6 +236,10 @@ static void HandleFieldInput(FieldSystem *fieldSystem)
     BOOL processInput = FALSE;
     if (!fieldSystem->processManager->pause && fieldSystem->runningFieldMap && FieldSystem_IsRunningTask(fieldSystem) == FALSE) {
         processInput = TRUE;
+    }
+
+    if (NetPlay_FieldUpdate(fieldSystem, processInput)) {
+        return;
     }
 
     FieldInput fieldInput;

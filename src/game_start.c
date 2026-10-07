@@ -10,6 +10,7 @@
 #include "location.h"
 #include "main.h"
 #include "math_util.h"
+#include "netplay.h"
 #include "overlay_manager.h"
 #include "party.h"
 #include "play_time_manager.h"
@@ -81,7 +82,8 @@ static BOOL GameStartRowanIntro_Main(ApplicationManager *appMan, int *state)
 static int GameStartRowanIntro_Exit(ApplicationManager *appMan, int *state)
 {
     Heap_Destroy(HEAP_ID_GAME_START);
-    EnqueueApplication(FS_OVERLAY_ID_NONE, &gRowanIntroAppTemplate);
+    // Netplay builds skip Professor Rowan's intro, see NetPlay_QuickStartTrainer.
+    EnqueueApplication(FS_OVERLAY_ID_NONE, &gGameStartNewSaveAppTemplate);
     return TRUE;
 }
 
@@ -95,7 +97,9 @@ static int GameStartNewSave_Init(ApplicationManager *appMan, int *state)
 static int GameStartNewSave_Main(ApplicationManager *appMan, int *state)
 {
     SaveData *saveData = ((ApplicationArgs *)ApplicationManager_Args(appMan))->saveData;
+    NetPlay_QuickStartTrainer(saveData);
     InitializeNewSave(HEAP_ID_GAME_START, saveData, 1);
+    NetPlay_QuickStartGame(saveData, HEAP_ID_GAME_START);
     PlayTime_Start(SaveData_GetPlayTime(saveData));
     return TRUE;
 }

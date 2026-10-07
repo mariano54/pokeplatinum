@@ -9,6 +9,7 @@
 #include "field/field_system_sub2_t.h"
 
 #include "bg_window.h"
+#include "font.h"
 #include "graphics.h"
 #include "heap.h"
 #include "map_header.h"
@@ -250,6 +251,28 @@ void MapNamePopUp_Show(MapNamePopUp *mapPopUp, s32 mapLabelTextID, s32 mapLabelW
             break;
         }
     }
+}
+
+// Slides in a banner with the given text instead of a location name, unless one is
+// already showing. Used by netplay to announce the other player.
+BOOL MapNamePopUp_ShowText(MapNamePopUp *mapPopUp, const String *text, s32 windowID)
+{
+    if (mapPopUp->isInited) {
+        return FALSE;
+    }
+
+    mapPopUp->isInited = TRUE;
+    Bg_SetOffset(mapPopUp->bgConfig, BG_LAYER_MAIN_3, BG_OFFSET_UPDATE_SET_Y, 38);
+
+    mapPopUp->yOffset = 38;
+    mapPopUp->task = SysTask_Start(SysTask_MapNamePopUpWindow, mapPopUp, 0);
+    mapPopUp->state = MAP_NAME_POPUP_STATE_SLIDE_IN;
+    mapPopUp->windowID = windowID;
+
+    String_Copy(mapPopUp->string, text);
+    MapNamePopUp_DrawWindowFrame(mapPopUp, Font_CalcStringWidth(FONT_SYSTEM, text, 0));
+    MapNamePopUp_PrintMapName(mapPopUp, mapPopUp->string);
+    return TRUE;
 }
 
 void MapNamePopUp_Hide(MapNamePopUp *mapPopUp)

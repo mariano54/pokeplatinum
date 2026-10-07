@@ -69,6 +69,7 @@ Static main
 	Object main.nef.p/src_play_time_manager.c.o
 	Object main.nef.p/src_unk_02017498.c.o
 	Object main.nef.p/src_system.c.o
+	Object main.nef.p/src_netplay.c.o
 	Object main.nef.p/src_heap.c.o
 	Object main.nef.p/src_bg_window.c.o
 	Object main.nef.p/src_easy3d.c.o

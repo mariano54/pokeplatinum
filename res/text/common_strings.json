@@ -873,6 +873,71 @@
         "It will be fixed if you enter the\n",
         "Hall of Fame again.\r"
       ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayGreeting",
+      "en_US": [
+        "It’s {STRVAR_1 3, 0, 0}!\n",
+        "What would you like to do?"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayWaiting",
+      "en_US": [
+        "Waiting for {STRVAR_1 3, 0, 0}…\n",
+        "Press B to cancel."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayDeclined",
+      "en_US": [
+        "{STRVAR_1 3, 0, 0} can’t right now."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayChooseMonToOffer",
+      "en_US": [
+        "Which Pokémon will you offer?"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayBattleChallenge",
+      "en_US": [
+        "{STRVAR_1 3, 0, 0} challenges you\n",
+        "to a battle! Accept?"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayTradeOffer",
+      "en_US": [
+        "{STRVAR_1 3, 0, 0} offers\n",
+        "{STRVAR_1 1, 1, 0} in a trade. Accept?"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayChooseMonToSend",
+      "en_US": [
+        "Which Pokémon will you send?"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayTraded",
+      "en_US": [
+        "You sent {STRVAR_1 1, 1, 0} and\n",
+        "received {STRVAR_1 1, 2, 0}!"
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayBattleOver",
+      "en_US": [
+        "What a battle with\n",
+        "{STRVAR_1 3, 0, 0}!\r",
+        "Your Pokémon were healed."
+      ]
+    },
+    {
+      "id": "CommonStrings_Text_NetPlayNearby",
+      "en_US": "{STRVAR_1 3, 0, 0} is here!"
     }
   ]
 }

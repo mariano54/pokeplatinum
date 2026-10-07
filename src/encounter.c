@@ -7,7 +7,10 @@
 #include "constants/pokemon.h"
 #include "generated/game_records.h"
 #include "generated/map_headers.h"
+#include "generated/genders.h"
+#include "generated/trainer_classes.h"
 #include "generated/trainer_score_events.h"
+#include "generated/trainers.h"
 
 #include "struct_decls/tv_broadcast.h"
 
@@ -18,6 +21,7 @@
 
 #include "battle_regulation.h"
 #include "catching_show.h"
+#include "charcode_util.h"
 #include "communication_information.h"
 #include "dexmode_checker.h"
 #include "enc_effects.h"
@@ -215,6 +219,47 @@ static BOOL FieldTask_Encounter(FieldTask *task)
         FreeEncounter(encounter);
         return TRUE;
         break;
+    }
+
+    return FALSE;
+}
+
+// Like FieldTask_Encounter, but the map always comes back: losing a netplay battle
+// doesn't black out (the script heals the party instead of warping home).
+static BOOL FieldTask_NetPlayEncounter(FieldTask *task)
+{
+    FieldSystem *fieldSystem = FieldTask_GetFieldSystem(task);
+    Encounter *encounter = FieldTask_GetEnv(task);
+    int *state = FieldTask_GetState(task);
+
+    switch (*state) {
+    case 0:
+        MapObjectMan_PauseAllMovement(fieldSystem->mapObjMan);
+        FieldTransition_StartEncounterEffect(task, encounter->introEffectID, encounter->battleBGM);
+        (*state)++;
+        break;
+    case 1:
+        FieldTransition_FinishMap(task);
+        (*state)++;
+        break;
+    case 2:
+        CallBattleTask(task, encounter->dto);
+        (*state)++;
+        break;
+    case 3:
+        UpdateFieldSystemFromDTO(encounter->dto, fieldSystem);
+        CheckPlayerWonEncounter(encounter);
+        FieldTransition_StartMap(task);
+        (*state)++;
+        break;
+    case 4:
+        MapObjectMan_UnpauseAllMovement(fieldSystem->mapObjMan);
+        FieldTransition_FadeIn(task);
+        (*state)++;
+        break;
+    case 5:
+        FreeEncounter(encounter);
+        return TRUE;
     }
 
     return FALSE;
@@ -755,6 +800,30 @@ void Encounter_NewVsTrainer(FieldTask *taskMan, int enemyTrainer1ID, int enemyTr
     Trainer_Encounter(dto, fieldSystem->saveData, heapID);
     GameRecords_IncrementRecordValue(SaveData_GetGameRecords(fieldSystem->saveData), RECORD_TRAINER_BATTLES_FOUGHT);
     StartEncounter(taskMan, dto, EncEffects_CutInEffect(dto), EncEffects_BGM(dto), resultMaskPtr);
+}
+
+// Netplay: battle the other player's team, controlled by the AI. Starts from
+// Lucas or Dawn's trainer data and swaps in the other player's name and party.
+void Encounter_NewVsNetPlay(FieldTask *task, const Party *opponentParty, const charcode_t *opponentName, int opponentGender, int *resultMaskPtr)
+{
+    FieldSystem *fieldSystem = FieldTask_GetFieldSystem(task);
+    FieldBattleDTO *dto;
+    Trainer *opponent;
+
+    RadarChain_Clear(fieldSystem->chain);
+    dto = FieldBattleDTO_New(HEAP_ID_FIELD2, BATTLE_TYPE_TRAINER);
+    FieldBattleDTO_Init(dto, fieldSystem);
+
+    dto->trainerIDs[BATTLER_ENEMY_1] = opponentGender == GENDER_FEMALE ? TRAINER_DAWN_JUBILIFE_CITY_TURTWIG : TRAINER_LUCAS_JUBILIFE_CITY_TURTWIG;
+    Trainer_Encounter(dto, fieldSystem->saveData, HEAP_ID_FIELD2);
+
+    opponent = &dto->trainer[BATTLER_ENEMY_1];
+    opponent->header.trainerType = opponentGender == GENDER_FEMALE ? TRAINER_CLASS_PLAYER_FEMALE : TRAINER_CLASS_PLAYER_MALE;
+    opponent->header.partySize = Party_GetCurrentCount(opponentParty);
+    CharCode_Copy(opponent->name, opponentName);
+    FieldBattleDTO_CopyPartyToBattler(dto, opponentParty, BATTLER_ENEMY_1);
+
+    FieldTask_InitCall(task, FieldTask_NetPlayEncounter, NewEncounter(dto, EncEffects_CutInEffect(dto), EncEffects_BGM(dto), resultMaskPtr));
 }
 
 void Encounter_NewVsLink(FieldTask *task, const u8 *partyOrder, int battleType)

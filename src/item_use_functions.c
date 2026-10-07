@@ -27,6 +27,7 @@
 #include "berry_patch_manager.h"
 #include "bg_window.h"
 #include "field_bgm.h"
+#include "field_interaction.h"
 #include "field_map_change.h"
 #include "field_message.h"
 #include "field_system.h"
@@ -58,7 +59,6 @@
 #include "system_flags.h"
 #include "system_vars.h"
 #include "terrain_collision_manager.h"
-#include "unk_0203C954.h"
 #include "unk_0203D1B8.h"
 #include "unk_0206B9D8.h"
 #include "vars_flags.h"
@@ -213,7 +213,7 @@ void ItemUseContext_Init(FieldSystem *fieldSystem, ItemUseContext *ctxOut)
 
     ctxOut->facingTileBehavior = TerrainCollisionManager_GetTileBehavior(fieldSystem, x, z);
     MapObject *mapObj;
-    sub_0203C9D4(fieldSystem, &mapObj);
+    FieldEvent_FindMapObjectInFront(fieldSystem, &mapObj);
 
     ctxOut->berryPatchFlags = BerryPatches_GetPatchFlags(fieldSystem, mapObj);
     ctxOut->playerAvatar = fieldSystem->playerAvatar;
@@ -274,7 +274,7 @@ static BOOL sub_020685AC(FieldTask *task)
 
     switch (*v2) {
     case 0:
-        sub_0203C9D4(fieldSystem, &v3);
+        FieldEvent_FindMapObjectInFront(fieldSystem, &v3);
         ScriptManager_Start(task, v1->unk_00, v3, NULL);
 
         *(u16 *)FieldSystem_GetScriptMemberPtr(fieldSystem, SCRIPT_DATA_PARAMETER_0) = v1->unk_04;

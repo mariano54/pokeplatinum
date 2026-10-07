@@ -420,7 +420,7 @@ void EncounterEffect_ScreenSlice(EncounterEffect *encEffect, ScreenSliceEffect *
     GF_ASSERT(screenSliceEfx->hBlankTask == NULL);
 
     encEffect->hBlankFlag = FALSE;
-    screenSliceEfx->hBlankSystem = encEffect->fieldSystem->unk_04->hBlankSystem;
+    screenSliceEfx->hBlankSystem = encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem;
     screenSliceEfx->pixelsPerSlice = pixelsPerSlice;
     screenSliceEfx->state = SCREENSLICE_STATE_INTERPOLATE;
     screenSliceEfx->done = &encEffect->hBlankFlag;
@@ -554,7 +554,7 @@ void EncounterEffect_ScreenSplit(EncounterEffect *encEffect, ScreenSplitEffect *
     GF_ASSERT(screenSplitEfx->hBlankTask == NULL);
 
     encEffect->hBlankFlag = FALSE;
-    screenSplitEfx->hBlankSystem = encEffect->fieldSystem->unk_04->hBlankSystem;
+    screenSplitEfx->hBlankSystem = encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem;
     screenSplitEfx->splitHeight = 96;
     screenSplitEfx->state = SCREENSPLIT_STATE_INTERPOLATE;
     screenSplitEfx->done = &encEffect->hBlankFlag;
@@ -1196,7 +1196,7 @@ void ov5_021DED20(EncounterEffect *param0, UnkStruct_ov5_021DED04 *param1, u32 p
     GF_ASSERT(param1->unk_E0 == NULL);
 
     param0->hBlankFlag = 0;
-    param1->unk_D8 = param0->fieldSystem->unk_04->hBlankSystem;
+    param1->unk_D8 = param0->fieldSystem->fieldMapSubsystems->hBlankSystem;
     param1->unk_14 = 0;
     param1->unk_E4 = &param0->hBlankFlag;
 
@@ -1398,8 +1398,8 @@ void ov5_021DF084(void)
     ParticleSystem_FreeAll();
 
     ov5_021DF3D4(Unk_ov5_02202120->fieldSystem);
-    ov5_021D16F4(Unk_ov5_02202120->fieldSystem, 1);
-    ov5_021D1718(Unk_ov5_02202120->fieldSystem, 1);
+    FieldMap_SetRenderEnabled(Unk_ov5_02202120->fieldSystem, 1);
+    FieldMap_SetTextureAnimationEnabled(Unk_ov5_02202120->fieldSystem, 1);
 
     Heap_Free(Unk_ov5_02202120);
     Unk_ov5_02202120 = NULL;
@@ -1515,8 +1515,8 @@ static void ov5_021DF28C(SysTask *param0, void *param1)
             NNS_G3dGlbSetBaseRot(&v3);
         }
 
-        ov5_021D16F4(v0->fieldSystem, 0);
-        ov5_021D1718(v0->fieldSystem, 0);
+        FieldMap_SetRenderEnabled(v0->fieldSystem, 0);
+        FieldMap_SetTextureAnimationEnabled(v0->fieldSystem, 0);
 
         Bg_SetPriority(BG_LAYER_MAIN_0, 0);
 
@@ -1562,7 +1562,7 @@ static void ov5_021DF30C(FieldSystem *fieldSystem)
     }
 
     {
-        ov5_021D143C(fieldSystem->bgConfig);
+        FieldMap_FreeBgs(fieldSystem->bgConfig);
 
         {
             G2_SetBG3ControlDCBmp(GX_BG_SCRSIZE_DCBMP_256x256, GX_BG_AREAOVER_XLU, GX_BG_BMPSCRBASE_0x20000);
@@ -1606,7 +1606,7 @@ static void ov5_021DF30C(FieldSystem *fieldSystem)
 static void ov5_021DF3D4(FieldSystem *fieldSystem)
 {
     Bg_FreeTilemapBuffer(fieldSystem->bgConfig, BG_LAYER_MAIN_2);
-    ov5_021D1434(fieldSystem->bgConfig);
+    FieldMap_InitBgs(fieldSystem->bgConfig);
 }
 
 static u32 ov5_021DF3E8(u32 param0, BOOL param1)

@@ -249,7 +249,7 @@ void TrainerCase_OpenUnionRoomCase(FieldSystem *fieldSystem)
     OpenCaseData *data = Heap_AllocAtEnd(HEAP_ID_FIELD2, sizeof(OpenCaseData));
 
     data->state = 0;
-    data->trainerCase = (TrainerCase *)UnionRoom_GetTrainerCase(fieldSystem->unk_7C);
+    data->trainerCase = (TrainerCase *)UnionRoom_GetTrainerCase(fieldSystem->unionRoom);
 
     FieldTask_InitCall(fieldSystem->task, FieldTask_OpenUnionRoomCaseTask, data);
 }
@@ -261,7 +261,7 @@ static BOOL FieldTask_OpenUnionRoomCaseTask(FieldTask *task)
 
     switch (data->state) {
     case 0:
-        UnionRoom_SendTrainerCase(fieldSystem->unk_7C);
+        UnionRoom_SendTrainerCase(fieldSystem->unionRoom);
         data->state = 1;
     case 1:
         if (data->trainerCase->unk_66A != 0) {
@@ -274,7 +274,7 @@ static BOOL FieldTask_OpenUnionRoomCaseTask(FieldTask *task)
         break;
     case 11:
         if (!FieldSystem_IsRunningApplication(fieldSystem)) {
-            sub_0205C1F0(fieldSystem->unk_7C);
+            sub_0205C1F0(fieldSystem->unionRoom);
             Heap_Free(data);
             return TRUE;
         }

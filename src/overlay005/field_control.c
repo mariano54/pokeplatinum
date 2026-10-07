@@ -15,10 +15,10 @@
 #include "field/field_system.h"
 #include "field/field_system_sub2_t.h"
 #include "overlay005/daycare.h"
+#include "overlay005/field_poketch.h"
+#include "overlay005/forced_slide.h"
 #include "overlay005/honey_tree.h"
 #include "overlay005/ov5_021DFB54.h"
-#include "overlay005/ov5_021E1154.h"
-#include "overlay005/ov5_021EA714.h"
 #include "overlay005/ov5_021EF4BC.h"
 #include "overlay005/villa_furniture.h"
 #include "overlay005/vs_seeker.h"
@@ -36,6 +36,7 @@
 #include "daycare_save.h"
 #include "encounter.h"
 #include "field_comm_manager.h"
+#include "field_interaction.h"
 #include "field_map_change.h"
 #include "field_overworld_state.h"
 #include "game_records.h"
@@ -62,7 +63,6 @@
 #include "terrain_collision_manager.h"
 #include "trainer_encounter.h"
 #include "trainer_info.h"
-#include "unk_0203C954.h"
 #include "unk_02054884.h"
 #include "unk_02056B30.h"
 #include "unk_0205A0D8.h"
@@ -259,7 +259,7 @@ BOOL FieldInput_Process(const FieldInput *input, FieldSystem *fieldSystem)
         if (PersistedMapFeatures_IsCurrentDynamicMap(fieldSystem, DYNAMIC_MAP_FEATURES_DISTORTION_WORLD) == TRUE) {
             validInteraction = Field_DistortionInteract(fieldSystem, &object);
         } else {
-            validInteraction = sub_0203CA40(fieldSystem, &object);
+            validInteraction = FieldEvent_TryGetInteractedMapObject(fieldSystem, &object);
         }
 
         if (validInteraction == TRUE) {
@@ -341,7 +341,7 @@ static BOOL Field_CheckSign(FieldSystem *fieldSystem)
 {
     MapObject *object;
 
-    if (sub_0203CBE0(fieldSystem, &object) == TRUE) {
+    if (FieldEvent_TryGetInteractedSignpost(fieldSystem, &object) == TRUE) {
         ScriptManager_Set(fieldSystem, MapObject_GetScript(object), object);
         return TRUE;
     }
@@ -402,7 +402,7 @@ BOOL FieldInput_Process_Colosseum(FieldInput *input, FieldSystem *fieldSystem)
     if (input->interact) {
         MapObject *object;
 
-        if (sub_0203CA40(fieldSystem, &object) == TRUE && MapObject_GetMovementType(object) != 0x1) {
+        if (FieldEvent_TryGetInteractedMapObject(fieldSystem, &object) == TRUE && MapObject_GetMovementType(object) != 0x1) {
             if (PlayerAvatar_CheckForceStopMovement(fieldSystem->playerAvatar) == TRUE) {
                 PlayerAvatar_ForceStopMovement(fieldSystem->playerAvatar, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar));
             }
@@ -457,7 +457,7 @@ BOOL FieldInput_Process_UnionRoom(const FieldInput *input, FieldSystem *fieldSys
     if (input->interact) {
         MapObject *object;
 
-        if (sub_0203CA40(fieldSystem, &object) == TRUE) {
+        if (FieldEvent_TryGetInteractedMapObject(fieldSystem, &object) == TRUE) {
             if (PlayerAvatar_CheckForceStopMovement(fieldSystem->playerAvatar) == TRUE) {
                 PlayerAvatar_ForceStopMovement(fieldSystem->playerAvatar, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar));
             }
@@ -494,7 +494,7 @@ int FieldInput_Process_BattleTower(const FieldInput *input, FieldSystem *fieldSy
     if (input->interact) {
         MapObject *object;
 
-        if (sub_0203CA40(fieldSystem, &object) == TRUE) {
+        if (FieldEvent_TryGetInteractedMapObject(fieldSystem, &object) == TRUE) {
             if (PlayerAvatar_CheckForceStopMovement(fieldSystem->playerAvatar) == TRUE) {
                 PlayerAvatar_ForceStopMovement(fieldSystem->playerAvatar, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar));
             }
@@ -709,7 +709,7 @@ static BOOL Field_ProcessStep(FieldSystem *fieldSystem)
 
     int playerDir = PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar);
 
-    if (ov5_021E1154(fieldSystem, fieldSystem->playerAvatar, playerDir) == TRUE) {
+    if (ForcedSlide_TryStart(fieldSystem, fieldSystem->playerAvatar, playerDir) == TRUE) {
         return TRUE;
     }
 
@@ -766,7 +766,7 @@ static BOOL Field_ProcessStep(FieldSystem *fieldSystem)
 
 static BOOL Field_CheckCoordEvent(FieldSystem *fieldSystem)
 {
-    u16 event = sub_0203CC14(fieldSystem, MapHeaderData_GetCoordEvents(fieldSystem), MapHeaderData_GetNumCoordEvents(fieldSystem));
+    u16 event = FieldEvent_GetTriggeredCoordEventScript(fieldSystem, MapHeaderData_GetCoordEvents(fieldSystem), MapHeaderData_GetNumCoordEvents(fieldSystem));
 
     if (event != 0xffff) {
         ScriptManager_Set(fieldSystem, event, NULL);
@@ -909,10 +909,10 @@ static BOOL Field_UpdatePoison(FieldSystem *fieldSystem)
     case FLDPSN_NONE:
         return FALSE;
     case FLDPSN_POISONED:
-        Field_DoPoisonEffect(fieldSystem->unk_04->unk_20);
+        Field_DoPoisonEffect(fieldSystem->fieldMapSubsystems->poisonEffect);
         return FALSE;
     case FLDPSN_FAINTED:
-        Field_DoPoisonEffect(fieldSystem->unk_04->unk_20);
+        Field_DoPoisonEffect(fieldSystem->fieldMapSubsystems->poisonEffect);
         ScriptManager_Set(fieldSystem, SCRIPT_ID(COMMON_SCRIPTS, 3), NULL);
         return TRUE;
     }

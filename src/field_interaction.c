@@ -1,4 +1,4 @@
-#include "unk_0203C954.h"
+#include "field_interaction.h"
 
 #include <nitro.h>
 #include <string.h>
@@ -45,7 +45,7 @@ static int BgEvent_GetPlayerFacingPosition(FieldSystem *fieldSystem, int *x, int
     return facingDir;
 }
 
-static u8 sub_0203C9B0(PlayerAvatar *playerAvatar, MapObject *param1)
+static u8 IsMapObjectAtPlayerHeight(PlayerAvatar *playerAvatar, MapObject *param1)
 {
     MapObject *v0 = PlayerAvatar_GetMapObject(playerAvatar);
 
@@ -56,7 +56,7 @@ static u8 sub_0203C9B0(PlayerAvatar *playerAvatar, MapObject *param1)
     return 0;
 }
 
-void sub_0203C9D4(FieldSystem *fieldSystem, MapObject **param1)
+void FieldEvent_FindMapObjectInFront(FieldSystem *fieldSystem, MapObject **param1)
 {
     int v0, v1;
     int v2;
@@ -85,12 +85,12 @@ void sub_0203C9D4(FieldSystem *fieldSystem, MapObject **param1)
     *param1 = sub_0206326C(fieldSystem->mapObjMan, v0, v1, 0);
 }
 
-u8 sub_0203CA40(FieldSystem *fieldSystem, MapObject **param1)
+u8 FieldEvent_TryGetInteractedMapObject(FieldSystem *fieldSystem, MapObject **param1)
 {
-    sub_0203C9D4(fieldSystem, param1);
+    FieldEvent_FindMapObjectInFront(fieldSystem, param1);
 
     if (*param1 != NULL) {
-        if ((sub_02062D9C(*param1) == 1) && (sub_0203C9B0(fieldSystem->playerAvatar, *param1) == 1)) {
+        if ((sub_02062D9C(*param1) == 1) && (IsMapObjectAtPlayerHeight(fieldSystem->playerAvatar, *param1) == 1)) {
             return 1;
         }
     }
@@ -189,13 +189,13 @@ u16 FieldEvent_GetInteractedWallSignScript(FieldSystem *fieldSystem, const BgEve
     return 0xffff;
 }
 
-u8 sub_0203CBE0(FieldSystem *fieldSystem, MapObject **param1)
+u8 FieldEvent_TryGetInteractedSignpost(FieldSystem *fieldSystem, MapObject **param1)
 {
     if (PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar) != DIR_NORTH) {
         return 0;
     }
 
-    if (sub_0203CA40(fieldSystem, param1) == 1) {
+    if (FieldEvent_TryGetInteractedMapObject(fieldSystem, param1) == 1) {
         u32 v0 = MapObject_GetGraphicsID(*param1);
 
         if ((v0 == 0x5b) || (v0 == 0x5c) || (v0 == 0x5d) || (v0 == 0x5e) || (v0 == 0x5f) || (v0 == 0x60)) {
@@ -206,7 +206,7 @@ u8 sub_0203CBE0(FieldSystem *fieldSystem, MapObject **param1)
     return 0;
 }
 
-u16 sub_0203CC14(FieldSystem *fieldSystem, void *param1, int param2)
+u16 FieldEvent_GetTriggeredCoordEventScript(FieldSystem *fieldSystem, void *param1, int param2)
 {
     int v3;
 

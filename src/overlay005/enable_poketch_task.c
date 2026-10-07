@@ -44,7 +44,7 @@ static BOOL FieldTask_EnablePoketch(FieldTask *task)
             Overlay_UnloadByID(FS_OVERLAY_ID(poketch_unavailable));
             Overlay_LoadByID(FS_OVERLAY_ID(poketch), OVERLAY_LOAD_ASYNC);
             Poketch_Enable(poketch);
-            PoketchSystem_Create(fieldSystem, &fieldSystem->unk_04->poketchSys, fieldSystem->saveData, fieldSystem->bgConfig, RenderOam_GetScreenOam(DS_SCREEN_SUB));
+            PoketchSystem_Create(fieldSystem, &fieldSystem->fieldMapSubsystems->poketchSys, fieldSystem->saveData, fieldSystem->bgConfig, RenderOam_GetScreenOam(DS_SCREEN_SUB));
             taskData->state++;
         }
         break;

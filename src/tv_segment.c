@@ -1696,7 +1696,7 @@ void FieldSystem_SaveTVSegment_ThePoketchWatch(FieldSystem *fieldSystem, u16 cus
     TVSegmentData segments;
     TVSegment_ThePoketchWatch *thePoketchWatch = &segments.thePoketchWatch;
 
-    thePoketchWatch->appID = PoketchSystem_CurrentAppID(fieldSystem->unk_04->poketchSys);
+    thePoketchWatch->appID = PoketchSystem_CurrentAppID(fieldSystem->fieldMapSubsystems->poketchSys);
     thePoketchWatch->customMessageWord = customMessageWord;
 
     FieldSystem_SaveTVSegment(fieldSystem, TV_PROGRAM_TYPE_INTERVIEWS, TV_PROGRAM_SEGMENT_THE_POKETCH_WATCH, thePoketchWatch);

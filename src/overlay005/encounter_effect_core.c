@@ -305,7 +305,7 @@ void EncounterEffect_Water_LowerLevel(SysTask *task, void *param)
         memset(encEffect->param, 0, sizeof(WaterEncounterEffect));
         waterEffect = encEffect->param;
         ScreenShakeEffect_Init(&waterEffect->screenShakeEfx, HEAP_ID_FIELD1);
-        HBlankSystem_Stop(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
         encEffect->state++;
         break;
     case 1:
@@ -340,7 +340,7 @@ void EncounterEffect_Water_LowerLevel(SysTask *task, void *param)
         break;
     case 6:
         ScreenShakeEffect_Finish(&waterEffect->screenShakeEfx);
-        HBlankSystem_Start(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (encEffect->done != NULL) {
             *(encEffect->done) = TRUE;
@@ -363,7 +363,7 @@ void EncounterEffect_Water_HigherLevel(SysTask *task, void *param)
         memset(encEffect->param, 0, sizeof(WaterEncounterEffect));
         waterEffect = encEffect->param;
         ScreenShakeEffect_Init(&waterEffect->screenShakeEfx, HEAP_ID_FIELD1);
-        HBlankSystem_Stop(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
         encEffect->state++;
         break;
     case 1:
@@ -398,7 +398,7 @@ void EncounterEffect_Water_HigherLevel(SysTask *task, void *param)
         break;
     case 6:
         ScreenShakeEffect_Finish(&waterEffect->screenShakeEfx);
-        HBlankSystem_Start(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (encEffect->done != NULL) {
             *(encEffect->done) = TRUE;
@@ -485,7 +485,7 @@ void EncounterEffect_Cave_LowerLevel(SysTask *task, void *param)
         }
         break;
     case 3:
-        HBlankSystem_Stop(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
         StartScreenFade(FADE_MAIN_ONLY, FADE_TYPE_CIRCLE_OUT, FADE_TYPE_CIRCLE_OUT, COLOR_BLACK, 12, 1, HEAP_ID_FIELD1);
 
         caveEffect->camera = encEffect->fieldSystem->camera;
@@ -508,7 +508,7 @@ void EncounterEffect_Cave_LowerLevel(SysTask *task, void *param)
         }
         break;
     case 5:
-        HBlankSystem_Start(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (encEffect->done != NULL) {
             *(encEffect->done) = TRUE;
@@ -543,7 +543,7 @@ void EncounterEffect_Cave_HigherLevel(SysTask *task, void *param)
         }
         break;
     case 3:
-        HBlankSystem_Stop(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
         StartScreenFade(FADE_MAIN_ONLY, FADE_TYPE_CIRCLE_OUT, FADE_TYPE_CIRCLE_OUT, COLOR_BLACK, 12, 1, HEAP_ID_FIELD1);
 
         caveEffect->camera = encEffect->fieldSystem->camera;
@@ -566,7 +566,7 @@ void EncounterEffect_Cave_HigherLevel(SysTask *task, void *param)
         }
         break;
     case 5:
-        HBlankSystem_Start(encEffect->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(encEffect->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (encEffect->done != NULL) {
             *(encEffect->done) = TRUE;
@@ -1437,7 +1437,7 @@ void EncounterEffect_Trainer_Cave_LowerLevel(SysTask *param0, void *param1)
 
     case 5:
 
-        HBlankSystem_Stop(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         v3 = Camera_GetDistance(v1->camera);
         QuadraticInterpolationTaskFX32_Init(&v1->unk_238, v3, v3 + (-FX32_CONST(1000)), FX32_CONST(10), 8);
@@ -1460,7 +1460,7 @@ void EncounterEffect_Trainer_Cave_LowerLevel(SysTask *param0, void *param1)
     case 7:
         SetScreenColorBrightness(DS_SCREEN_SUB, COLOR_BLACK);
 
-        HBlankSystem_Start(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (v0->done != NULL) {
             *(v0->done) = 1;
@@ -1779,7 +1779,7 @@ void EncounterEffect_Frontier(SysTask *param0, void *param1)
                 v1->unk_200, &v3);
         }
 
-        HBlankSystem_Stop(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
         StartScreenFade(FADE_MAIN_ONLY, FADE_TYPE_CIRCLE_OUT, FADE_TYPE_BRIGHTNESS_OUT, COLOR_BLACK, 6, 1, HEAP_ID_FIELD1);
         v0->state++;
         break;
@@ -1802,7 +1802,7 @@ void EncounterEffect_Frontier(SysTask *param0, void *param1)
     case 7:
         SetScreenColorBrightness(DS_SCREEN_SUB, COLOR_BLACK);
 
-        HBlankSystem_Start(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (v0->done != NULL) {
             *(v0->done) = 1;
@@ -1903,7 +1903,7 @@ void EncounterEffect_Double(SysTask *param0, void *param1)
 
     case 5:
 
-        HBlankSystem_Stop(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
         StartScreenFade(FADE_MAIN_ONLY, FADE_TYPE_UNK_34, FADE_TYPE_BRIGHTNESS_OUT, COLOR_BLACK, 8, 1, HEAP_ID_FIELD1);
         v0->state++;
         break;
@@ -1918,7 +1918,7 @@ void EncounterEffect_Double(SysTask *param0, void *param1)
     case 7:
         SetScreenColorBrightness(DS_SCREEN_SUB, COLOR_BLACK);
 
-        HBlankSystem_Start(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (v0->done != NULL) {
             *(v0->done) = 1;
@@ -2062,7 +2062,7 @@ void EncounterEffect_GalacticGrunt(SysTask *param0, void *param1)
 
     case 5:
 
-        HBlankSystem_Stop(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         StartScreenFade(FADE_MAIN_ONLY, FADE_TYPE_UNK_34, FADE_TYPE_BRIGHTNESS_OUT, COLOR_BLACK, 12, 1, HEAP_ID_FIELD1);
         v0->state++;
@@ -2078,7 +2078,7 @@ void EncounterEffect_GalacticGrunt(SysTask *param0, void *param1)
     case 7:
         SetScreenColorBrightness(DS_SCREEN_SUB, COLOR_BLACK);
 
-        HBlankSystem_Start(v0->fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Start(v0->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
         if (v0->done != NULL) {
             *(v0->done) = 1;

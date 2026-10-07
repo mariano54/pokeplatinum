@@ -68,7 +68,7 @@ void *sub_0209C1EC(FieldSystem *fieldSystem)
 
     v0->fieldSystem = fieldSystem;
     v0->unk_08.saveData = fieldSystem->saveData;
-    v0->unk_08.unk_0C = fieldSystem->unk_80;
+    v0->unk_08.unk_0C = fieldSystem->unionRoomPlayers;
     v0->unk_08.options = SaveData_GetOptions(fieldSystem->saveData);
     v0->unk_08.records = SaveData_GetGameRecords(fieldSystem->saveData);
     v0->unk_08.journalEntry = SaveData_GetJournal(fieldSystem->saveData);

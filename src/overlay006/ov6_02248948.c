@@ -5,7 +5,7 @@
 
 #include "field/field_system.h"
 #include "field/field_system_sub2_t.h"
-#include "overlay005/struct_ov5_021D1BEC_decl.h"
+#include "overlay005/field_map_task_decl.h"
 #include "overlay006/ov6_02248050.h"
 
 #include "heap.h"
@@ -13,15 +13,15 @@
 #include "sys_task_manager.h"
 
 typedef struct {
-    UnkStruct_ov5_021D1BEC *unk_00;
+    FieldMapTask *unk_00;
     u16 *unk_04;
     u32 unk_08;
     u32 unk_0C;
 } UnkStruct_ov6_02248948;
 
-typedef UnkStruct_ov5_021D1BEC *(*UnkFuncPtr_ov6_02249840)(FieldSystem *);
-typedef void (*UnkFuncPtr_ov6_02249834)(UnkStruct_ov5_021D1BEC *);
-typedef BOOL (*UnkFuncPtr_ov6_0224984C)(UnkStruct_ov5_021D1BEC *);
+typedef FieldMapTask *(*UnkFuncPtr_ov6_02249840)(FieldSystem *);
+typedef void (*UnkFuncPtr_ov6_02249834)(FieldMapTask *);
+typedef BOOL (*UnkFuncPtr_ov6_0224984C)(FieldMapTask *);
 
 static const UnkFuncPtr_ov6_02249840 Unk_ov6_02249840[3] = {
     ov6_0224830C,

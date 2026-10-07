@@ -5,10 +5,9 @@
 
 #include "field/field_system.h"
 #include "field/field_system_sub2_t.h"
-#include "overlay005/ov5_021D1A94.h"
+#include "overlay005/field_map_task_decl.h"
+#include "overlay005/field_map_task_manager.h"
 #include "overlay005/ov5_021D5EB8.h"
-#include "overlay005/struct_ov5_021D1BEC_decl.h"
-#include "overlay006/struct_ov6_0223E6EC.h"
 #include "overlay006/wild_encounters.h"
 
 #include "bg_window.h"
@@ -45,7 +44,7 @@ typedef struct {
 } UnkStruct_ov5_021F007C;
 
 typedef struct UnkStruct_ov5_021F0468_t {
-    UnkStruct_ov5_021D1BEC *unk_00;
+    FieldMapTask *unk_00;
     BOOL unk_04;
     BOOL unk_08;
     u16 unk_0C;
@@ -56,7 +55,7 @@ static void ov5_021F0260(BgConfig *param0);
 static void ov5_021F02B8(UnkStruct_ov5_021F02B8 *param0, int param1, int param2, int param3);
 static BOOL ov5_021F02C8(UnkStruct_ov5_021F02B8 *param0);
 
-static void ov5_021F007C(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F007C(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     UnkStruct_ov5_021F007C *v0 = param2;
 
@@ -70,7 +69,7 @@ static void ov5_021F007C(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     Sound_PlayEffect(SEQ_SE_DP_FW230_sseq);
 }
 
-static void ov5_021F00BC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F00BC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     UnkStruct_ov5_021F007C *v0 = param2;
 
@@ -82,13 +81,13 @@ static void ov5_021F00BC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     v0->unk_3C = 0;
 }
 
-static void ov5_021F00E4(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F00E4(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     UnkStruct_ov5_021F007C *v0 = param2;
     Heap_Free(v0->unk_00);
 }
 
-static void ov5_021F00F0(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F00F0(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     BOOL v0;
     UnkStruct_ov5_021F007C *v1 = param2;
@@ -107,7 +106,7 @@ static void ov5_021F00F0(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     Bg_LoadPalette(BG_LAYER_MAIN_2, v1->unk_08, PALETTE_SIZE_BYTES, PLTT_OFFSET(6));
 }
 
-static void ov5_021F013C(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F013C(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     UnkStruct_ov5_021F013C *v0 = param2;
 
@@ -123,7 +122,7 @@ static void ov5_021F013C(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     Sound_PlayEffect(SEQ_SE_DP_FW230_sseq);
 }
 
-static void ov5_021F0188(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F0188(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     UnkStruct_ov5_021F013C *v0 = param2;
 
@@ -135,12 +134,12 @@ static void ov5_021F0188(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     G2_SetBlendAlpha((GX_PLANEMASK_BG2), GX_BLEND_PLANEMASK_BG0 | GX_BLEND_PLANEMASK_BD, 10, 16 - 10);
 }
 
-static void ov5_021F01BC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F01BC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     return;
 }
 
-static void ov5_021F01C0(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F01C0(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     BOOL v0;
     UnkStruct_ov5_021F013C *v1 = param2;
@@ -158,14 +157,14 @@ static void ov5_021F01C0(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSyste
     G2_ChangeBlendAlpha(v1->unk_00.unk_00, 16 - v1->unk_00.unk_00);
 }
 
-static void ov5_021F01EC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov5_021F01EC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     return;
 }
 
-UnkStruct_ov5_021D1BEC *ov5_021F01F0(FieldSystem *fieldSystem)
+FieldMapTask *ov5_021F01F0(FieldSystem *fieldSystem)
 {
-    static const UnkStruct_ov6_0223E6EC v0 = {
+    static const FieldMapTaskTemplate v0 = {
         1024,
         sizeof(UnkStruct_ov5_021F013C),
         ov5_021F013C,
@@ -173,13 +172,13 @@ UnkStruct_ov5_021D1BEC *ov5_021F01F0(FieldSystem *fieldSystem)
         ov5_021F01C0,
         ov5_021F01EC
     };
-    UnkStruct_ov5_021D1BEC *v1 = ov5_021D1B6C(fieldSystem->unk_04->unk_04, &v0);
+    FieldMapTask *v1 = FieldMapTaskManager_Add(fieldSystem->fieldMapSubsystems->fieldMapTaskMan, &v0);
     return v1;
 }
 
-UnkStruct_ov5_021D1BEC *ov5_021F0204(FieldSystem *fieldSystem)
+FieldMapTask *ov5_021F0204(FieldSystem *fieldSystem)
 {
-    static const UnkStruct_ov6_0223E6EC v0 = {
+    static const FieldMapTaskTemplate v0 = {
         1024,
         sizeof(UnkStruct_ov5_021F013C),
         ov5_021F0188,
@@ -187,24 +186,24 @@ UnkStruct_ov5_021D1BEC *ov5_021F0204(FieldSystem *fieldSystem)
         ov5_021F01C0,
         ov5_021F01EC
     };
-    UnkStruct_ov5_021D1BEC *v1 = ov5_021D1B6C(fieldSystem->unk_04->unk_04, &v0);
+    FieldMapTask *v1 = FieldMapTaskManager_Add(fieldSystem->fieldMapSubsystems->fieldMapTaskMan, &v0);
     return v1;
 }
 
-void ov5_021F0218(UnkStruct_ov5_021D1BEC *param0)
+void ov5_021F0218(FieldMapTask *param0)
 {
-    ov5_021D1BEC(param0);
+    FieldMapTask_Remove(param0);
 }
 
-BOOL ov5_021F0220(UnkStruct_ov5_021D1BEC *param0)
+BOOL ov5_021F0220(FieldMapTask *param0)
 {
-    UnkStruct_ov5_021F013C *v0 = ov5_021D1C2C(param0);
+    UnkStruct_ov5_021F013C *v0 = FieldMapTask_GetData(param0);
     return v0->unk_14;
 }
 
-UnkStruct_ov5_021D1BEC *ov5_021F022C(FieldSystem *fieldSystem)
+FieldMapTask *ov5_021F022C(FieldSystem *fieldSystem)
 {
-    static const UnkStruct_ov6_0223E6EC v0 = {
+    static const FieldMapTaskTemplate v0 = {
         1024,
         sizeof(UnkStruct_ov5_021F007C),
         ov5_021F007C,
@@ -212,13 +211,13 @@ UnkStruct_ov5_021D1BEC *ov5_021F022C(FieldSystem *fieldSystem)
         ov5_021F00F0,
         ov5_021F01EC
     };
-    UnkStruct_ov5_021D1BEC *v1 = ov5_021D1B6C(fieldSystem->unk_04->unk_04, &v0);
+    FieldMapTask *v1 = FieldMapTaskManager_Add(fieldSystem->fieldMapSubsystems->fieldMapTaskMan, &v0);
     return v1;
 }
 
-UnkStruct_ov5_021D1BEC *ov5_021F0240(FieldSystem *fieldSystem)
+FieldMapTask *ov5_021F0240(FieldSystem *fieldSystem)
 {
-    static const UnkStruct_ov6_0223E6EC v0 = {
+    static const FieldMapTaskTemplate v0 = {
         1024,
         sizeof(UnkStruct_ov5_021F007C),
         ov5_021F00BC,
@@ -226,13 +225,13 @@ UnkStruct_ov5_021D1BEC *ov5_021F0240(FieldSystem *fieldSystem)
         ov5_021F00F0,
         ov5_021F01EC
     };
-    UnkStruct_ov5_021D1BEC *v1 = ov5_021D1B6C(fieldSystem->unk_04->unk_04, &v0);
+    FieldMapTask *v1 = FieldMapTaskManager_Add(fieldSystem->fieldMapSubsystems->fieldMapTaskMan, &v0);
     return v1;
 }
 
-BOOL ov5_021F0254(UnkStruct_ov5_021D1BEC *param0)
+BOOL ov5_021F0254(FieldMapTask *param0)
 {
-    UnkStruct_ov5_021F007C *v0 = ov5_021D1C2C(param0);
+    UnkStruct_ov5_021F007C *v0 = FieldMapTask_GetData(param0);
     return v0->unk_3C;
 }
 
@@ -326,11 +325,11 @@ static BOOL ov5_021F03D8(FieldSystem *fieldSystem)
     u32 v1;
     int v2;
 
-    if (fieldSystem->unk_04->unk_0C == NULL) {
+    if (fieldSystem->fieldMapSubsystems->weather == NULL) {
         return 0;
     }
 
-    v1 = ov5_021D5FE0(fieldSystem->unk_04->unk_0C);
+    v1 = ov5_021D5FE0(fieldSystem->fieldMapSubsystems->weather);
 
     for (v2 = 0; v2 < NELEMS(v0); v2++) {
         if (v1 == v0[v2]) {
@@ -349,11 +348,11 @@ static BOOL ov5_021F0408(FieldSystem *fieldSystem)
     u32 v1;
     int v2;
 
-    if (fieldSystem->unk_04->unk_0C == NULL) {
+    if (fieldSystem->fieldMapSubsystems->weather == NULL) {
         return 0;
     }
 
-    v1 = ov5_021D5FE0(fieldSystem->unk_04->unk_0C);
+    v1 = ov5_021D5FE0(fieldSystem->fieldMapSubsystems->weather);
 
     for (v2 = 0; v2 < 1; v2++) {
         if (v1 == v0[v2]) {
@@ -389,11 +388,11 @@ static BOOL ov5_021F0438(FieldSystem *fieldSystem)
     u32 v1;
     int v2;
 
-    if (fieldSystem->unk_04->unk_0C == NULL) {
+    if (fieldSystem->fieldMapSubsystems->weather == NULL) {
         return 0;
     }
 
-    v1 = ov5_021D5FE0(fieldSystem->unk_04->unk_0C);
+    v1 = ov5_021D5FE0(fieldSystem->fieldMapSubsystems->weather);
 
     for (v2 = 0; v2 < 18; v2++) {
         if (v1 == v0[v2]) {

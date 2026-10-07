@@ -1,4 +1,4 @@
-#include "overlay005/ov5_021EA874.h"
+#include "overlay005/pal_pad_registration.h"
 
 #include <nitro.h>
 #include <string.h>
@@ -50,13 +50,13 @@ typedef struct {
     int unk_6C[8];
     int unk_8C;
     int unk_90;
-} UnkStruct_ov5_021EAE78;
+} PalPadRegistration;
 
-static void ov5_021EAE78(UnkStruct_ov5_021EAE78 *param0, int param1);
-static void ov5_021EAF1C(UnkStruct_ov5_021EAE78 *param0);
-static void ov5_021EAF90(ListMenu *param0, u32 param1, u8 param2);
+static void PalPadRegistration_PrintMessage(PalPadRegistration *param0, int param1);
+static void PalPadRegistration_Free(PalPadRegistration *param0);
+static void FriendListMenuCursorCallback(ListMenu *param0, u32 param1, u8 param2);
 
-static BOOL ov5_021EA874(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_CheckForFriends(PalPadRegistration *param0)
 {
     int v0, v1 = 0;
     DWCFriendData *v2 = sub_0202AED8(SaveData_GetWiFiList(param0->saveData), 0);
@@ -75,7 +75,7 @@ static BOOL ov5_021EA874(UnkStruct_ov5_021EAE78 *param0)
     return 0;
 }
 
-static BOOL ov5_021EA8F0(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_ProcessPendingFriend(PalPadRegistration *param0)
 {
     int v0;
     TrainerInfo *v1;
@@ -97,7 +97,7 @@ static BOOL ov5_021EA8F0(UnkStruct_ov5_021EAE78 *param0)
     if (Bag_CanRemoveItem(SaveData_GetBag(param0->saveData), ITEM_PAL_PAD, 1, HEAP_ID_FIELD1) == TRUE) {
         v1 = CommInfo_TrainerInfo(param0->unk_8C);
         StringTemplate_SetPlayerName(param0->unk_38, 0, v1);
-        ov5_021EAE78(param0, 57);
+        PalPadRegistration_PrintMessage(param0, 57);
         param0->unk_48 = 2;
         return 0;
     }
@@ -116,7 +116,7 @@ static BOOL ov5_021EA8F0(UnkStruct_ov5_021EAE78 *param0)
     return 0;
 }
 
-static const WindowTemplate Unk_ov5_021FAF00 = {
+static const WindowTemplate sYesNoWindowTemplate = {
     0x3,
     0x19,
     0xD,
@@ -126,17 +126,17 @@ static const WindowTemplate Unk_ov5_021FAF00 = {
     0x21F
 };
 
-static BOOL ov5_021EA9BC(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_ShowRegisterPrompt(PalPadRegistration *param0)
 {
     if (Text_IsPrinterActive(param0->unk_40) == 0) {
-        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &Unk_ov5_021FAF00, 1024 - (18 + 12) - 9, 11, 4);
+        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &sYesNoWindowTemplate, 1024 - (18 + 12) - 9, 11, 4);
         param0->unk_48 = 3;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EA9F8(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_HandleRegisterConfirm(PalPadRegistration *param0)
 {
     DWCFriendData *v0;
     String *v1;
@@ -156,7 +156,7 @@ static BOOL ov5_021EA9F8(UnkStruct_ov5_021EAE78 *param0)
         }
 
         if (v2 == 32) {
-            ov5_021EAE78(param0, 58);
+            PalPadRegistration_PrintMessage(param0, 58);
             param0->unk_48 = 4;
             return 0;
         }
@@ -166,17 +166,17 @@ static BOOL ov5_021EA9F8(UnkStruct_ov5_021EAE78 *param0)
     return 0;
 }
 
-static BOOL ov5_021EAA6C(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_ShowRosterFullPrompt(PalPadRegistration *param0)
 {
     if (Text_IsPrinterActive(param0->unk_40) == 0) {
-        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &Unk_ov5_021FAF00, 1024 - (18 + 12) - 9, 11, 4);
+        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &sYesNoWindowTemplate, 1024 - (18 + 12) - 9, 11, 4);
         param0->unk_48 = 5;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EAAA8(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_HandleRosterFullConfirm(PalPadRegistration *param0)
 {
     TrainerInfo *v0;
     DWCFriendData *v1;
@@ -191,24 +191,24 @@ static BOOL ov5_021EAAA8(UnkStruct_ov5_021EAE78 *param0)
     } else {
         v0 = CommInfo_TrainerInfo(param0->unk_8C);
         StringTemplate_SetPlayerName(param0->unk_38, 0, v0);
-        ov5_021EAE78(param0, 59);
+        PalPadRegistration_PrintMessage(param0, 59);
         param0->unk_48 = 6;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EAAEC(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_ShowAbandonPrompt(PalPadRegistration *param0)
 {
     if (Text_IsPrinterActive(param0->unk_40) == 0) {
-        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &Unk_ov5_021FAF00, 1024 - (18 + 12) - 9, 11, 4);
+        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &sYesNoWindowTemplate, 1024 - (18 + 12) - 9, 11, 4);
         param0->unk_48 = 7;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EAB28(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_HandleAbandonConfirm(PalPadRegistration *param0)
 {
     TrainerInfo *v0;
     DWCFriendData *v1;
@@ -221,14 +221,14 @@ static BOOL ov5_021EAB28(UnkStruct_ov5_021EAE78 *param0)
     } else if (v4 == 0) {
         param0->unk_48 = 12;
     } else {
-        ov5_021EAE78(param0, 58);
+        PalPadRegistration_PrintMessage(param0, 58);
         param0->unk_48 = 4;
     }
 
     return 0;
 }
 
-static const ListMenuTemplate Unk_ov5_021FAF08 = {
+static const ListMenuTemplate sFriendListMenuTemplate = {
     NULL,
     NULL,
     NULL,
@@ -250,7 +250,7 @@ static const ListMenuTemplate Unk_ov5_021FAF08 = {
     NULL
 };
 
-static BOOL ov5_021EAB58(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_BuildFriendListMenu(PalPadRegistration *param0)
 {
     WiFiList *v0 = SaveData_GetWiFiList(param0->saveData);
     ListMenuTemplate v1;
@@ -276,13 +276,13 @@ static BOOL ov5_021EAB58(UnkStruct_ov5_021EAE78 *param0)
         StringList_AddFromMessageBank(param0->unk_00, param0->unk_3C, 11, 0xfffffffe);
     }
 
-    v1 = Unk_ov5_021FAF08;
+    v1 = sFriendListMenuTemplate;
 
     v1.count = v2 + 1;
     v1.maxDisplay = v3;
     v1.choices = param0->unk_00;
     v1.window = &param0->unk_20;
-    v1.cursorCallback = ov5_021EAF90;
+    v1.cursorCallback = FriendListMenuCursorCallback;
     v1.parent = param0;
 
     param0->unk_04 = ListMenu_New(&v1, 0, 0, HEAP_ID_FIELD1);
@@ -292,7 +292,7 @@ static BOOL ov5_021EAB58(UnkStruct_ov5_021EAE78 *param0)
     return 0;
 }
 
-static BOOL ov5_021EAC44(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_HandleFriendListInput(PalPadRegistration *param0)
 {
     TrainerInfo *v0;
     int v1 = ListMenu_ProcessInput(param0->unk_04);
@@ -304,7 +304,7 @@ static BOOL ov5_021EAC44(UnkStruct_ov5_021EAE78 *param0)
         Sound_PlayEffect(SE_CONFIRM_sseq_3);
         v0 = CommInfo_TrainerInfo(param0->unk_8C);
         StringTemplate_SetPlayerName(param0->unk_38, 0, v0);
-        ov5_021EAE78(param0, 59);
+        PalPadRegistration_PrintMessage(param0, 59);
         param0->unk_48 = 6;
         break;
     default:
@@ -318,7 +318,7 @@ static BOOL ov5_021EAC44(UnkStruct_ov5_021EAE78 *param0)
         StringTemplate_SetPlayerName(param0->unk_38, 0, v3);
         Heap_Free(v3);
 
-        ov5_021EAE78(param0, 60);
+        PalPadRegistration_PrintMessage(param0, 60);
         param0->unk_48 = 10;
         break;
     }
@@ -331,17 +331,17 @@ static BOOL ov5_021EAC44(UnkStruct_ov5_021EAE78 *param0)
     return 0;
 }
 
-static BOOL ov5_021EACFC(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_ShowDeletePrompt(PalPadRegistration *param0)
 {
     if (Text_IsPrinterActive(param0->unk_40) == 0) {
-        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &Unk_ov5_021FAF00, 1024 - (18 + 12) - 9, 11, 4);
+        param0->unk_44 = Menu_MakeYesNoChoice(param0->fieldSystem->bgConfig, &sYesNoWindowTemplate, 1024 - (18 + 12) - 9, 11, 4);
         param0->unk_48 = 11;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EAD38(UnkStruct_ov5_021EAE78 *param0)
+static BOOL PalPadRegistration_HandleDeleteConfirm(PalPadRegistration *param0)
 {
     WiFiList *v0 = SaveData_GetWiFiList(param0->saveData);
     TrainerInfo *v1;
@@ -359,61 +359,61 @@ static BOOL ov5_021EAD38(UnkStruct_ov5_021EAE78 *param0)
     } else {
         v1 = CommInfo_TrainerInfo(param0->unk_8C);
         StringTemplate_SetPlayerName(param0->unk_38, 0, v1);
-        ov5_021EAE78(param0, 59);
+        PalPadRegistration_PrintMessage(param0, 59);
         param0->unk_48 = 6;
     }
 
     return 0;
 }
 
-static BOOL ov5_021EADB4(FieldTask *param0)
+static BOOL PalPadRegistration_Task(FieldTask *param0)
 {
-    UnkStruct_ov5_021EAE78 *v0 = FieldTask_GetEnv(param0);
+    PalPadRegistration *v0 = FieldTask_GetEnv(param0);
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
 
     switch (v0->unk_48) {
     case 0:
-        if (ov5_021EA874(v0)) {
+        if (PalPadRegistration_CheckForFriends(v0)) {
             v0->unk_48 = 12;
         }
         break;
     case 1:
-        if (ov5_021EA8F0(v0)) {
+        if (PalPadRegistration_ProcessPendingFriend(v0)) {
             v0->unk_48 = 12;
         }
         break;
     case 2:
-        ov5_021EA9BC(v0);
+        PalPadRegistration_ShowRegisterPrompt(v0);
         break;
     case 3:
-        ov5_021EA9F8(v0);
+        PalPadRegistration_HandleRegisterConfirm(v0);
         break;
     case 4:
-        ov5_021EAA6C(v0);
+        PalPadRegistration_ShowRosterFullPrompt(v0);
         break;
     case 5:
-        ov5_021EAAA8(v0);
+        PalPadRegistration_HandleRosterFullConfirm(v0);
         break;
     case 6:
-        ov5_021EAAEC(v0);
+        PalPadRegistration_ShowAbandonPrompt(v0);
         break;
     case 7:
-        ov5_021EAB28(v0);
+        PalPadRegistration_HandleAbandonConfirm(v0);
         break;
     case 8:
-        ov5_021EAB58(v0);
+        PalPadRegistration_BuildFriendListMenu(v0);
         break;
     case 9:
-        ov5_021EAC44(v0);
+        PalPadRegistration_HandleFriendListInput(v0);
         break;
     case 10:
-        ov5_021EACFC(v0);
+        PalPadRegistration_ShowDeletePrompt(v0);
         break;
     case 11:
-        ov5_021EAD38(v0);
+        PalPadRegistration_HandleDeleteConfirm(v0);
         break;
     case 12:
-        ov5_021EAF1C(v0);
+        PalPadRegistration_Free(v0);
         Heap_Free(v0);
         FieldSystem_ResumeProcessing();
         return 1;
@@ -422,7 +422,7 @@ static BOOL ov5_021EADB4(FieldTask *param0)
     return 0;
 }
 
-static void ov5_021EAE78(UnkStruct_ov5_021EAE78 *param0, int param1)
+static void PalPadRegistration_PrintMessage(PalPadRegistration *param0, int param1)
 {
     if (Window_IsInUse(&param0->unk_10)) {
         Window_Remove(&param0->unk_10);
@@ -436,9 +436,9 @@ static void ov5_021EAE78(UnkStruct_ov5_021EAE78 *param0, int param1)
     param0->unk_40 = FieldMessage_Print(&param0->unk_10, param0->unk_0C, SaveData_GetOptions(param0->fieldSystem->saveData), 1);
 }
 
-static void ov5_021EAEE0(UnkStruct_ov5_021EAE78 *param0)
+static void PalPadRegistration_Init(PalPadRegistration *param0)
 {
-    MI_CpuClear8(param0, sizeof(UnkStruct_ov5_021EAE78));
+    MI_CpuClear8(param0, sizeof(PalPadRegistration));
 
     param0->unk_38 = StringTemplate_Default(HEAP_ID_FIELD1);
     param0->unk_3C = MessageLoader_Init(MSG_LOADER_PRELOAD_ENTIRE_BANK, NARC_INDEX_MSGDATA__PL_MSG, TEXT_BANK_PAL_PAD, HEAP_ID_FIELD1);
@@ -446,7 +446,7 @@ static void ov5_021EAEE0(UnkStruct_ov5_021EAE78 *param0)
     param0->unk_08 = String_Init(110, HEAP_ID_FIELD1);
 }
 
-static void ov5_021EAF1C(UnkStruct_ov5_021EAE78 *param0)
+static void PalPadRegistration_Free(PalPadRegistration *param0)
 {
     MessageLoader_Free(param0->unk_3C);
     StringTemplate_Free(param0->unk_38);
@@ -458,26 +458,26 @@ static void ov5_021EAF1C(UnkStruct_ov5_021EAE78 *param0)
     }
 }
 
-void ov5_021EAF50(FieldSystem *fieldSystem)
+void PalPadRegistration_Start(FieldSystem *fieldSystem)
 {
-    UnkStruct_ov5_021EAE78 *v0;
+    PalPadRegistration *v0;
     FieldTask *v1 = fieldSystem->task;
 
-    v0 = Heap_AllocAtEnd(HEAP_ID_FIELD2, sizeof(UnkStruct_ov5_021EAE78));
-    ov5_021EAEE0(v0);
+    v0 = Heap_AllocAtEnd(HEAP_ID_FIELD2, sizeof(PalPadRegistration));
+    PalPadRegistration_Init(v0);
 
     v0->fieldSystem = fieldSystem;
     v0->saveData = fieldSystem->saveData;
     v0->unk_48 = 0;
 
     if (v1 == NULL) {
-        FieldSystem_CreateTask(fieldSystem, ov5_021EADB4, v0);
+        FieldSystem_CreateTask(fieldSystem, PalPadRegistration_Task, v0);
     } else {
-        FieldTask_InitCall(v1, ov5_021EADB4, v0);
+        FieldTask_InitCall(v1, PalPadRegistration_Task, v0);
     }
 }
 
-static void ov5_021EAF90(ListMenu *param0, u32 param1, u8 param2)
+static void FriendListMenuCursorCallback(ListMenu *param0, u32 param1, u8 param2)
 {
     if (param2 == 0) {
         Sound_PlayEffect(SE_CONFIRM_sseq_3);

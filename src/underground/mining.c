@@ -1636,7 +1636,7 @@ static void Mining_GameTask(SysTask *sysTask, void *data)
             fieldSystem->ugTopScreenCtx = UndergroundTopScreen_StartTask(fieldSystem);
             NetworkIcon_Init();
             CommPlayerMan_PauseFieldSystem();
-            HBlankSystem_Stop(ctx->fieldSystem->unk_04->hBlankSystem);
+            HBlankSystem_Stop(ctx->fieldSystem->fieldMapSubsystems->hBlankSystem);
             StartScreenFade(FADE_MAIN_THEN_SUB, FADE_TYPE_CIRCLE_IN, FADE_TYPE_TOP_HALF_CIRCLE_IN, COLOR_BLACK, 6, 1, HEAP_ID_FIELD1);
             ctx->state++;
             break;
@@ -1646,8 +1646,8 @@ static void Mining_GameTask(SysTask *sysTask, void *data)
         ResetScreenMasterBrightness(DS_SCREEN_MAIN);
 
         if (IsScreenFadeDone()) {
-            HBlankSystem_Stop(ctx->fieldSystem->unk_04->hBlankSystem);
-            HBlankSystem_Start(ctx->fieldSystem->unk_04->hBlankSystem);
+            HBlankSystem_Stop(ctx->fieldSystem->fieldMapSubsystems->hBlankSystem);
+            HBlankSystem_Start(ctx->fieldSystem->fieldMapSubsystems->hBlankSystem);
 
             Graphics_LoadPalette(NARC_INDEX_DATA__UG_TRAP, text_window_NCLR, PAL_LOAD_MAIN_BG, PLTT_OFFSET(10), PALETTE_SIZE_BYTES * 4, HEAP_ID_FIELD1);
             LoadStandardWindowGraphics(ctx->fieldSystem->bgConfig, BG_LAYER_MAIN_3, BASE_TILE_STANDARD_WINDOW_FRAME, 11, STANDARD_WINDOW_UNDERGROUND, HEAP_ID_FIELD1);
@@ -1731,7 +1731,7 @@ static void Mining_StartGameTask(FieldSystem *fieldSystem)
     MI_CpuFill8(ctx, 0, sizeof(MiningGameContext));
     ctx->fieldSystem = fieldSystem;
 
-    HBlankSystem_Stop(fieldSystem->unk_04->hBlankSystem);
+    HBlankSystem_Stop(fieldSystem->fieldMapSubsystems->hBlankSystem);
     SystemFlag_SetDiggingForFossils(SaveData_GetVarsFlags(fieldSystem->saveData));
 
     sMiningEnv->miningGameTask = SysTask_Start(Mining_GameTask, ctx, 100);

@@ -1,5 +1,5 @@
-#ifndef POKEPLATINUM_OV5_021D5BC0_H
-#define POKEPLATINUM_OV5_021D5BC0_H
+#ifndef POKEPLATINUM_FIELD_BOTTOM_SCREEN_H
+#define POKEPLATINUM_FIELD_BOTTOM_SCREEN_H
 
 #include "field/field_system_decl.h"
 
@@ -8,4 +8,4 @@ BOOL FieldSystem_IsBottomScreenRunningDummy(FieldSystem *fieldSystem);
 void FieldSystem_EndBottomScreen(FieldSystem *fieldSystem);
 BOOL FieldSystem_IsBottomScreenDone(FieldSystem *fieldSystem);
 
-#endif // POKEPLATINUM_OV5_021D5BC0_H
+#endif // POKEPLATINUM_FIELD_BOTTOM_SCREEN_H

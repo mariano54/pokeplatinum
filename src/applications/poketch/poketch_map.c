@@ -106,42 +106,42 @@ void PoketchMap_GetHiddenLocationPosition(int hiddenLocation, u32 *mapX, u32 *ma
     *mapY = hiddenLocationPositions[hiddenLocation].y;
 }
 
-BOOL PoketchMap_GetPositionFromMapID(enum MapID mapID, u32 *x, u32 *y)
+BOOL PoketchMap_GetPositionFromMapID(enum MapHeaderID mapID, u32 *x, u32 *y)
 {
     static const struct {
         u16 mapID;
         u8 x;
         u8 y;
     } positions[] = {
-        { MAP_342, 47, 150 },
-        { MAP_343, 56, 144 },
-        { MAP_344, 65, 132 },
-        { MAP_345, 50, 126 },
-        { MAP_346, 50, 120 },
-        { MAP_347, 62, 108 },
-        { MAP_349, 74, 90 },
-        { MAP_350, 80, 111 },
-        { MAP_353, 83, 126 },
-        { MAP_354, 101, 126 },
-        { MAP_356, 125, 126 },
-        { MAP_362, 128, 102 },
-        { MAP_363, 122, 90 },
-        { MAP_365, 92, 90 },
-        { MAP_366, 104, 90 },
-        { MAP_367, 110, 138 },
-        { MAP_371, 119, 150 },
-        { MAP_373, 152, 147 },
-        { MAP_380, 152, 120 },
-        { MAP_382, 140, 102 },
-        { MAP_383, 86, 66 },
-        { MAP_385, 80, 51 },
-        { MAP_388, 41, 132 },
-        { MAP_391, 56, 156 },
-        { MAP_467, 59, 162 },
-        { MAP_392, 74, 162 },
-        { MAP_395, 170, 138 },
-        { MAP_200, 68, 114 },
-        { MAP_204, 56, 102 }
+        { MAP_HEADER_ROUTE_201, 47, 150 },
+        { MAP_HEADER_ROUTE_202, 56, 144 },
+        { MAP_HEADER_ROUTE_203, 65, 132 },
+        { MAP_HEADER_ROUTE_204_SOUTH, 50, 126 },
+        { MAP_HEADER_ROUTE_204_NORTH, 50, 120 },
+        { MAP_HEADER_ROUTE_205_SOUTH, 62, 108 },
+        { MAP_HEADER_ROUTE_205_NORTH, 74, 90 },
+        { MAP_HEADER_ROUTE_206, 80, 111 },
+        { MAP_HEADER_ROUTE_207, 83, 126 },
+        { MAP_HEADER_ROUTE_208, 101, 126 },
+        { MAP_HEADER_ROUTE_209, 125, 126 },
+        { MAP_HEADER_ROUTE_210_SOUTH, 128, 102 },
+        { MAP_HEADER_ROUTE_210_NORTH, 122, 90 },
+        { MAP_HEADER_ROUTE_211_WEST, 92, 90 },
+        { MAP_HEADER_ROUTE_211_EAST, 104, 90 },
+        { MAP_HEADER_ROUTE_212_NORTH, 110, 138 },
+        { MAP_HEADER_ROUTE_212_SOUTH, 119, 150 },
+        { MAP_HEADER_ROUTE_213, 152, 147 },
+        { MAP_HEADER_ROUTE_214, 152, 120 },
+        { MAP_HEADER_ROUTE_215, 140, 102 },
+        { MAP_HEADER_ROUTE_216, 86, 66 },
+        { MAP_HEADER_ROUTE_217, 80, 51 },
+        { MAP_HEADER_ROUTE_218, 41, 132 },
+        { MAP_HEADER_ROUTE_219, 56, 156 },
+        { MAP_HEADER_ROUTE_220, 59, 162 },
+        { MAP_HEADER_ROUTE_221, 74, 162 },
+        { MAP_HEADER_ROUTE_222, 170, 138 },
+        { MAP_HEADER_VALLEY_WINDWORKS_OUTSIDE, 68, 114 },
+        { MAP_HEADER_FUEGO_IRONWORKS_OUTSIDE, 56, 102 }
     };
 
     for (int i = 0; i < NELEMS(positions); i++) {

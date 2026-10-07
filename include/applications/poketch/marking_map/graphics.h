@@ -2,7 +2,7 @@
 #define POKEPLATINUM_POKETCH_MARKING_MAP_GRAPHICS_H
 
 #include "generated/hidden_locations.h"
-#include "generated/maps.h"
+#include "generated/map_headers.h"
 #include "generated/roaming_slots.h"
 
 #include "applications/poketch/poketch_animation.h"
@@ -30,7 +30,7 @@ typedef struct {
     BOOL showHiddenLocation[HIDDEN_LOCATION_MAX];
     struct {
         BOOL isActive;
-        enum MapID mapID;
+        enum MapHeaderID mapID;
     } roamerData[ROAMING_SLOT_MAX];
 } MarkingMapData;
 

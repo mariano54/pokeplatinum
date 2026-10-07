@@ -1,0 +1,850 @@
+{
+  "container": "BTX0",
+  "textures": [
+    {
+      "name": "h_kage",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "h_kage_pl",
+      "file": "h_kage.png"
+    },
+    {
+      "name": "pcloof",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "pcloof_pl",
+      "file": "pcloof.png"
+    },
+    {
+      "name": "pcwall",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "pcwall_pl",
+      "file": "pcwall.png"
+    },
+    {
+      "name": "fsloof",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "fsloof",
+      "file": "fsloof.png"
+    },
+    {
+      "name": "gyma",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "gyma",
+      "file": "gyma.png"
+    },
+    {
+      "name": "gymb",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "gymb",
+      "file": "gymb.png"
+    },
+    {
+      "name": "gymc",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": true,
+      "palette": "gymc_pl",
+      "file": "gymc.png"
+    },
+    {
+      "name": "gate_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "gate_1_pl",
+      "file": "gate_1.png"
+    },
+    {
+      "name": "gate_2",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "gate_2_pl",
+      "file": "gate_2.png"
+    },
+    {
+      "name": "gate_3",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "gate_3_pl",
+      "file": "gate_3.png"
+    },
+    {
+      "name": "treeeff01",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "treeeff01_pl",
+      "file": "treeeff01.png"
+    },
+    {
+      "name": "c1_fun1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_fun1_pl",
+      "file": "c1_fun1.png"
+    },
+    {
+      "name": "c1_fun2",
+      "format": "a3i5",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "c1_fun2_pl",
+      "file": "c1_fun2.png"
+    },
+    {
+      "name": "c1_b01_1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": true,
+      "palette": "c1_b01_1_pl",
+      "file": "c1_b01_1.png"
+    },
+    {
+      "name": "c1_b01_3",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_b01_3_pl",
+      "file": "c1_b01_3.png"
+    },
+    {
+      "name": "c1_b01_4",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "c1_b01_4_pl",
+      "file": "c1_b01_4.png"
+    },
+    {
+      "name": "c1_s01_a",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_s01_a_pl",
+      "file": "c1_s01_a.png"
+    },
+    {
+      "name": "c1_s01_b",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "c1_s01_b_pl",
+      "file": "c1_s01_b.png"
+    },
+    {
+      "name": "c1_s01_c",
+      "format": "palette4",
+      "width": 32,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "c1_s01_c_pl",
+      "file": "c1_s01_c.png"
+    },
+    {
+      "name": "c1_s01_d.1",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "c1_s01_d.1_pl",
+      "file": "c1_s01_d.1.png"
+    },
+    {
+      "name": "c1_s01_d.2",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "c1_s01_d.2_pl",
+      "file": "c1_s01_d.2.png"
+    },
+    {
+      "name": "c1_s01_d.3",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "c1_s01_d.3_pl",
+      "file": "c1_s01_d.3.png"
+    },
+    {
+      "name": "c1_s01_d.4",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "c1_s01_d.4_pl",
+      "file": "c1_s01_d.4.png"
+    },
+    {
+      "name": "c1_s02_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_s02_1_pl",
+      "file": "c1_s02_1.png"
+    },
+    {
+      "name": "c1_s02_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_s02_2_pl",
+      "file": "c1_s02_2.png"
+    },
+    {
+      "name": "c1_s02_3.1",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_s02_3.1_pl",
+      "file": "c1_s02_3.1.png"
+    },
+    {
+      "name": "c1_s02_3.2",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_s02_3.2_pl",
+      "file": "c1_s02_3.2.png"
+    },
+    {
+      "name": "c1_s02_3.3",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_s02_3.3_pl",
+      "file": "c1_s02_3.3.png"
+    },
+    {
+      "name": "c1_s02_3.4",
+      "format": "palette4",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_s02_3.4_pl",
+      "file": "c1_s02_3.4.png"
+    },
+    {
+      "name": "c1_s03_a",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_s03_a_pl",
+      "file": "c1_s03_a.png"
+    },
+    {
+      "name": "c1_s03_b",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_s03_b_pl",
+      "file": "c1_s03_b.png"
+    },
+    {
+      "name": "c1_s03_c",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": true,
+      "palette": "c1_s03_c_pl",
+      "file": "c1_s03_c.png"
+    },
+    {
+      "name": "c1_s03_d",
+      "format": "a3i5",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_s03_d_pl",
+      "file": "c1_s03_d.png"
+    },
+    {
+      "name": "h_mado",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "h_mado_pl",
+      "file": "h_mado.png"
+    },
+    {
+      "name": "c1_o02",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": true,
+      "palette": "c1_o02_pl",
+      "file": "c1_o02.png"
+    },
+    {
+      "name": "c1_school_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_school_1",
+      "file": "c1_school_1.png"
+    },
+    {
+      "name": "c1_school_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "c1_school_2",
+      "file": "c1_school_2.png"
+    },
+    {
+      "name": "c1_b02_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_b02_1",
+      "file": "c1_b02_1.png"
+    },
+    {
+      "name": "t1_door1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "t1_door1_pl",
+      "file": "t1_door1.png"
+    },
+    {
+      "name": "t1_h01",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_h01_pl",
+      "file": "t1_h01.png"
+    },
+    {
+      "name": "t1_s01_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_s01_1_pl",
+      "file": "t1_s01_1.png"
+    },
+    {
+      "name": "t1_s01_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_s01_2_pl",
+      "file": "t1_s01_2.png"
+    },
+    {
+      "name": "t2_h01",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t2_h01_pl",
+      "file": "t2_h01.png"
+    },
+    {
+      "name": "t2_s01_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t2_s01_1_pl",
+      "file": "t2_s01_1.png"
+    },
+    {
+      "name": "t2_s01_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t2_s01_2_pl",
+      "file": "t2_s01_2.png"
+    },
+    {
+      "name": "t2_s02_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t2_s02_1_pl",
+      "file": "t2_s02_1.png"
+    },
+    {
+      "name": "t2_s02_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t2_s02_2_pl",
+      "file": "t2_s02_2.png"
+    },
+    {
+      "name": "door01",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "door01",
+      "file": "door01.png"
+    },
+    {
+      "name": "t2_door1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "t2_door1_pl",
+      "file": "t2_door1.png"
+    },
+    {
+      "name": "t2_door2",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "t2_door2_pl",
+      "file": "t2_door2.png"
+    },
+    {
+      "name": "t1_s02_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_s02_1_pl",
+      "file": "t1_s02_1.png"
+    },
+    {
+      "name": "t1_s02_2",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_s02_2_pl",
+      "file": "t1_s02_2.png"
+    },
+    {
+      "name": "c1_b03_1",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "c1_b03_1_pl",
+      "file": "c1_b03_1.png"
+    },
+    {
+      "name": "c1_b03_2",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "c1_b03_2_pl",
+      "file": "c1_b03_2.png"
+    },
+    {
+      "name": "c1_b03_3",
+      "format": "palette16",
+      "width": 32,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "c1_b03_3_pl",
+      "file": "c1_b03_3.png"
+    },
+    {
+      "name": "c1_door1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "c1_door1_pl",
+      "file": "c1_door1.png"
+    },
+    {
+      "name": "park_mark",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": true,
+      "palette": "park_mark_pl",
+      "file": "park_mark.png"
+    },
+    {
+      "name": "pokepark",
+      "format": "palette16",
+      "width": 32,
+      "height": 64,
+      "color0_transparent": false,
+      "palette": "pokepark_pl",
+      "file": "pokepark.png"
+    },
+    {
+      "name": "gym_door00",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "gym_door00_pl",
+      "file": "gym_door00.png"
+    }
+  ],
+  "palettes": [
+    {
+      "name": "h_kage_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "h_kage.png"
+    },
+    {
+      "name": "pcloof_pl",
+      "colors": 16,
+      "source": "pcloof.png"
+    },
+    {
+      "name": "pcwall_pl",
+      "colors": 16,
+      "source": "pcwall.png"
+    },
+    {
+      "name": "fsloof",
+      "colors": 16,
+      "source": "fsloof.png"
+    },
+    {
+      "name": "gyma",
+      "colors": 16,
+      "source": "gyma.png"
+    },
+    {
+      "name": "gymb",
+      "colors": 16,
+      "source": "gymb.png"
+    },
+    {
+      "name": "gymc_pl",
+      "colors": 8,
+      "source": "gymc.png"
+    },
+    {
+      "name": "gate_1_pl",
+      "colors": 16,
+      "source": "gate_1.png"
+    },
+    {
+      "name": "gate_2_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "gate_2.png"
+    },
+    {
+      "name": "gate_3_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "gate_3.png"
+    },
+    {
+      "name": "treeeff01_pl",
+      "colors": 16,
+      "source": "treeeff01.png"
+    },
+    {
+      "name": "c1_fun1_pl",
+      "colors": 16,
+      "source": "c1_fun1.png"
+    },
+    {
+      "name": "c1_fun2_pl",
+      "colors": 8,
+      "source": "c1_fun2_pl.pal.png"
+    },
+    {
+      "name": "c1_b01_1_pl",
+      "colors": 16,
+      "source": "c1_b01_1.png"
+    },
+    {
+      "name": "c1_b01_3_pl",
+      "colors": 16,
+      "source": "c1_b01_3.png"
+    },
+    {
+      "name": "c1_b01_4_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_b01_4.png"
+    },
+    {
+      "name": "c1_s01_a_pl",
+      "colors": 16,
+      "source": "c1_s01_a.png"
+    },
+    {
+      "name": "c1_s01_b_pl",
+      "colors": 16,
+      "source": "c1_s01_b.png"
+    },
+    {
+      "name": "c1_s01_c_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s01_c.png"
+    },
+    {
+      "name": "c1_s01_d.1_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s01_d.1.png"
+    },
+    {
+      "name": "c1_s01_d.2_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s01_d.2.png"
+    },
+    {
+      "name": "c1_s01_d.3_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s01_d.3.png"
+    },
+    {
+      "name": "c1_s01_d.4_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s01_d.4.png"
+    },
+    {
+      "name": "c1_s02_1_pl",
+      "colors": 16,
+      "source": "c1_s02_1.png"
+    },
+    {
+      "name": "c1_s02_2_pl",
+      "colors": 16,
+      "source": "c1_s02_2.png"
+    },
+    {
+      "name": "c1_s02_3.1_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s02_3.1.png"
+    },
+    {
+      "name": "c1_s02_3.2_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s02_3.2.png"
+    },
+    {
+      "name": "c1_s02_3.3_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s02_3.3.png"
+    },
+    {
+      "name": "c1_s02_3.4_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_s02_3.4.png"
+    },
+    {
+      "name": "c1_s03_a_pl",
+      "colors": 16,
+      "source": "c1_s03_a.png"
+    },
+    {
+      "name": "c1_s03_b_pl",
+      "colors": 16,
+      "source": "c1_s03_b.png"
+    },
+    {
+      "name": "c1_s03_c_pl",
+      "colors": 16,
+      "source": "c1_s03_c.png"
+    },
+    {
+      "name": "c1_s03_d_pl",
+      "colors": 8,
+      "source": "c1_s03_d_pl.pal.png"
+    },
+    {
+      "name": "h_mado_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "h_mado.png"
+    },
+    {
+      "name": "c1_o02_pl",
+      "colors": 8,
+      "source": "c1_o02.png"
+    },
+    {
+      "name": "c1_school_1",
+      "colors": 16,
+      "source": "c1_school_1.png"
+    },
+    {
+      "name": "c1_school_2",
+      "colors": 16,
+      "source": "c1_school_2.png"
+    },
+    {
+      "name": "c1_b02_1",
+      "colors": 16,
+      "source": "c1_b02_1.png"
+    },
+    {
+      "name": "t1_door1_pl",
+      "colors": 8,
+      "source": "t1_door1.png"
+    },
+    {
+      "name": "t1_h01_pl",
+      "colors": 16,
+      "source": "t1_h01.png"
+    },
+    {
+      "name": "t1_s01_1_pl",
+      "colors": 16,
+      "source": "t1_s01_1.png"
+    },
+    {
+      "name": "t1_s01_2_pl",
+      "colors": 16,
+      "source": "t1_s01_2.png"
+    },
+    {
+      "name": "t2_h01_pl",
+      "colors": 16,
+      "source": "t2_h01.png"
+    },
+    {
+      "name": "t2_s01_1_pl",
+      "colors": 16,
+      "source": "t2_s01_1.png"
+    },
+    {
+      "name": "t2_s01_2_pl",
+      "colors": 16,
+      "source": "t2_s01_2.png"
+    },
+    {
+      "name": "t2_s02_1_pl",
+      "colors": 16,
+      "source": "t2_s02_1.png"
+    },
+    {
+      "name": "t2_s02_2_pl",
+      "colors": 16,
+      "source": "t2_s02_2.png"
+    },
+    {
+      "name": "door01",
+      "colors": 8,
+      "source": "door01.png"
+    },
+    {
+      "name": "t2_door1_pl",
+      "colors": 8,
+      "source": "t2_door1.png"
+    },
+    {
+      "name": "t2_door2_pl",
+      "colors": 16,
+      "source": "t2_door2.png"
+    },
+    {
+      "name": "t1_s02_1_pl",
+      "colors": 16,
+      "source": "t1_s02_1.png"
+    },
+    {
+      "name": "t1_s02_2_pl",
+      "colors": 16,
+      "source": "t1_s02_2.png"
+    },
+    {
+      "name": "c1_b03_1_pl",
+      "colors": 16,
+      "source": "c1_b03_1.png"
+    },
+    {
+      "name": "c1_b03_2_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "c1_b03_2.png"
+    },
+    {
+      "name": "c1_b03_3_pl",
+      "colors": 8,
+      "source": "c1_b03_3.png"
+    },
+    {
+      "name": "c1_door1_pl",
+      "colors": 16,
+      "source": "c1_door1.png"
+    },
+    {
+      "name": "park_mark_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "park_mark.png"
+    },
+    {
+      "name": "pokepark_pl",
+      "colors": 16,
+      "source": "pokepark.png"
+    },
+    {
+      "name": "gym_door00_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "gym_door00.png"
+    }
+  ]
+}

@@ -71,6 +71,21 @@ copy_gen = generator(copy_exe,
     output: '@PLAINNAME@'
 )
 
+# 3D models and texture sets kept as editable sources (NAME/NAME.json plus PNG
+# and display-list text files, see tools/scripts/nsbmd.py and nsbtx.py) are
+# packed back into NAME.nsbmd / NAME.nsbtx.
+nsbmd_pack_gen = generator(nsbmd_py,
+    arguments: [ 'pack', '@INPUT@', '@OUTPUT@', '--depfile', '@DEPFILE@', ],
+    output: '@BASENAME@.nsbmd',
+    depfile: '@BASENAME@.nsbmd.d',
+)
+
+nsbtx_pack_gen = generator(nsbtx_py,
+    arguments: [ 'pack', '@INPUT@', '@OUTPUT@', '--depfile', '@DEPFILE@', ],
+    output: '@BASENAME@.nsbtx',
+    depfile: '@BASENAME@.nsbtx.d',
+)
+
 npctrade_data = custom_target('npctrade_data',
     output: [
         'npc_trades.narc',

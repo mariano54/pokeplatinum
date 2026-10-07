@@ -9,6 +9,8 @@ import pathlib
 import re
 import struct
 
+import g3d_sources
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MODELS = ROOT / 'res/field/props/models'
 
@@ -28,7 +30,7 @@ def nsbmd_model_name(blob: bytes) -> str:
 def main():
     order = [line.strip() for line in (MODELS / 'map_prop_models.order').read_text().splitlines() if line.strip()]
     names = [f.rsplit('.', 1)[0] + '_nsbmd' for f in order]
-    internal = [nsbmd_model_name((MODELS / f).read_bytes()) for f in order]
+    internal = [nsbmd_model_name(g3d_sources.read_bytes(MODELS / f, ROOT / 'build' / 'g3d_sources')) for f in order]
 
     used_in = collections.defaultdict(set)
     for path in sorted((ROOT / 'res/field/maps/data').glob('map_*.json')):

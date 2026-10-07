@@ -1,5 +1,4 @@
 prop_texture_set_files = copy_gen.process(files(
-    'prop_texture_set_000.nsbtx',
     'prop_texture_set_001.nsbtx',
     'prop_texture_set_002.nsbtx',
     'prop_texture_set_003.nsbtx',
@@ -71,6 +70,11 @@ prop_texture_set_files = copy_gen.process(files(
     'prop_texture_set_069.nsbtx',
     'prop_texture_set_070.nsbtx'
 ))
+
+# Texture sets stored as editable PNG + JSON sources.
+prop_texture_set_files = [ prop_texture_set_files, nsbtx_pack_gen.process(files(
+    'prop_texture_set_000/prop_texture_set_000.json',
+)) ]
 
 prop_texture_set_narc = custom_target('prop_texture_sets.narc',
     output: 'prop_texture_sets.narc',

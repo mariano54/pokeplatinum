@@ -21,7 +21,6 @@ map_prop_model_files = copy_gen.process(files(
     'prop_model_019.nsbmd',
     'prop_model_020.nsbmd',
     'prop_model_021.nsbmd',
-    'prop_model_022.nsbmd',
     'prop_model_023.nsbmd',
     'prop_model_024.nsbmd',
     'prop_model_025.nsbmd',
@@ -590,6 +589,11 @@ map_prop_model_files = copy_gen.process(files(
     'prop_model_588.nsbmd',
     'prop_model_589.nsbmd',
 ))
+
+# Models stored as editable sources (JSON + display-list text + PNG textures).
+map_prop_model_files = [ map_prop_model_files, nsbmd_pack_gen.process(files(
+    'prop_model_022/prop_model_022.json',
+)) ]
 
 map_prop_model_narc = custom_target('prop_models.narc',
     output: [

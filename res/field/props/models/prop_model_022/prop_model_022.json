@@ -1,0 +1,104 @@
+{
+  "container": "BMD0",
+  "version": 2,
+  "models": [
+    {
+      "name": "t1_h01",
+      "info": {
+        "sbc_type": 0,
+        "scaling_rule": 0,
+        "tex_mtx_mode": 0,
+        "first_unused_mtx_stack_id": 1,
+        "info_pad": 0,
+        "pos_scale": 16.0,
+        "inv_pos_scale": 0.0625,
+        "bounding_box": {
+          "min": [
+            -2.0,
+            0.09375,
+            -1.375
+          ],
+          "size": [
+            4.1875,
+            4.4375,
+            2.75
+          ]
+        },
+        "box_pos_scale": 16.0,
+        "box_inv_pos_scale": 0.0625
+      },
+      "nodes": [
+        "polySurface1",
+        "t1_door2:pCube1"
+      ],
+      "node_section": "00024000080014007f010000750201015d00020004000c004000000044000000706f6c7953757266616365310000000074315f646f6f72323a7043756265310007f8001006f80010eb1f00003d1200002fcd0000",
+      "render_commands": [
+        "NODEDESC.1 0 0 0 0",
+        "NODE 0 1",
+        "POSSCALE",
+        "MAT 2",
+        "SHP 1",
+        "MAT 1",
+        "SHP 2",
+        "MAT 3",
+        "SHP 0",
+        "POSSCALE.1",
+        "NODEDESC 1 0 0",
+        "NODE 1 1",
+        "POSSCALE",
+        "MAT 0",
+        "SHP 3",
+        "POSSCALE.1",
+        "RET"
+      ],
+      "render_commands_pad": "",
+      "materials": [
+        {
+          "name": "door1",
+          "texture": "t1_door1",
+          "palette": "t1_door1_pl"
+        },
+        {
+          "name": "h_kage",
+          "texture": "h_kage",
+          "palette": "h_kage_pl"
+        },
+        {
+          "name": "light",
+          "texture": "t1_h01",
+          "palette": "t1_h01_pl"
+        },
+        {
+          "name": "t1_h01",
+          "texture": "t1_h01",
+          "palette": "t1_h01_pl"
+        }
+      ],
+      "material_section": "7400cc000004700008001c007f0100002e0201012d0302032604030225000400040014002c0100005801000084010000b0010000646f6f72310000000000000000000000685f6b616765000000000000000000006c69676874000000000000000000000074315f6830310000000000000000000000035800080018007f0100003d0201012e0302002d00030204001000240101002501010026010200685f6b6167650000000000000000000074315f646f6f7231000000000000000074315f6830310000000000000000000000035800080018007f01000056020101460003002e0302020400100028010100290101002a010200685f6b6167655f706c0000000000000074315f646f6f72315f706c000000000074315f6830315f706c00000000000000010002030100020300002c0039e739670000000083801f08fff81f3f00000300ffffffff0000ce1f20002000001000000010000000002c0039e7ff7f0000000081800900fff81f3f00000300ffffffff0000ce1f10001000001000000010000000002c0039e7ff7f0000000084801f08fff81f3f00000300ffffffff0000ce1f40004000001000000010000000002c0039e739670000000081801f08fff81f3f00000300ffffffff0000ce1f400040000010000000100000",
+      "shapes": [
+        {
+          "name": "polygon0",
+          "file": "t1_h01.polygon0.dl",
+          "flag": 5
+        },
+        {
+          "name": "polygon1",
+          "file": "t1_h01.polygon1.dl",
+          "flag": 5
+        },
+        {
+          "name": "polygon2",
+          "file": "t1_h01.polygon2.dl",
+          "flag": 5
+        },
+        {
+          "name": "polygon3",
+          "file": "t1_h01.polygon3.dl",
+          "flag": 5
+        }
+      ],
+      "envelope_matrices": ""
+    }
+  ],
+  "textures": "textures/textures.json"
+}

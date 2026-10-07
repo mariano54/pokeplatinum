@@ -29,6 +29,8 @@ CACHE = ROOT / 'build' / 'map_editor'
 
 sys.path.insert(0, str(ROOT / 'tools' / 'jsoncnv'))
 sys.path.insert(0, str(ROOT / 'tools' / 'scripts'))
+import g3d_sources  # noqa: E402  (assets kept as editable PNG/JSON sources are packed on demand)
+sys.path.insert(0, str(ROOT / 'tools' / 'scripts'))
 import map_data  # noqa: E402
 import make_prop_model_catalog  # noqa: E402
 import unpack_map_data  # noqa: E402
@@ -48,7 +50,8 @@ class Project:
         self.prop_files = {f.rsplit('.', 1)[0] + '_nsbmd': f for f in order}
         self.prop_models = {name: i for i, name in enumerate(self.prop_files)}
         self.prop_internal = {
-            name: make_prop_model_catalog.nsbmd_model_name((ROOT / 'res/field/props/models' / f).read_bytes())
+            name: make_prop_model_catalog.nsbmd_model_name(
+                g3d_sources.read_bytes(ROOT / 'res/field/props/models' / f, CACHE / 'packed'))
             for name, f in self.prop_files.items()
         }
 
@@ -179,14 +182,17 @@ class Converter:
         with self.lock:
             lock = self.locks.setdefault(out, threading.Lock())
         with lock:
-            stale = not out.exists() or (out / '.stamp').read_text() != str(model.stat().st_mtime_ns)
+            model = g3d_sources.binary_path(model, CACHE / 'packed')
+            textures = g3d_sources.binary_path(textures, CACHE / 'packed')
+            stamp = f'{model.stat().st_mtime_ns}:{textures.stat().st_mtime_ns if textures.exists() else 0}'
+            stale = not out.exists() or (out / '.stamp').read_text() != stamp
             if stale:
                 shutil.rmtree(out, ignore_errors=True)
                 out.parent.mkdir(parents=True, exist_ok=True)
                 inputs = [str(model)] + ([str(textures)] if textures.exists() else [])
                 subprocess.run([self.apicula, 'convert', *inputs, '-f', 'glb', '-o', str(out)],
                                check=True, capture_output=True)
-                (out / '.stamp').write_text(str(model.stat().st_mtime_ns))
+                (out / '.stamp').write_text(stamp)
         return out
 
 

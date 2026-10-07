@@ -1,0 +1,50 @@
+{
+  "container": "TEX0 (embedded)",
+  "textures": [
+    {
+      "name": "h_kage",
+      "format": "palette4",
+      "width": 16,
+      "height": 16,
+      "color0_transparent": false,
+      "palette": "h_kage_pl",
+      "file": "h_kage.png"
+    },
+    {
+      "name": "t1_door1",
+      "format": "palette16",
+      "width": 32,
+      "height": 32,
+      "color0_transparent": false,
+      "palette": "t1_door1_pl",
+      "file": "t1_door1.png"
+    },
+    {
+      "name": "t1_h01",
+      "format": "palette16",
+      "width": 64,
+      "height": 64,
+      "color0_transparent": true,
+      "palette": "t1_h01_pl",
+      "file": "t1_h01.png"
+    }
+  ],
+  "palettes": [
+    {
+      "name": "h_kage_pl",
+      "colors": 8,
+      "four_color": true,
+      "source": "h_kage.png"
+    },
+    {
+      "name": "t1_door1_pl",
+      "colors": 8,
+      "source": "t1_door1.png"
+    },
+    {
+      "name": "t1_h01_pl",
+      "colors": 16,
+      "source": "t1_h01.png"
+    }
+  ]
+}

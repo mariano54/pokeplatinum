@@ -7,3 +7,5 @@ make_pokedex_enc_platinum_py = find_program('make_pokedex_enc_platinum.py', nati
 make_town_map_data_py = find_program('make_town_map_data.py', native: true)
 make_trainer_ball_capsules_py = find_program('make_trainer_ball_capsules.py', native: true)
 nclr_concat_py = find_program('nclr_concat.py', native: true)
+nsbmd_py = find_program('nsbmd.py', native: true)
+nsbtx_py = find_program('nsbtx.py', native: true)

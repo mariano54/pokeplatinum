@@ -48,6 +48,7 @@ in which the player moves.
   features system used to make dynamic maps
 - [editing_maps.md](editing_maps.md): a practical guide to editing maps (buildings,
   collision, heights, warps...) in this repository
+- [map_editor.md](map_editor.md): the visual map editor in `tools/map_editor`
 - [prop_models.md](prop_models.md): the list of map prop models, with their internal
   names and the maps using them
 

@@ -6,7 +6,8 @@ underlying systems work, see [maps.md](maps.md), [bdhc.md](bdhc.md) and
 [file_format_specifications.md](file_format_specifications.md).
 
 Everything below is plain text in the repository and is rebuilt into the ROM by
-`make`. After editing, build with `make rom` (`make` also checks that the ROM
+`make`. Most map edits can also be done visually with the
+[map editor](map_editor.md). After editing, build with `make rom` (`make` also checks that the ROM
 matches the original, which it no longer will).
 
 ## Where things live

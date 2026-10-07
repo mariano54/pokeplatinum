@@ -20,12 +20,13 @@ class Image:
     pixels is a flat row-major list of length width * height.
     """
 
-    def __init__(self, width, height, mode, pixels, palette=None):
+    def __init__(self, width, height, mode, pixels, palette=None, bit_depth=8):
         self.width = width
         self.height = height
         self.mode = mode
         self.pixels = pixels
         self.palette = palette
+        self.bit_depth = bit_depth
 
 
 def _chunk(kind, data):
@@ -33,14 +34,26 @@ def _chunk(kind, data):
     return out + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
 
 
-def write_indexed(path, width, height, indices, palette):
-    """indices: flat list of ints (< len(palette)); palette: list of (r,g,b) or (r,g,b,a)."""
-    if not 1 <= len(palette) <= 256:
-        raise ValueError(f"{path}: palette must have 1..256 entries, has {len(palette)}")
+def write_indexed(path, width, height, indices, palette, bit_depth=8):
+    """indices: flat list of ints (< len(palette)); palette: list of (r,g,b) or (r,g,b,a).
+
+    bit_depth (1, 2, 4 or 8) only matters to tools that look at it (nitrobtx
+    picks the texture format from it)."""
+    if not 1 <= len(palette) <= min(256, 1 << bit_depth):
+        raise ValueError(f"{path}: palette must have 1..{1 << bit_depth} entries, has {len(palette)}")
     raw = bytearray()
+    per_byte = 8 // bit_depth
     for y in range(height):
         raw.append(0)
-        raw += bytes(indices[y * width:(y + 1) * width])
+        row = indices[y * width:(y + 1) * width]
+        if bit_depth == 8:
+            raw += bytes(row)
+            continue
+        for x in range(0, width, per_byte):
+            byte = 0
+            for k, v in enumerate(row[x:x + per_byte]):
+                byte |= v << (8 - bit_depth * (k + 1))
+            raw.append(byte)
     plte = bytearray()
     alphas = []
     for c in palette:
@@ -49,7 +62,7 @@ def write_indexed(path, width, height, indices, palette):
     while alphas and alphas[-1] == 255:
         alphas.pop()
     out = PNG_SIG
-    out += _chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 3, 0, 0, 0))
+    out += _chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, bit_depth, 3, 0, 0, 0))
     out += _chunk(b"PLTE", bytes(plte))
     if alphas:
         out += _chunk(b"tRNS", bytes(alphas))
@@ -161,7 +174,7 @@ def read(path):
         for i, c in enumerate(plte or []):
             a = trns[i] if trns is not None and i < len(trns) else 255
             palette.append((c[0], c[1], c[2], a))
-        return Image(width, height, "P", pixels, palette)
+        return Image(width, height, "P", pixels, palette, depth)
 
     scale = 255 // ((1 << min(depth, 8)) - 1)
     pixels = []

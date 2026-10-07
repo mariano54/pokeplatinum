@@ -610,16 +610,26 @@ def edit_palette(json_path, pal_name, sets):
 
     sets: ["5=#a03030", ...].  Only the owner PNG's PLTE chunk changes; pixel
     data is untouched.  Other PNGs previewing the same palette are updated too
-    so they keep showing what the game will draw."""
-    base = os.path.dirname(os.path.abspath(json_path))
-    with open(json_path) as f:
-        doc = json.load(f)
-    pe = next((p for p in doc["palettes"] if p["name"] == pal_name), None)
-    if pe is None:
-        raise TexSetError(f"no palette named {pal_name}")
-    targets = [pe["source"]] + [t["file"] for t in doc["textures"]
-                                if t.get("palette") == pal_name and t.get("file") and t["file"] != pe["source"]
-                                and t["format"] in ("palette4", "palette16", "palette256")]
+    so they keep showing what the game will draw.  json_path may also be a
+    plain indexed PNG (e.g. a sprite sheet packed by nitrobtx), whose own
+    palette is then edited; pal_name is then the first INDEX=#RRGGBB."""
+    if json_path.lower().endswith(".png"):
+        if pal_name:
+            sets = [pal_name] + list(sets)
+        base, pal_name = os.path.dirname(os.path.abspath(json_path)), os.path.basename(json_path)
+        img = pngio.read(json_path)
+        pe = {"source": os.path.basename(json_path), "colors": len(img.palette)}
+        targets = [pe["source"]]
+    else:
+        base = os.path.dirname(os.path.abspath(json_path))
+        with open(json_path) as f:
+            doc = json.load(f)
+        pe = next((p for p in doc["palettes"] if p["name"] == pal_name), None)
+        if pe is None:
+            raise TexSetError(f"no palette named {pal_name}")
+        targets = [pe["source"]] + [t["file"] for t in doc["textures"]
+                                    if t.get("palette") == pal_name and t.get("file") and t["file"] != pe["source"]
+                                    and t["format"] in ("palette4", "palette16", "palette256")]
     changes = {}
     for s in sets:
         idx, _, col = s.partition("=")
@@ -641,7 +651,7 @@ def edit_palette(json_path, pal_name, sets):
             # Snap to what the hardware can show (5 bits per channel).
             snapped = tuple((v >> 3 << 3) | (v >> 5) for v in rgb)
             pal[i] = snapped + (pal[i][3],)
-        pngio.write_indexed(path, img.width, img.height, img.pixels, pal)
+        pngio.write_indexed(path, img.width, img.height, img.pixels, pal, img.bit_depth)
         if changes:
             print(f"updated {fname}")
 
@@ -696,8 +706,8 @@ def main(argv=None):
     p.add_argument("inputs", nargs="+")
     p.add_argument("--models", action="append", default=[])
     p = sub.add_parser("palette", help="print a palette, or recolour entries with INDEX=#rrggbb")
-    p.add_argument("json")
-    p.add_argument("palette")
+    p.add_argument("json", help="unpacked texture set JSON, or a plain indexed PNG")
+    p.add_argument("palette", nargs="?", default="")
     p.add_argument("set", nargs="*", metavar="INDEX=#RRGGBB")
     args = ap.parse_args(argv)
 

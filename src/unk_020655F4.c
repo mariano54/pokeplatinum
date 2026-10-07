@@ -402,7 +402,7 @@ static BOOL MovementAction_End(MapObject *mapObj)
 static void MovementAction_InitFace(MapObject *mapObj, int dir)
 {
     MapObject_TryFace(mapObj, dir);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_UpdateCoords(mapObj);
     MapObject_AdvanceMovementStep(mapObj);
 }
@@ -442,7 +442,7 @@ static void MovementAction_InitWalk(MapObject *mapObj, int dir, fx32 distance, s
 
     MapObject_StepDir(mapObj, dir);
     MapObject_TryFaceAndTurn(mapObj, dir);
-    sub_02062A0C(mapObj, param4);
+    MapObject_SetSpriteAnimCode(mapObj, param4);
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_START_MOVEMENT);
     MapObject_AdvanceMovementStep(mapObj);
 }
@@ -460,8 +460,8 @@ static BOOL MovementAction_Walk_Step1(MapObject *mapObj)
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_END_MOVEMENT | MAP_OBJ_STATUS_5);
     MapObject_UpdateCoords(mapObj);
-    sub_02062B68(mapObj);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_CallDrawFunc(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -644,7 +644,7 @@ static void MovementAction_InitWalkOnSpot(MapObject *mapObj, int dir, s16 durati
     data->duration = duration + 1;
 
     MapObject_TryFace(mapObj, dir);
-    sub_02062A0C(mapObj, param3);
+    MapObject_SetSpriteAnimCode(mapObj, param3);
     MapObject_UpdateCoords(mapObj);
     MapObject_AdvanceMovementStep(mapObj);
 }
@@ -658,7 +658,7 @@ static BOOL MovementAction_WalkOnSpot_Step1(MapObject *mapObj)
     }
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_5);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -803,7 +803,7 @@ static void MovementAction_InitJumpCustomSound(MapObject *mapObj, int dir, fx32 
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_START_MOVEMENT | MAP_OBJ_STATUS_START_JUMP);
     MapObject_TryFaceAndTurn(mapObj, dir);
-    sub_02062A0C(mapObj, param4);
+    MapObject_SetSpriteAnimCode(mapObj, param4);
     MapObject_AdvanceMovementStep(mapObj);
 
     if (seqID) {
@@ -864,8 +864,8 @@ static BOOL MovementAction_Jump_Step1(MapObject *mapObj)
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_END_MOVEMENT | MAP_OBJ_STATUS_END_JUMP | MAP_OBJ_STATUS_5);
     MapObject_UpdateCoords(mapObj);
-    sub_02062B68(mapObj);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_CallDrawFunc(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
     Sound_PlayEffect(SEQ_SE_PL_SUTYA2_sseq_3);
 
@@ -1091,7 +1091,7 @@ static BOOL MovementAction_WarpOut_Step0(MapObject *mapObj)
     WarpMovementData *data = MapObject_InitMovementData(mapObj, sizeof(WarpMovementData));
     data->dy = FX32_CONST(16);
 
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -1122,7 +1122,7 @@ static BOOL MovementAction_WarpIn_Step0(MapObject *mapObj)
     data->y = FX32_CONST(8) * 40;
     data->dy = -FX32_CONST(16);
 
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -1249,7 +1249,7 @@ static void MovementAction_InitWalkUneven(MapObject *mapObj, int dir, s16 durati
 
     MapObject_StepDir(mapObj, dir);
     MapObject_TryFaceAndTurn(mapObj, dir);
-    sub_02062A0C(mapObj, param3);
+    MapObject_SetSpriteAnimCode(mapObj, param3);
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_START_MOVEMENT);
     MapObject_AdvanceMovementStep(mapObj);
 }
@@ -1267,8 +1267,8 @@ static BOOL MovementAction_WalkUneven(MapObject *mapObj, const fx32 *stepSizes)
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_END_MOVEMENT | MAP_OBJ_STATUS_5);
     MapObject_UpdateCoords(mapObj);
-    sub_02062B68(mapObj);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_CallDrawFunc(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -1365,7 +1365,7 @@ static BOOL MovementAction_PokecenterNurseBow_Step0(MapObject *mapObj)
 {
     PokecenterNurseBowMovementData *data = MapObject_InitMovementData(mapObj, sizeof(PokecenterNurseBowMovementData));
 
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_09);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_09);
     MapObject_AdvanceMovementStep(mapObj);
 
     return FALSE;
@@ -1377,7 +1377,7 @@ static BOOL MovementAction_PokecenterNurseBow_Step1(MapObject *mapObj)
 
     if (++(data->timer) >= 8) {
         MapObject_TryFace(mapObj, DIR_SOUTH);
-        sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+        MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
         MapObject_AdvanceMovementStep(mapObj);
     }
 
@@ -1435,7 +1435,7 @@ static BOOL MovementAction_PlayerGive_Step0(MapObject *mapObj)
 {
     PlayerGiveReceiveMovementData *data = MapObject_InitMovementData(mapObj, sizeof(PlayerGiveReceiveMovementData));
 
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return FALSE;
@@ -1445,7 +1445,7 @@ static BOOL MovementAction_PlayerReceive_Step0(MapObject *mapObj)
 {
     PlayerGiveReceiveMovementData *data = MapObject_InitMovementData(mapObj, sizeof(PlayerGiveReceiveMovementData));
 
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_01);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_01);
     MapObject_AdvanceMovementStep(mapObj);
 
     return FALSE;
@@ -1471,7 +1471,7 @@ static void sub_02066824(MapObject *mapObj, const VecFx32 *param1, int param2, i
 
     MapObject_TryFace(mapObj, param2);
     MapObject_Turn(mapObj, param3);
-    sub_02062A0C(mapObj, param5);
+    MapObject_SetSpriteAnimCode(mapObj, param5);
     MapObject_SetStartMovement(mapObj);
 
     MapObject_SetXPrev(mapObj, MapObject_GetX(mapObj));
@@ -1511,8 +1511,8 @@ static BOOL sub_020668EC(MapObject *mapObj)
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_END_MOVEMENT | MAP_OBJ_STATUS_5);
 
     MapObject_UpdateCoords(mapObj);
-    sub_02062B68(mapObj);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_CallDrawFunc(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
 
     return TRUE;
@@ -1788,7 +1788,7 @@ static void sub_02066F88(MapObject *mapObj, fx32 distance, int facingDir, int mo
 
     MapObject_TryFace(mapObj, facingDir);
     MapObject_Turn(mapObj, movingDir);
-    sub_02062A0C(mapObj, param5);
+    MapObject_SetSpriteAnimCode(mapObj, param5);
     MapObject_SetStartMovement(mapObj);
 
     MapObject_SetXPrev(mapObj, MapObject_GetX(mapObj));
@@ -1929,8 +1929,8 @@ static BOOL sub_02067068(MapObject *mapObj)
 
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_END_MOVEMENT | MAP_OBJ_STATUS_END_JUMP | MAP_OBJ_STATUS_5);
     MapObject_UpdateCoords(mapObj);
-    sub_02062B68(mapObj);
-    sub_02062A0C(mapObj, MAP_OBJ_UNK_A0_00);
+    MapObject_CallDrawFunc(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, MAP_OBJ_UNK_A0_00);
     MapObject_AdvanceMovementStep(mapObj);
     Sound_PlayEffect(SEQ_SE_PL_SUTYA2_sseq_3);
 

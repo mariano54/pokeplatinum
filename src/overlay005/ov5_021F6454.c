@@ -939,8 +939,8 @@ BOOL ScrCmd_32D(ScriptContext *ctx)
             v2 = ov5_021EB1A0(v7);
 
             if ((v2 == NULL) && BerryPatchGraphics_IsBerryPatch(MapObject_GetGraphicsID(v7))) {
-                if (sub_02062D4C(v7)) {
-                    sub_02062B68(v7);
+                if (MapObject_CheckDrawInitializedFlag(v7)) {
+                    MapObject_CallDrawFunc(v7);
                     v2 = BerryPatchGraphics_GetGraphicsObject(v7);
                 }
             }

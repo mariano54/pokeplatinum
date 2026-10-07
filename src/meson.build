@@ -373,7 +373,7 @@ pokeplatinum_c = files(
     'overlay005/enable_poketch_task.c',
     'overlay005/encounter_effect.c',
     'overlay005/field_effect_manager.c',
-    'overlay005/ov5_021DFB54.c',
+    'overlay005/player_avatar_actions.c',
     'overlay005/ov5_021E1154.c',
     'overlay005/ov5_021E135C.c',
     'overlay005/map_prop.c',

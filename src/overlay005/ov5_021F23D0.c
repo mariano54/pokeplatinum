@@ -143,7 +143,7 @@ static void ov5_021F251C(OverworldAnimManager *param0, void *param1)
     MapObject *v1 = v0->unk_10.unk_08;
 
     if (v0->unk_0C == 0) {
-        if (sub_02062764(v1, v0->unk_04, v0->unk_08) == 0) {
+        if (MapObject_MatchesLocalIDAndMap(v1, v0->unk_04, v0->unk_08) == 0) {
             FieldEffectManager_FinishAnimManager(param0);
             return;
         }

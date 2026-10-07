@@ -122,7 +122,7 @@ static void ov5_021F6140(OverworldAnimManager *param0, void *param1)
     UnkStruct_ov5_021F6134 *v0 = param1;
     MapObject *v1 = v0->unk_10.unk_0C;
 
-    if (sub_02062764(v1, v0->unk_04, v0->unk_08) == 0) {
+    if (MapObject_MatchesLocalIDAndMap(v1, v0->unk_04, v0->unk_08) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }
@@ -134,7 +134,7 @@ static void ov5_021F615C(OverworldAnimManager *param0, void *param1)
     UnkStruct_ov5_021F6134 *v2 = param1;
     MapObject *v3 = v2->unk_10.unk_0C;
 
-    if (sub_02062764(v3, v2->unk_04, v2->unk_08) == 0) {
+    if (MapObject_MatchesLocalIDAndMap(v3, v2->unk_04, v2->unk_08) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }

@@ -143,7 +143,7 @@ static void SurfMountRenderer_AnimTick(OverworldAnimManager *animMan, void *cont
     SurfMountRenderer *renderer = context;
     MapObject *playerMapObj = renderer->userData.playerMapObj;
 
-    if (!sub_02062764(playerMapObj, renderer->mapObjLocalID, renderer->mapHeaderID)) {
+    if (!MapObject_MatchesLocalIDAndMap(playerMapObj, renderer->mapObjLocalID, renderer->mapHeaderID)) {
         FieldEffectManager_FinishAnimManager(animMan);
         return;
     }

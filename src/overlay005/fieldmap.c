@@ -127,7 +127,7 @@ static void MapObjectsToPreload_Free(MapObjectsToPreload *mapObjectsToPreload);
 
 static inline void inline_fieldmap(FieldSystem *fieldSystem)
 {
-    UnkStruct_ov5_021ED0A4 *v0 = sub_0206285C(fieldSystem->mapObjMan);
+    UnkStruct_ov5_021ED0A4 *v0 = MapObjectMan_GetRenderManager(fieldSystem->mapObjMan);
     BillboardList *v1 = ov5_021EDC8C(v0);
 
     BillboardList_ResetRedraw(v1);
@@ -292,7 +292,7 @@ static BOOL FieldMap_Exit(ApplicationManager *appMan, int *param1)
 
         fieldSystem->unk_04->unk_10 = NULL;
 
-        sub_02061BF0(fieldSystem->mapObjMan);
+        MapObjectMan_PauseAllDrawing(fieldSystem->mapObjMan);
         ov5_021ECC78(fieldSystem->mapObjMan);
 
         MapObjectMan_StopAllMovement(fieldSystem->mapObjMan);
@@ -419,7 +419,7 @@ static BOOL FieldMap_ChangeZone(FieldSystem *fieldSystem)
     int objEventCount = MapHeaderData_GetNumObjectEvents(fieldSystem);
     const ObjectEvent *objEventList = MapHeaderData_GetObjectEvents(fieldSystem);
 
-    sub_0206184C(fieldSystem->mapObjMan, oldMapHeaderID, newMapHeaderID, objEventCount, objEventList);
+    MapObjectMan_DeleteObjectsOnMapChange(fieldSystem->mapObjMan, oldMapHeaderID, newMapHeaderID, objEventCount, objEventList);
 
     RadarChain_Clear(fieldSystem->chain);
     FieldBGM_TryFadeOut(fieldSystem, FieldBGM_GetEffective(fieldSystem, fieldSystem->location->mapHeaderID), 1);
@@ -458,7 +458,7 @@ void FieldMap_ChangeZoneDistortionWorld(FieldSystem *fieldSystem, enum MapHeader
     u32 objEventCount = MapHeaderData_GetNumObjectEvents(fieldSystem);
     const ObjectEvent *objEventList = MapHeaderData_GetObjectEvents(fieldSystem);
 
-    sub_0206184C(fieldSystem->mapObjMan, oldMapHeaderID, mapHeaderID, objEventCount, objEventList);
+    MapObjectMan_DeleteObjectsOnMapChange(fieldSystem->mapObjMan, oldMapHeaderID, mapHeaderID, objEventCount, objEventList);
 
     FieldBGM_TryFadeOut(fieldSystem, FieldBGM_GetEffective(fieldSystem, fieldSystem->location->mapHeaderID), 1);
     sub_0203A418(fieldSystem);
@@ -815,7 +815,7 @@ static void ov5_021D1878(FieldSystem *fieldSystem)
     ov5_021DF488(fieldSystem->fieldEffMan, HEAP_ID_FIELD1, 32, 32, 32, 32, 0x500 * (32 / 2), 0x80 * (32 / 2), 0x800 * 32);
 
     if ((fieldSystem->mapLoadType == MAP_LOAD_TYPE_UNDERGROUND) || (fieldSystem->mapLoadType == MAP_LOAD_TYPE_UNION)) {
-        MapObjectMan_SetEndMovement(fieldSystem->mapObjMan, 0);
+        MapObjectMan_SetShadowsEnabled(fieldSystem->mapObjMan, 0);
     }
 
     {
@@ -853,9 +853,9 @@ static void ov5_021D1878(FieldSystem *fieldSystem)
         PlayerAvatar_InitMapFeatures(fieldSystem->playerAvatar, v4);
     }
 
-    sub_02061C48(fieldSystem->mapObjMan);
+    MapObjectMan_ResumeAllDrawing(fieldSystem->mapObjMan);
     CommPlayerMan_ForcePos();
-    sub_02062C3C(fieldSystem->mapObjMan);
+    MapObjectMan_StartAllMovement(fieldSystem->mapObjMan);
     LandDataManager_TrackTarget(PlayerAvatar_GetPos(fieldSystem->playerAvatar), fieldSystem->landDataMan);
 
     fieldSystem->unk_04->berryPatchManager = BerryPatchManager_New(fieldSystem, HEAP_ID_FIELD1);

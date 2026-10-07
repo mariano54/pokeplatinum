@@ -58,10 +58,10 @@
 #include "overlay005/map_object_anim_cmd.h"
 #include "overlay005/ov5_021D431C.h"
 #include "overlay005/ov5_021D5EB8.h"
-#include "overlay005/ov5_021DFB54.h"
 #include "overlay005/ov5_021EA874.h"
 #include "overlay005/ov5_021ECC20.h"
 #include "overlay005/ov5_021F6454.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay005/save_info_window.h"
 #include "overlay005/scrcmd_move_tutor.h"
 #include "overlay005/script_message.h"
@@ -2381,7 +2381,7 @@ static BOOL ScrCmd_AddFreeCamera(ScriptContext *ctx)
 
     MapObject_RecalculateObjectHeight(*cameraObject);
     MapObject_SetHidden(*cameraObject, TRUE);
-    sub_02062D80(*cameraObject, FALSE);
+    MapObject_SetCollisionEnabled(*cameraObject, FALSE);
 
     {
         const VecFx32 *cameraPos = MapObject_GetPos(*cameraObject);
@@ -2417,7 +2417,7 @@ static BOOL ScrCmd_AddCameraOverrideObject(ScriptContext *ctx)
 
     MapObject_RecalculateObjectHeight(*cameraObject);
     MapObject_SetHidden(*cameraObject, TRUE);
-    sub_02062D80(*cameraObject, FALSE);
+    MapObject_SetCollisionEnabled(*cameraObject, FALSE);
 
     return FALSE;
 }
@@ -2535,7 +2535,7 @@ static BOOL ScrCmd_Unused_06E(ScriptContext *ctx)
 {
     MapObject *mapObj = MapObjMan_GetLocalMapObjByMovementType(ctx->fieldSystem->mapObjMan, MOVEMENT_TYPE_FOLLOW_PLAYER);
 
-    sub_020633C8(mapObj, 0xfe);
+    MapObject_ChangeLocalID(mapObj, 0xfe);
     return FALSE;
 }
 
@@ -3700,7 +3700,7 @@ static BOOL ScriptContext_WaitForHMCutInFinished(ScriptContext *ctx)
 
 static BOOL ScrCmd_ChangeIntoContestAttire(ScriptContext *ctx)
 {
-    ov5_021E0DD4(ctx->task);
+    FieldTask_StartChangeIntoContestAttire(ctx->task);
     return TRUE;
 }
 
@@ -5673,7 +5673,7 @@ static BOOL ScrCmd_258(ScriptContext *ctx)
     SysTask **v0 = FieldSystem_GetScriptMemberPtr(ctx->fieldSystem, SCRIPT_MANAGER_PLAYER_TASK);
 
     *v0 = NULL;
-    *v0 = ov5_021E1000(ctx->fieldSystem);
+    *v0 = FieldSystem_StartSavePoseTask(ctx->fieldSystem);
 
     return TRUE;
 }
@@ -5682,7 +5682,7 @@ static BOOL ScrCmd_259(ScriptContext *ctx)
 {
     SysTask **v0 = FieldSystem_GetScriptMemberPtr(ctx->fieldSystem, SCRIPT_MANAGER_PLAYER_TASK);
 
-    ov5_021E100C(*v0);
+    FieldSystem_EndSavePoseTask(*v0);
     return TRUE;
 }
 
@@ -6519,7 +6519,7 @@ static BOOL ScrCmd_2B6(ScriptContext *ctx)
         GF_ASSERT(FALSE);
     }
 
-    sub_02062D80(mapObject, v2);
+    MapObject_SetCollisionEnabled(mapObject, v2);
     return FALSE;
 }
 

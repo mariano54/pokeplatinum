@@ -18,7 +18,7 @@
 
 #include "res/graphics/field_sprites/field_sprites.naix"
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0F0 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB0F0 = {
     ov5_021EBA0C,
     ov5_021EBAD0,
     ov5_021EBA34,
@@ -26,7 +26,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0F0 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF88 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAF88 = {
     ov5_021EBA0C,
     ov5_021EBF50,
     ov5_021EBA34,
@@ -34,7 +34,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF88 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF60 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAF60 = {
     ov5_021EBA0C,
     ov5_021EC3F0,
     ov5_021EBA34,
@@ -42,7 +42,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF60 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFB0 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAFB0 = {
     ov5_021EBA0C,
     ov5_021EC454,
     ov5_021EBA34,
@@ -50,7 +50,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFB0 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFEC = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAFEC = {
     ov5_021EBA0C,
     ov5_021EC4BC,
     ov5_021EBA34,
@@ -58,7 +58,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFEC = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB014 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB014 = {
     ov5_021EBA0C,
     ov5_021EC15C,
     ov5_021EBA34,
@@ -66,7 +66,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB014 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0DC = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB0DC = {
     ov5_021EBA0C,
     ov5_021EC554,
     ov5_021EBA34,
@@ -74,7 +74,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0DC = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0C8 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB0C8 = {
     ov5_021EBA0C,
     ov5_021EC5C0,
     ov5_021EBA34,
@@ -82,7 +82,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0C8 = {
     ov5_021EBA8C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFD8 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAFD8 = {
     ov5_021EB2EC,
     ov5_021EB398,
     ov5_021EB314,
@@ -90,7 +90,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFD8 = {
     ov5_021EB354
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0A0 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB0A0 = {
     ov5_021EB2EC,
     ov5_021EB40C,
     ov5_021EB314,
@@ -98,7 +98,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0A0 = {
     ov5_021EB354
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB03C = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB03C = {
     ov5_021EB2EC,
     ov5_021EB438,
     ov5_021EB314,
@@ -106,7 +106,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB03C = {
     ov5_021EB354
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB08C = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB08C = {
     ov5_021EB2EC,
     ov5_021EB720,
     ov5_021EB314,
@@ -114,7 +114,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB08C = {
     ov5_021EB354
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB064 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB064 = {
     ov5_021EB7F8,
     ov5_021EB8B8,
     ov5_021EB834,
@@ -122,7 +122,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB064 = {
     ov5_021EB874
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB000 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB000 = {
     ov5_021EC734,
     ov5_021EC75C,
     ov5_021EC760,
@@ -130,7 +130,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB000 = {
     ov5_021EC790
 };
 
-static const UnkStruct_ov5_021FB0F0 sBerryPatchRenderer = {
+static const ObjectEventGfxRenderer sBerryPatchRenderer = {
     BerryPatchGraphics_NewGraphics,
     BerryPatchGraphics_UpdateGraphics,
     BerryPatchGraphics_FreeGraphics,
@@ -138,7 +138,7 @@ static const UnkStruct_ov5_021FB0F0 sBerryPatchRenderer = {
     BerryPatchGraphics_ResumeGraphics
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB078 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB078 = {
     ov5_021EB2EC,
     ov5_021EB944,
     ov5_021EB314,
@@ -146,7 +146,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB078 = {
     ov5_021EB354
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB050 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB050 = {
     ov5_021EC7B8,
     ov5_021EC75C,
     ov5_021EC760,
@@ -154,7 +154,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB050 = {
     ov5_021EC7D0
 };
 
-const UnkStruct_ov5_021FB0F0 gInvisibleObjectEventGfxRenderer = {
+const ObjectEventGfxRenderer gInvisibleObjectEventGfxRenderer = {
     ov5_021ECE18,
     ov5_021ECE30,
     ov5_021ECE34,
@@ -162,7 +162,7 @@ const UnkStruct_ov5_021FB0F0 gInvisibleObjectEventGfxRenderer = {
     ov5_021ECE3C
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF9C = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAF9C = {
     ov5_021ECA70,
     ov5_021ECA90,
     ov5_021ECABC,
@@ -170,7 +170,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAF9C = {
     ov5_021ECAF0
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0B4 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB0B4 = {
     ov5_021ECB34,
     ov5_021ECB58,
     ov5_021ECB78,
@@ -179,7 +179,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB0B4 = {
 };
 
 // Unreferenced, deadstripped if made static
-const UnkStruct_ov5_021FB0F0 gObjEventGfxDataDummy = {
+const ObjectEventGfxRenderer gObjEventGfxDataDummy = {
     NULL,
     NULL,
     NULL,
@@ -187,7 +187,7 @@ const UnkStruct_ov5_021FB0F0 gObjEventGfxDataDummy = {
     NULL
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFC4 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FAFC4 = {
     ov5_021EC824,
     ov5_021EC8EC,
     ov5_021EC858,
@@ -195,7 +195,7 @@ static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FAFC4 = {
     ov5_021EC898
 };
 
-static const UnkStruct_ov5_021FB0F0 Unk_ov5_021FB028 = {
+static const ObjectEventGfxRenderer Unk_ov5_021FB028 = {
     ov5_021EC938,
     ov5_021EC9E8,
     ov5_021EC95C,

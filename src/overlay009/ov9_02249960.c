@@ -2033,7 +2033,7 @@ static void Dummy02249F84(DistWorldSystem *system)
 
 static void InitMapObjectFlags(DistWorldSystem *system)
 {
-    MapObjectMan_SetEndMovement(system->fieldSystem->mapObjMan, FALSE);
+    MapObjectMan_SetShadowsEnabled(system->fieldSystem->mapObjMan, FALSE);
 }
 
 static void Dummy02249F98(DistWorldSystem *system)
@@ -2250,7 +2250,7 @@ static void DistWorldMapObjectRotatorManager_TryPrepareRotator(DistWorldMapObjec
 static int DistWorldMapObjectRotator_GetValidity(DistWorldMapObjectRotator *mapObjRotator)
 {
     if (mapObjRotator->mapObj != NULL) {
-        if (!sub_02062CF8(mapObjRotator->mapObj)) {
+        if (!MapObject_IsInUse(mapObjRotator->mapObj)) {
             return MAP_OBJECT_ROTATOR_VALIDITY_NEEDS_RESET;
         } else if (MapObject_GetLocalID(mapObjRotator->mapObj) != mapObjRotator->mapObjLocalID) {
             return MAP_OBJECT_ROTATOR_VALIDITY_NEEDS_RESET;
@@ -2713,7 +2713,7 @@ static void InitPlayer(DistWorldSystem *system)
     }
 
     PlayerAvatar_SetPlayerState(playerAvatar, playerState);
-    sub_02061AD4(playerMapObj, playerGraphicsID);
+    MapObject_ChangeGraphics(playerMapObj, playerGraphicsID);
 
     if (floatingPlatformKind != FLOATING_PLATFORM_KIND_WEST_WALL) {
         GF_ASSERT(MapObject_IsHeightCalculationDisabled(playerMapObj) == TRUE);
@@ -3008,9 +3008,9 @@ static BOOL TickJumpOnFloatingPlatformMovementAnimation(DistWorldFloatingPlatfor
         *targetOffset = 0;
 
         MapObject_UpdateCoords(playerMapObj);
-        sub_02062B68(playerMapObj);
+        MapObject_CallDrawFunc(playerMapObj);
         MapObject_TryFace(playerMapObj, template->finalFacingDir);
-        sub_02062A0C(playerMapObj, MAP_OBJ_UNK_A0_00);
+        MapObject_SetSpriteAnimCode(playerMapObj, MAP_OBJ_UNK_A0_00);
 
         return TRUE;
     }
@@ -6031,9 +6031,9 @@ static MapObject *AddMovingPlatformMapObject(DistWorldSystem *system, int tileX,
     MapObject_SetDataAt(mapObj, mapHeaderID, MOVING_PLATFORM_MAP_OBJ_DATA_MAP_HEADER_ID);
     MapObject_SetDataAt(mapObj, elevatorPathIndex, MOVING_PLATFORM_MAP_OBJ_DATA_EVELATOR_PATH_INDEX);
     MapObject_SetFlagIsPersistent(mapObj, TRUE);
-    sub_02062D80(mapObj, 0);
+    MapObject_SetCollisionEnabled(mapObj, 0);
     MapObject_SetHeightCalculationDisabled(mapObj, TRUE);
-    sub_02062FC4(mapObj, 1);
+    MapObject_SetTileBehaviorCheckDisabled(mapObj, 1);
 
     return mapObj;
 }
@@ -6056,9 +6056,9 @@ static void DistWorldMovingPlatformPropAnimator_InitFromMapObject(DistWorldSyste
     animator->animMan = InitAnimManagerForMovingPlatform(system, animator);
 
     MapObject_SetFlagIsPersistent(mapObj, TRUE);
-    sub_02062D80(mapObj, 0);
+    MapObject_SetCollisionEnabled(mapObj, 0);
     MapObject_SetHeightCalculationDisabled(mapObj, TRUE);
-    sub_02062FC4(mapObj, 1);
+    MapObject_SetTileBehaviorCheckDisabled(mapObj, 1);
 }
 
 static OverworldAnimManager *InitAnimManagerForMovingPlatform(DistWorldSystem *system, DistWorldMovingPlatformPropAnimator *animator)
@@ -7257,7 +7257,7 @@ static BOOL AddMapObjectFromEvent(DistWorldSystem *system, MapObject **mapObj, c
         BindMapObjectRotator(system, *mapObj, objEvent->rotationAngle);
     }
 
-    sub_02062FC4(*mapObj, TRUE);
+    MapObject_SetTileBehaviorCheckDisabled(*mapObj, TRUE);
     MapObject_SetFlagIsPersistent(*mapObj, TRUE);
     MapObject_SetHeightCalculationDisabled(*mapObj, TRUE);
     MapObject_SetStatusFlagOn(*mapObj, MAP_OBJ_STATUS_13);
@@ -7331,7 +7331,7 @@ static MapObject *AddMapObjectWithLocalID(DistWorldSystem *system, u32 mapHeader
                     AddMapObjectFromEvent(system, mapObj, *objEventIter, mapHeaderID, TRUE);
 
                     if (mapHeaderID == MAP_HEADER_DISTORTION_WORLD_B6F && mapObjLocalID >= DIST_WORLD_MAP_OBJECT_B6F_MESPRIT_BOULDER_PIT_TEXT_1 && mapObjLocalID <= DIST_WORLD_MAP_OBJECT_B6F_AZELF_BOULDER_PIT_TEXT_3) {
-                        sub_02062D80(*mapObj, FALSE);
+                        MapObject_SetCollisionEnabled(*mapObj, FALSE);
                     }
 
                     return *mapObj;
@@ -8885,7 +8885,7 @@ void DistWorld_ApplyGiratinaSpritePalette(FieldSystem *fieldSystem)
 
     if (dwSystem->playingGiratinaArrival == TRUE) {
         CmdRunDataPlayGiratinaArrival *runData = GetLoadedEventDataBuffer(dwSystem);
-        UnkStruct_ov5_021ED0A4 *v2 = sub_0206285C(dwSystem->fieldSystem->mapObjMan);
+        UnkStruct_ov5_021ED0A4 *v2 = MapObjectMan_GetRenderManager(dwSystem->fieldSystem->mapObjMan);
         TextureResourceManager *texMgr = ov5_021EDCB0(v2);
         TextureResource *texResource = TextureResourceManager_FindTextureResource(texMgr, 0xe6);
         NNSGfdPlttKey paletteKey = TextureResource_GetPaletteKey(texResource);

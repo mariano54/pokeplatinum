@@ -383,7 +383,7 @@ static BillboardResources *ov5_021ED110(UnkStruct_ov5_021ED0A4 *param0, u32 para
 int ov5_021ED150(const MapObjectManager *param0, u32 param1, BillboardResources *param2)
 {
     int v0;
-    const UnkStruct_ov5_021ED0A4 *v1 = sub_0206285C(param0);
+    const UnkStruct_ov5_021ED0A4 *v1 = MapObjectMan_GetRenderManager(param0);
     UnkStruct_ov5_021ED110 *v2 = v1->unk_F4;
     v0 = v1->unk_04;
 
@@ -444,7 +444,7 @@ static int ov5_021ED1C8(const MapObjectManager *param0, const MapObject *param1,
 
     do {
         if (v2 != param1) {
-            if (sub_02062CF8(v2) == 1) {
+            if (MapObject_IsInUse(v2) == 1) {
                 v1 = MapObject_GetGraphicsID(v2);
 
                 if (BerryPatchGraphics_IsBerryPatch(v1) == 1) {
@@ -457,7 +457,7 @@ static int ov5_021ED1C8(const MapObjectManager *param0, const MapObject *param1,
             }
         }
 
-        sub_02062880(&v2);
+        MapObject_Next(&v2);
         v0--;
     } while (v0);
 
@@ -1126,7 +1126,7 @@ static int ov5_021EDB3C(const MapObjectManager *param0, int param1, const MapObj
 void ov5_021EDBC4(const MapObjectManager *param0, int param1, MapObject *param2)
 {
     int v0;
-    UnkStruct_ov5_021ED0A4 *v1 = sub_0206285C(param0);
+    UnkStruct_ov5_021ED0A4 *v1 = MapObjectMan_GetRenderManager(param0);
 
     v0 = ov5_021EDD2C(param1);
 
@@ -1419,7 +1419,7 @@ static void ov5_021EDE3C(UnkStruct_ov5_021ED0A4 *param0, u32 param1, BillboardRe
 static UnkStruct_ov5_021ED0A4 *ov5_021EDEA8(const MapObject *param0)
 {
     const MapObjectManager *v0 = MapObject_MapObjectManager(param0);
-    return (UnkStruct_ov5_021ED0A4 *)sub_0206285C(v0);
+    return (UnkStruct_ov5_021ED0A4 *)MapObjectMan_GetRenderManager(v0);
 }
 
 BOOL ov5_021EDEB4(MapObject *param0, Billboard *param1)
@@ -1779,9 +1779,9 @@ static void ov5_021EE2D0(UnkStruct_ov5_021ED0A4 *param0, UnkStruct_ov5_021EE294 
         ov5_021EDD78(param1->unk_04, 0);
 
         if (MapObject_CheckStatusFlag(param1->unk_04, MAP_OBJ_STATUS_21) == 1) {
-            sub_02062BA4(param1->unk_04);
+            MapObject_CallDrawResumeFunc(param1->unk_04);
         } else {
-            sub_02062B68(param1->unk_04);
+            MapObject_CallDrawFunc(param1->unk_04);
         }
 
         param1->unk_04 = NULL;
@@ -1845,9 +1845,9 @@ Billboard *ov5_021EE3FC(MapObject *param0, int param1, UnkFuncPtr_ov5_021EE454 p
         int v0 = MapObject_GetGraphicsID(param0);
         const MapObjectManager *v1 = MapObject_MapObjectManager(param0);
 
-        sub_02061B48(param0);
+        MapObject_ClearGraphics(param0);
         ov5_021EDBC4(v1, v0, param0);
-        sub_02061AB4(param0, param1);
+        MapObject_InitGraphics(param0, param1);
         return NULL;
     }
 
@@ -1948,7 +1948,7 @@ static Billboard *ov5_021EE454(MapObject *param0, int param1, UnkFuncPtr_ov5_021
     Billboard_TryRequestVRAMTransfer(v11->unk_24);
 
     {
-        if (sub_02062F64(param0) == 1) {
+        if (MapObject_IsReflectionActive(param0) == 1) {
             VecFx32 v12;
             int v13;
             int v14 = MapObject_CalculateTaskPriority(param0, 2);
@@ -1967,9 +1967,9 @@ static Billboard *ov5_021EE454(MapObject *param0, int param1, UnkFuncPtr_ov5_021
         }
     }
 
-    sub_02061B48(param0);
+    MapObject_ClearGraphics(param0);
     ov5_021EDBC4(v8->unk_104, v2, param0);
-    sub_02061AB4(param0, param1);
+    MapObject_InitGraphics(param0, param1);
 
     {
         int v16 = MapObjectMan_GetTaskBasePriority(v8->unk_104);
@@ -1996,7 +1996,7 @@ static void ov5_021EE698(SysTask *param0, void *param1)
 
     switch (v0->unk_04) {
     case 0:
-        if ((sub_02062CF8(v1) == 0) || (ov5_021EDD94(v1) == 0)) {
+        if ((MapObject_IsInUse(v1) == 0) || (ov5_021EDD94(v1) == 0)) {
             if (v0->unk_5C != NULL) {
                 v0->unk_5C(
                     v0->unk_58, v0->unk_24);

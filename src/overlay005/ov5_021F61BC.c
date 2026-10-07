@@ -125,7 +125,7 @@ static void ov5_021F62A0(OverworldAnimManager *param0, void *param1)
     PlayerAvatar *playerAvatar = v1->unk_24.playerAvatar;
     MapObject *v3 = PlayerAvatar_GetMapObject(playerAvatar);
 
-    if (sub_02062764(v3, v1->unk_14, v1->unk_18) == 0) {
+    if (MapObject_MatchesLocalIDAndMap(v3, v1->unk_14, v1->unk_18) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }

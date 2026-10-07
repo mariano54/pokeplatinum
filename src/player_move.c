@@ -15,7 +15,7 @@
 #include "field/field_system.h"
 #include "global/utility.h"
 #include "overlay005/land_data_manager_decl.h"
-#include "overlay005/ov5_021DFB54.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay009/ov9_02249960.h"
 
 #include "dynamic_map_features.h"
@@ -161,7 +161,7 @@ void PlayerAvatar_MoveMain(PlayerAvatar *playerAvatar, const LandDataManager *la
     PlayerAvatar_RequestChangeState(playerAvatar);
 
     if (PlayerAvatar_TryMoveFromCurTileBehavior(playerAvatar, dir) == TRUE) {
-        ov5_021E0EEC(playerAvatar);
+        PlayerAvatar_TryStopLookingAtPoketch(playerAvatar);
         return;
     }
 
@@ -169,9 +169,9 @@ void PlayerAvatar_MoveMain(PlayerAvatar *playerAvatar, const LandDataManager *la
         int moveState = PlayerAvatar_UpdateMoveState2(playerAvatar, dir);
 
         if (moveState != PLAYER_MOVE_STATE_NONE) {
-            ov5_021E0EEC(playerAvatar);
+            PlayerAvatar_TryStopLookingAtPoketch(playerAvatar);
         } else if (tappedPoketch == TRUE) {
-            ov5_021E0E94(playerAvatar);
+            PlayerAvatar_TryStartLookingAtPoketch(playerAvatar);
         }
     }
 
@@ -458,7 +458,7 @@ void PlayerAvatar_ForceStopMovement(PlayerAvatar *playerAvatar, int dir)
     MapObject *mapObj = PlayerAvatar_GetMapObject(playerAvatar);
 
     MapObject_TryFace(mapObj, dir);
-    sub_02062A0C(mapObj, 0x0);
+    MapObject_SetSpriteAnimCode(mapObj, 0x0);
     MapObject_UpdateCoords(mapObj);
     sub_020656DC(mapObj);
     LocalMapObj_SetAnimationCode(mapObj, MovementAction_TurnActionTowardsDir(dir, MOVEMENT_ACTION_FACE_NORTH));

@@ -74,7 +74,7 @@ static BOOL (*const Unk_020EE77C[4])(u8);
 
 void MapObject_InitMove(MapObject *mapObj)
 {
-    sub_02062B00(mapObj);
+    MapObject_CallMoveInitFunc(mapObj);
     sub_020673B8(mapObj);
 }
 
@@ -91,7 +91,7 @@ void MapObject_Move(MapObject *mapObj)
     if (MapObject_CheckStatus(mapObj, MAP_OBJ_STATUS_4)) {
         MapObject_DoMovementAction(mapObj);
     } else if (MapObject_IsMovementPaused(mapObj) == FALSE && sub_02063478(mapObj) == TRUE && sub_020673C0(mapObj) == FALSE) {
-        sub_02062B14(mapObj);
+        MapObject_CallMoveFunc(mapObj);
     }
 
     sub_0206353C(mapObj);
@@ -116,7 +116,7 @@ static BOOL sub_02063478(const MapObject *mapObj)
         return FALSE;
     }
 
-    if (status & (1 << 11) && sub_02062FDC(mapObj) == FALSE) {
+    if (status & (1 << 11) && MapObject_IsTileBehaviorCheckDisabled(mapObj) == FALSE) {
         return FALSE;
     }
 
@@ -172,7 +172,7 @@ static void sub_020635AC(MapObject *mapObj)
 {
     MapObject_SetTileBehaviors(mapObj);
 
-    if (sub_02062DFC(mapObj) == TRUE) {
+    if (MapObject_IsDrawInitialized(mapObj) == TRUE) {
         u8 currTileBehavior = MapObject_GetCurrTileBehavior(mapObj);
         u8 prevTileBehavior = MapObject_GetPrevTileBehavior(mapObj);
         const ObjectEventGfxRenderDetailsEntry *v2 = ov5_021ECD04(mapObj);
@@ -192,7 +192,7 @@ static void sub_0206363C(MapObject *mapObj)
 {
     MapObject_SetTileBehaviors(mapObj);
 
-    if (sub_02062DFC(mapObj) == TRUE) {
+    if (MapObject_IsDrawInitialized(mapObj) == TRUE) {
         u8 currTileBehavior = MapObject_GetCurrTileBehavior(mapObj);
         u8 prevTileBehavior = MapObject_GetPrevTileBehavior(mapObj);
         const ObjectEventGfxRenderDetailsEntry *v2 = ov5_021ECD04(mapObj);
@@ -216,7 +216,7 @@ static void sub_020636F0(MapObject *mapObj)
 {
     MapObject_SetTileBehaviors(mapObj);
 
-    if (sub_02062DFC(mapObj) == TRUE) {
+    if (MapObject_IsDrawInitialized(mapObj) == TRUE) {
         u8 currTileBehavior = MapObject_GetCurrTileBehavior(mapObj);
         u8 prevTileBehavior = MapObject_GetPrevTileBehavior(mapObj);
         const ObjectEventGfxRenderDetailsEntry *v2 = ov5_021ECD04(mapObj);
@@ -233,7 +233,7 @@ static void sub_0206375C(MapObject *mapObj)
 {
     MapObject_SetTileBehaviors(mapObj);
 
-    if (sub_02062DFC(mapObj) == TRUE) {
+    if (MapObject_IsDrawInitialized(mapObj) == TRUE) {
         u8 currTileBehavior = MapObject_GetCurrTileBehavior(mapObj);
         u8 prevTileBehavior = MapObject_GetPrevTileBehavior(mapObj);
         const ObjectEventGfxRenderDetailsEntry *v2 = ov5_021ECD04(mapObj);
@@ -251,7 +251,7 @@ static void sub_020637D4(MapObject *mapObj)
 {
     MapObject_SetTileBehaviors(mapObj);
 
-    if (sub_02062DFC(mapObj) == TRUE) {
+    if (MapObject_IsDrawInitialized(mapObj) == TRUE) {
         u8 currTileBehavior = MapObject_GetCurrTileBehavior(mapObj);
         u8 prevTileBehavior = MapObject_GetPrevTileBehavior(mapObj);
         const ObjectEventGfxRenderDetailsEntry *v2 = ov5_021ECD04(mapObj);
@@ -363,18 +363,18 @@ static void sub_02063994(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
 static void sub_02063A30(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBehavior, const ObjectEventGfxRenderDetailsEntry *renderDetails)
 {
     if (TileBehavior_IsShallowWater(currTileBehavior) == TRUE) {
-        if (sub_02062EC8(mapObj) == FALSE) {
+        if (MapObject_IsShallowWaterEffectActive(mapObj) == FALSE) {
             ov5_021F331C(mapObj, 1);
-            sub_02062EAC(mapObj, 1);
+            MapObject_SetShallowWaterEffectActive(mapObj, 1);
         }
     } else {
-        sub_02062EAC(mapObj, 0);
+        MapObject_SetShallowWaterEffectActive(mapObj, 0);
     }
 }
 
 static void sub_02063A64(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBehavior, const ObjectEventGfxRenderDetailsEntry *renderDetails)
 {
-    sub_02062EAC(mapObj, 0);
+    MapObject_SetShallowWaterEffectActive(mapObj, 0);
 }
 
 static void sub_02063A70(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBehavior, const ObjectEventGfxRenderDetailsEntry *renderDetails)
@@ -386,7 +386,7 @@ static void sub_02063A78(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
 {
     const MapObjectManager *mapObjMan = MapObject_MapObjectManager(mapObj);
 
-    if (sub_02062CE4(mapObjMan) == FALSE) {
+    if (MapObjectMan_AreShadowsEnabled(mapObjMan) == FALSE) {
         return;
     }
 
@@ -416,7 +416,7 @@ static void sub_02063B20(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
 {
     const MapObjectManager *mapObjMan = MapObject_MapObjectManager(mapObj);
 
-    if (sub_02062CE4(mapObjMan) == FALSE) {
+    if (MapObjectMan_AreShadowsEnabled(mapObjMan) == FALSE) {
         return;
     }
 
@@ -515,7 +515,7 @@ static void sub_02063D30(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
         return;
     }
 
-    if (sub_02062F64(mapObj) == FALSE) {
+    if (MapObject_IsReflectionActive(mapObj) == FALSE) {
         u8 tileBehavior = GetNullTileBehaviorID();
 
         if (TileBehavior_HasReflectiveSurface(currTileBehavior) == TRUE) {
@@ -531,7 +531,7 @@ static void sub_02063D30(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
         if (tileBehavior != GetNullTileBehaviorID()) {
             int v2;
 
-            sub_02062F48(mapObj, 1);
+            MapObject_SetReflectionActive(mapObj, 1);
 
             if (TileBehavior_IsReflective(tileBehavior) == TRUE) {
                 v2 = 2;
@@ -548,14 +548,14 @@ static void sub_02063D30(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBeha
 
 static void sub_02063DA8(MapObject *mapObj, u8 currTileBehavior, u8 prevTileBehavior, const ObjectEventGfxRenderDetailsEntry *renderDetails)
 {
-    if (renderDetails->hasReflection == 0 || sub_02062F64(mapObj) == FALSE) {
+    if (renderDetails->hasReflection == 0 || MapObject_IsReflectionActive(mapObj) == FALSE) {
         return;
     }
 
     u8 southTileBehavior = MapObject_GetTileBehaviorFromDir(mapObj, DIR_SOUTH);
 
     if (TileBehavior_HasReflectiveSurface(southTileBehavior) == FALSE) {
-        sub_02062F48(mapObj, 0);
+        MapObject_SetReflectionActive(mapObj, 0);
     }
 }
 
@@ -665,7 +665,7 @@ int sub_02063F00(const MapObject *mapObj, int x, int y, int z)
             }
         }
 
-        sub_02062880(&v4);
+        MapObject_Next(&v4);
         maxObjects--;
     } while (maxObjects);
 
@@ -705,7 +705,7 @@ int MapObject_IsOutOfRange(const MapObject *mapObj, int x, int y, int z)
 
 int sub_02064004(const MapObject *mapObj, int x, int z, int dir)
 {
-    if (sub_02062FDC(mapObj) == FALSE) {
+    if (MapObject_IsTileBehaviorCheckDisabled(mapObj) == FALSE) {
         FieldSystem *fieldSystem = MapObject_FieldSystem(mapObj);
         u8 v1 = MapObject_GetCurrTileBehavior(mapObj);
         u8 v2 = TerrainCollisionManager_GetTileBehavior(fieldSystem, x, z);
@@ -945,7 +945,7 @@ int MapObject_SetTileBehaviors(MapObject *mapObj)
     u8 prevTileBehavior = GetNullTileBehaviorID();
     u8 currTileBehavior = prevTileBehavior;
 
-    if (sub_02062FDC(mapObj) == FALSE) {
+    if (MapObject_IsTileBehaviorCheckDisabled(mapObj) == FALSE) {
         int x = MapObject_GetXPrev(mapObj);
         int z = MapObject_GetZPrev(mapObj);
         FieldSystem *fieldSystem = MapObject_FieldSystem(mapObj);
@@ -1000,7 +1000,7 @@ void sub_02064464(MapObject *mapObj)
         || movementType == MOVEMENT_TYPE_DISGUISE_SAND
         || movementType == MOVEMENT_TYPE_DISGUISE_ROCK
         || movementType == MOVEMENT_TYPE_DISGUISE_GRASS) {
-        sub_02062B14(mapObj);
+        MapObject_CallMoveFunc(mapObj);
     }
 }
 

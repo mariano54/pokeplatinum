@@ -203,8 +203,8 @@ static int ov5_021F1258(OverworldAnimManager *param0, void *param1)
     v0->unk_04 = MapObject_GetLocalID(v0->unk_1C.unk_08);
     v0->unk_18 = ov5_021F11FC(v0->unk_1C.unk_04, v0->unk_1C.unk_00);
 
-    if (sub_02062E94(v0->unk_1C.unk_08) == 1) {
-        v0->unk_08 = sub_02062C18(v0->unk_1C.unk_08);
+    if (MapObject_IsBorrowed(v0->unk_1C.unk_08) == 1) {
+        v0->unk_08 = MapObject_GetOwnerMapHeaderID(v0->unk_1C.unk_08);
     } else {
         v0->unk_08 = MapObject_GetMapHeaderID(v0->unk_1C.unk_08);
     }
@@ -223,7 +223,7 @@ static void ov5_021F12AC(OverworldAnimManager *param0, void *param1)
     UnkStruct_021F1258 *v0 = param1;
     const MapObject *v1 = v0->unk_1C.unk_08;
 
-    if (sub_02062764(v1, v0->unk_04, v0->unk_08) == 0) {
+    if (MapObject_MatchesLocalIDAndMap(v1, v0->unk_04, v0->unk_08) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }

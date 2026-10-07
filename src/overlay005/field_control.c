@@ -16,10 +16,10 @@
 #include "field/field_system_sub2_t.h"
 #include "overlay005/daycare.h"
 #include "overlay005/honey_tree.h"
-#include "overlay005/ov5_021DFB54.h"
 #include "overlay005/ov5_021E1154.h"
 #include "overlay005/ov5_021EA714.h"
 #include "overlay005/ov5_021EF4BC.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay005/villa_furniture.h"
 #include "overlay005/vs_seeker.h"
 #include "overlay006/repel_step_update.h"
@@ -219,7 +219,7 @@ BOOL FieldInput_Process(const FieldInput *input, FieldSystem *fieldSystem)
             playerEvent |= PLAYER_EVENT_DISTORTION_WORLD;
         }
 
-        if (ov5_021DFDE0(fieldSystem, fieldSystem->playerAvatar, direction, playerEvent) == TRUE) {
+        if (PlayerAvatar_TryStartMoveEvent(fieldSystem, fieldSystem->playerAvatar, direction, playerEvent) == TRUE) {
             return TRUE;
         }
     }

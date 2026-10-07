@@ -14,8 +14,8 @@
 
 #include "applications/town_map/main.h"
 #include "field/field_system.h"
-#include "overlay005/ov5_021DFB54.h"
 #include "overlay005/ov5_021F101C.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay006/field_warp.h"
 #include "overlay006/hm_cut_in.h"
 

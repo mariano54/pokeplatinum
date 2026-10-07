@@ -279,7 +279,7 @@ static void sub_0205C51C(UnkStruct_0205C22C *param0, MapObjectManager *param1)
                 }
 
                 sub_020656AC(v0);
-                sub_02062DB4(v0, 0);
+                MapObject_SetInteractionDisabled(v0, 0);
 
                 if ((param0->unk_0C[v1].unk_00 == 1) && (param0->unk_0C[v1].unk_09 == 0)) {
                     MapObject_SwitchMovementType(v0, MOVEMENT_TYPE_WANDER_AROUND);
@@ -312,7 +312,7 @@ static void sub_0205C51C(UnkStruct_0205C22C *param0, MapObjectManager *param1)
                 param0->unk_0C[v1].unk_09 = 0;
 
                 MapObject_SetHidden(v0, 1);
-                sub_02062D80(v0, 0);
+                MapObject_SetCollisionEnabled(v0, 0);
             }
             break;
         case 4:
@@ -369,13 +369,13 @@ static void sub_0205C6E0(UnkStruct_0205C680 *param0, MapObject *param1, int para
     }
 
     Sound_PlayEffect(SEQ_SE_DP_TELE2_sseq);
-    sub_02061AD4(param1, param0->unk_08);
+    MapObject_ChangeGraphics(param1, param0->unk_08);
     sub_0205C680(param0, 0);
     MapObject_SetPosDirFromCoords(param1, v0, v1, v2, 1);
     MapObject_Face(param1, 1);
     LocalMapObj_SetAnimationCode(param1, MOVEMENT_ACTION_WARP_IN);
     MapObject_SetHidden(param1, 0);
-    sub_02062D80(param1, 1);
+    MapObject_SetCollisionEnabled(param1, 1);
 
     param0->unk_01 = 1;
 
@@ -393,7 +393,7 @@ static void sub_0205C6E0(UnkStruct_0205C680 *param0, MapObject *param1, int para
 static void sub_0205C788(UnkStruct_0205C680 *param0, MapObject *param1)
 {
     LocalMapObj_SetAnimationCode(param1, MOVEMENT_ACTION_WARP_OUT);
-    sub_02062DB4(param1, 1);
+    MapObject_SetInteractionDisabled(param1, 1);
     MapObject_SwitchMovementType(param1, MOVEMENT_TYPE_NONE);
     sub_0205C680(param0, 1);
 
@@ -427,8 +427,8 @@ static void sub_0205C7E4(MapObjectManager *mapObjMan, int param1, int param2)
         }
 
         MapObject_SetHidden(v1, 1);
-        sub_02062D80(v1, 0);
-        sub_02062DB4(v1, 1);
+        MapObject_SetCollisionEnabled(v1, 0);
+        MapObject_SetInteractionDisabled(v1, 1);
     }
 }
 
@@ -460,11 +460,11 @@ void sub_0205C820(MapObjectManager *mapObjMan, UnkStruct_0205C22C *param1)
                     GF_ASSERT(FALSE);
                 }
 
-                sub_02061AD4(mapObj, v1->unk_08);
+                MapObject_ChangeGraphics(mapObj, v1->unk_08);
                 MapObject_Face(mapObj, 1);
                 LocalMapObj_SetAnimationCode(mapObj, MOVEMENT_ACTION_WARP_IN);
                 MapObject_SetHidden(mapObj, 0);
-                sub_02062D80(mapObj, 1);
+                MapObject_SetCollisionEnabled(mapObj, 1);
 
                 v1->unk_01 = 1;
 

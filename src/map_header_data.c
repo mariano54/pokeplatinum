@@ -55,7 +55,7 @@ void sub_0203A418(FieldSystem *fieldSystem)
     GF_ASSERT(fieldSystem->mapHeaderData != NULL);
 
     if (numObjectEvents != 0) {
-        sub_02062068(fieldSystem->mapObjMan, fieldSystem->location->mapHeaderID, numObjectEvents, fieldSystem->mapHeaderData->objectEvents);
+        MapObjectMan_AddMapObjectsFromHeader(fieldSystem->mapObjMan, fieldSystem->location->mapHeaderID, numObjectEvents, fieldSystem->mapHeaderData->objectEvents);
     }
 }
 

@@ -670,6 +670,57 @@ def pack_file(json_path, out_path, depfile=None, options=None):
             f.write(out_path + ": " + " ".join(deps) + "\n")
 
 
+def transform_dl(lines, scale, origin, above=None):
+    """Scale vertex positions about `origin` (optionally only vertices with
+    y >= above) and fix up the normals of the transformed vertices.
+
+    Returns (new lines, stats).  Positions are rounded to 1/4096; the vertex
+    command names are kept and `pack` re-encodes any that no longer fit."""
+    out = []
+    stats = collections.Counter()
+    # First pass: which vertices move, and which NORMAL governs each vertex.
+    moved = []
+    governing = []
+    last_normal = None
+    for i, line in enumerate(lines):
+        tok = line.split()
+        if tok and tok[0] == "NORMAL":
+            last_normal = i
+        elif tok and tok[0].startswith("VTX"):
+            y = float(tok[2])
+            moved.append(above is None or y >= above)
+            governing.append((i, last_normal))
+    normal_users = collections.defaultdict(list)
+    for (vi, ni), mv in zip(governing, moved):
+        if ni is not None:
+            normal_users[ni].append(mv)
+    for i, line in enumerate(lines):
+        tok = line.split()
+        if tok and tok[0].startswith("VTX"):
+            p = [float(v) for v in tok[1:4]]
+            if above is None or p[1] >= above:
+                q = [origin[k] + (p[k] - origin[k]) * scale[k] for k in range(3)]
+                raw = [round(v * FX) for v in q]
+                for v in raw:
+                    if not -32768 <= v <= 32767:
+                        raise ModelError(f"transformed vertex {q} leaves the [-8, 8) range; "
+                                         "lower the scale or raise pos_scale")
+                stats["vertices moved"] += 1
+                line = f"{tok[0]} {fmt_num(raw[0], FX)} {fmt_num(raw[1], FX)} {fmt_num(raw[2], FX)}"
+        elif tok and tok[0] == "NORMAL" and normal_users.get(i):
+            users = normal_users[i]
+            if all(users):
+                n = [float(v) / scale[k] for k, v in enumerate(tok[1:4])]
+                length = sum(v * v for v in n) ** 0.5 or 1.0
+                raw = [max(-512, min(511, round(v / length * 512))) for v in n]
+                line = "NORMAL " + " ".join(fmt_num(v, 512) for v in raw)
+                stats["normals adjusted"] += 1
+            elif any(users):
+                stats["normals shared by moved and fixed vertices (kept)"] += 1
+        out.append(line)
+    return out, stats
+
+
 # --------------------------------------------------------------------------
 # CLI
 
@@ -719,6 +770,11 @@ def main(argv=None):
     p.add_argument("--fit-box", action="store_true", help="recompute the bounding box from the vertices")
     p = sub.add_parser("verify")
     p.add_argument("inputs", nargs="+")
+    p = sub.add_parser("transform", help="scale the vertices of display-list text files in place")
+    p.add_argument("dl_files", nargs="+")
+    p.add_argument("--scale", nargs=3, type=float, required=True, metavar=("SX", "SY", "SZ"))
+    p.add_argument("--origin", nargs=3, type=float, default=[0.0, 0.0, 0.0], metavar=("X", "Y", "Z"))
+    p.add_argument("--above", type=float, help="only move vertices with y >= ABOVE")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "unpack":
@@ -727,6 +783,16 @@ def main(argv=None):
             pack_file(args.json, args.output, args.depfile, {"fit_box": args.fit_box})
         elif args.cmd == "verify":
             return 0 if verify(args.inputs) else 1
+        elif args.cmd == "transform":
+            for path in args.dl_files:
+                with open(path) as f:
+                    lines = f.read().splitlines()
+                new, stats = transform_dl(lines, args.scale, args.origin, args.above)
+                with open(path, "w") as f:
+                    f.write("\n".join(new) + "\n")
+                st = dl_stats([ln for ln in new if not ln.startswith("#")])
+                print(f"{path}: " + ", ".join(f"{k}={v}" for k, v in stats.items()) +
+                      f"; bounds {[v / FX for v in st['min']]} .. {[v / FX for v in st['max']]}")
     except (ModelError, nsbtx.TexSetError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 1

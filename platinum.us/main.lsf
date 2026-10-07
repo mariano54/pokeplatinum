@@ -177,7 +177,7 @@ Static main
 	Object main.nef.p/src_spawn_locations.c.o
 	Object main.nef.p/src_field_overworld_weather.c.o
 	Object main.nef.p/src_start_menu.c.o
-	Object main.nef.p/src_unk_0203C954.c.o
+	Object main.nef.p/src_field_interaction.c.o
 	Object main.nef.p/src_field_system.c.o
 	Object main.nef.p/src_location.c.o
 	Object main.nef.p/src_unk_0203D1B8.c.o
@@ -460,17 +460,17 @@ Overlay overlay5
 {
 	After main
 	Object main.nef.p/src_overlay005_fieldmap.c.o
-	Object main.nef.p/src_overlay005_ov5_021D1A94.c.o
+	Object main.nef.p/src_overlay005_field_map_task_manager.c.o
 	Object main.nef.p/src_overlay005_field_control.c.o
 	Object main.nef.p/src_overlay005_sprite_resource_manager.c.o
 	Object main.nef.p/src_overlay005_map_prop_animation.c.o
-	Object main.nef.p/src_overlay005_ov5_021D431C.c.o
+	Object main.nef.p/src_overlay005_entrance_animation.c.o
 	Object main.nef.p/src_overlay005_area_light.c.o
 	Object main.nef.p/src_overlay005_map_prop_material_shape.c.o
 	Object main.nef.p/src_overlay005_fog_manager.c.o
 	Object main.nef.p/src_overlay005_model_attributes.c.o
 	Object main.nef.p/src_overlay005_field_camera.c.o
-	Object main.nef.p/src_overlay005_ov5_021D5BC0.c.o
+	Object main.nef.p/src_overlay005_field_bottom_screen.c.o
 	Object main.nef.p/src_overlay005_texture_resource_manager.c.o
 	Object main.nef.p/src_overlay005_ov5_021D5EB8.c.o
 	Object main.nef.p/src_overlay005_vs_seeker.c.o
@@ -481,8 +481,8 @@ Overlay overlay5
 	Object main.nef.p/src_overlay005_encounter_effect.c.o
 	Object main.nef.p/src_overlay005_field_effect_manager.c.o
 	Object main.nef.p/src_overlay005_player_avatar_actions.c.o
-	Object main.nef.p/src_overlay005_ov5_021E1154.c.o
-	Object main.nef.p/src_overlay005_ov5_021E135C.c.o
+	Object main.nef.p/src_overlay005_forced_slide.c.o
+	Object main.nef.p/src_overlay005_warp_animation.c.o
 	Object main.nef.p/src_overlay005_map_prop.c.o
 	Object main.nef.p/src_overlay005_signpost.c.o
 	Object main.nef.p/src_overlay005_save_info_window.c.o
@@ -491,15 +491,15 @@ Overlay overlay5
 	Object main.nef.p/src_overlay005_encounter_effect_core.c.o
 	Object main.nef.p/src_overlay005_daycare.c.o
 	Object main.nef.p/src_overlay005_land_data.c.o
-	Object main.nef.p/src_overlay005_ov5_021EA714.c.o
-	Object main.nef.p/src_overlay005_ov5_021EA874.c.o
-	Object main.nef.p/src_overlay005_ov5_021EAFA4.c.o
+	Object main.nef.p/src_overlay005_field_poketch.c.o
+	Object main.nef.p/src_overlay005_pal_pad_registration.c.o
+	Object main.nef.p/src_overlay005_touch_projection.c.o
 	Object main.nef.p/src_overlay005_object_event_gfx_data.c.o
 	Object main.nef.p/src_overlay005_ov5_021EB1A0.c.o
 	Object main.nef.p/src_overlay005_ov5_021ECA70.c.o
 	Object main.nef.p/src_overlay005_ov5_021ECC20.c.o
 	Object main.nef.p/src_overlay005_ov5_021ECE40.c.o
-	Object main.nef.p/src_overlay005_ov5_021EE75C.c.o
+	Object main.nef.p/src_overlay005_bike_slope.c.o
 	Object main.nef.p/src_overlay005_size_contest.c.o
 	Object main.nef.p/src_overlay005_loaded_map_buffers.c.o
 	Object main.nef.p/src_overlay005_bdhc.c.o
@@ -514,7 +514,7 @@ Overlay overlay5
 	Object main.nef.p/src_overlay005_secret_base_props.c.o
 	Object main.nef.p/src_overlay005_fishing.c.o
 	Object main.nef.p/src_overlay005_footprint_type.c.o
-	Object main.nef.p/src_overlay005_ov5_021F0EB0.c.o
+	Object main.nef.p/src_overlay005_camera_distance_animation.c.o
 	Object main.nef.p/src_overlay005_ov5_021F101C.c.o
 	Object main.nef.p/src_overlay005_ov5_021F10E8.c.o
 	Object main.nef.p/src_overlay005_ov5_021F134C.c.o

@@ -2,7 +2,7 @@
 #define POKEPLATINUM_OV6_0223E140_H
 
 #include "field/field_system_decl.h"
-#include "overlay005/struct_ov5_021D1BEC_decl.h"
+#include "overlay005/field_map_task_decl.h"
 #include "overlay006/struct_ov6_0223FDE4_decl.h"
 #include "overlay006/struct_ov6_02240000_decl.h"
 #include "overlay006/struct_ov6_022400A8_decl.h"
@@ -16,16 +16,16 @@
 
 void ov6_0223E384(FieldTask *param0);
 void ov6_0223E4EC(FieldTask *param0);
-UnkStruct_ov5_021D1BEC *ov6_0223E6EC(FieldSystem *fieldSystem);
-void ov6_0223E700(UnkStruct_ov5_021D1BEC *param0);
-BOOL ov6_0223E708(UnkStruct_ov5_021D1BEC *param0);
-UnkStruct_ov5_021D1BEC *ov6_0223E814(FieldSystem *fieldSystem);
-void ov6_0223E828(UnkStruct_ov5_021D1BEC *param0);
-UnkStruct_ov5_021D1BEC *ov6_0223EA74(FieldSystem *fieldSystem, u32 param1);
-UnkStruct_ov5_021D1BEC *ov6_0223FCCC(FieldSystem *fieldSystem);
-void ov6_0223FCE0(UnkStruct_ov5_021D1BEC *param0);
-void ov6_0223FCE8(UnkStruct_ov5_021D1BEC *param0);
-u32 ov6_0223FCF4(UnkStruct_ov5_021D1BEC *param0);
+FieldMapTask *ov6_0223E6EC(FieldSystem *fieldSystem);
+void ov6_0223E700(FieldMapTask *param0);
+BOOL ov6_0223E708(FieldMapTask *param0);
+FieldMapTask *ov6_0223E814(FieldSystem *fieldSystem);
+void ov6_0223E828(FieldMapTask *param0);
+FieldMapTask *ov6_0223EA74(FieldSystem *fieldSystem, u32 param1);
+FieldMapTask *ov6_0223FCCC(FieldSystem *fieldSystem);
+void ov6_0223FCE0(FieldMapTask *param0);
+void ov6_0223FCE8(FieldMapTask *param0);
+u32 ov6_0223FCF4(FieldMapTask *param0);
 void ov6_0223FE08(UnkStruct_ov6_0223FDE4 *param0);
 void ov6_0223FE1C(UnkStruct_ov6_0223FDE4 *param0, fx32 param1, fx32 param2, u32 param3, u32 param4, Camera *camera);
 void ov6_0223FE9C(UnkStruct_ov6_0223FDE4 *param0);

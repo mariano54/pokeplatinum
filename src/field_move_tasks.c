@@ -19,6 +19,7 @@
 #include "overlay006/field_warp.h"
 #include "overlay006/hm_cut_in.h"
 
+#include "field_interaction.h"
 #include "field_map_change.h"
 #include "field_overworld_state.h"
 #include "field_task.h"
@@ -38,7 +39,6 @@
 #include "system_flags.h"
 #include "terrain_collision_manager.h"
 #include "trainer_info.h"
-#include "unk_0203C954.h"
 #include "unk_0203D1B8.h"
 #include "unk_020711C8.h"
 #include "vars_flags.h"
@@ -246,7 +246,7 @@ void FieldMoves_SetUsableMoves(FieldSystem *fieldSystem, FieldMoveContext *field
         return;
     }
 
-    sub_0203C9D4(fieldSystem, &mapObj);
+    FieldEvent_FindMapObjectInFront(fieldSystem, &mapObj);
     fieldMoveContext->mapObj = mapObj;
 
     if (mapObj != NULL) {

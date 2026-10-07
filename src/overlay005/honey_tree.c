@@ -176,7 +176,7 @@ void HoneyTree_StopShaking(FieldSystem *fieldSystem)
     u8 treeId = GetTreeIDFromMapHeaderID(fieldSystem->location->mapHeaderID);
     GF_ASSERT(treeId != NUM_HONEY_TREES);
 
-    if (fieldSystem->unk_A8->trees[treeId].isShaking) {
+    if (fieldSystem->honeyTreeShakeList->trees[treeId].isShaking) {
         MapPropManager *v3;
 
         u8 v1 = LandDataManager_GetTrackedTargetLoadedMapsQuadrant(fieldSystem->landDataMan);
@@ -187,10 +187,10 @@ void HoneyTree_StopShaking(FieldSystem *fieldSystem)
         NNSG3dRenderObj *v4 = MapProp_GetRenderObj(v2);
 
         if (v2 != NULL) {
-            MapPropAnimationManager_RemoveAnimationFromRenderObj(fieldSystem->mapPropAnimMan, v4, honey_tree_nsbmd, fieldSystem->unk_A8->trees[treeId].shakeValue);
+            MapPropAnimationManager_RemoveAnimationFromRenderObj(fieldSystem->mapPropAnimMan, v4, honey_tree_nsbmd, fieldSystem->honeyTreeShakeList->trees[treeId].shakeValue);
         }
 
-        fieldSystem->unk_A8->trees[treeId].isShaking = FALSE;
+        fieldSystem->honeyTreeShakeList->trees[treeId].isShaking = FALSE;
     }
 }
 
@@ -348,10 +348,10 @@ static void DoTreeShakingAnimation(FieldSystem *fieldSystem, MapPropManager *par
             if (v4 != NULL) {
                 NNSG3dRenderObj *v7 = MapProp_GetRenderObj(v4);
 
-                MapPropAnimationManager_RemoveAnimationFromRenderObj(fieldSystem->mapPropAnimMan, v7, honey_tree_nsbmd, fieldSystem->unk_A8->trees[treeId].shakeValue);
+                MapPropAnimationManager_RemoveAnimationFromRenderObj(fieldSystem->mapPropAnimMan, v7, honey_tree_nsbmd, fieldSystem->honeyTreeShakeList->trees[treeId].shakeValue);
 
-                fieldSystem->unk_A8->trees[treeId].shakeValue = shakeValue;
-                fieldSystem->unk_A8->trees[treeId].isShaking = isShaking;
+                fieldSystem->honeyTreeShakeList->trees[treeId].shakeValue = shakeValue;
+                fieldSystem->honeyTreeShakeList->trees[treeId].isShaking = isShaking;
 
                 MapPropAnimationManager_AddAnimationToRenderObj(honey_tree_nsbmd, shakeValue, 1, v7, fieldSystem->mapPropAnimMan);
             }
@@ -454,7 +454,7 @@ void HoneyTree_Unslather(FieldSystem *fieldSystem)
     u8 treeId = GetTreeIDFromMapHeaderID(fieldSystem->location->mapHeaderID);
     GF_ASSERT(treeId != NUM_HONEY_TREES);
 
-    fieldSystem->unk_A8->trees[treeId].isShaking = FALSE;
+    fieldSystem->honeyTreeShakeList->trees[treeId].isShaking = FALSE;
 
     PlayerHoneyTreeStates *treeDat = SpecialEncounter_GetPlayerHoneyTreeStates(SaveData_GetSpecialEncounters(fieldSystem->saveData));
     HoneyTree *tree = SpecialEncounter_GetHoneyTree(treeId, treeDat);

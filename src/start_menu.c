@@ -720,7 +720,7 @@ static void sub_0203B2EC(StartMenu *menu, FieldSystem *fieldSystem)
 {
     if (CommServerClient_IsInitialized()) {
         if (menu->inUnionRoom) {
-            sub_0205C2B0(fieldSystem->unk_80);
+            sub_0205C2B0(fieldSystem->unionRoomPlayers);
 
             CommManager_UnionRestartSearch();
             sub_0205BEA8(0);
@@ -1425,7 +1425,7 @@ static BOOL StartMenu_ExitChat(FieldTask *fieldTask)
 
         if (CommServerClient_IsInitialized()) {
             sub_0205C12C(&sentence);
-            sub_0205C010(fieldSystem->unk_7C, &sentence);
+            sub_0205C010(fieldSystem->unionRoom, &sentence);
         }
 
         menu->state = START_MENU_STATE_8;
@@ -1435,7 +1435,7 @@ static BOOL StartMenu_ExitChat(FieldTask *fieldTask)
 
     EasyChatArgs_Free((EasyChatArgs *)menu->taskData);
     FieldSystem_StartFieldMap(fieldSystem);
-    sub_0205C2B0(fieldSystem->unk_80);
+    sub_0205C2B0(fieldSystem->unionRoomPlayers);
 
     return FALSE;
 }

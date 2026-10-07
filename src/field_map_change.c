@@ -12,10 +12,10 @@
 #include "struct_defs/player_data.h"
 
 #include "field/field_system.h"
+#include "overlay005/entrance_animation_decl.h"
 #include "overlay005/map_name_popup.h"
-#include "overlay005/ov5_021E135C.h"
 #include "overlay005/save_info_window.h"
-#include "overlay005/struct_ov5_021D432C_decl.h"
+#include "overlay005/warp_animation.h"
 #include "overlay006/field_warp.h"
 #include "overlay006/hm_cut_in.h"
 #include "underground/comm_manager.h"
@@ -79,7 +79,7 @@ FS_EXTERN_OVERLAY(underground);
 typedef struct MapChangeData {
     int state;
     Location nextLocation;
-    UnkStruct_ov5_021D432C *unk_18;
+    EntranceAnimation *unk_18;
 } MapChangeData;
 
 typedef struct MapChangeSubData {
@@ -91,7 +91,7 @@ typedef struct MapChangeFlyData {
     int state;
     SysTask *task;
     Location location;
-    UnkStruct_ov5_021D432C *unk_1C;
+    EntranceAnimation *unk_1C;
 } MapChangeFlyData;
 
 typedef struct MapChangeFromErrorData {
@@ -575,8 +575,8 @@ static BOOL FieldTask_LoadMapFromError(FieldTask *task)
         (*state)++;
         break;
     case 2:
-        fieldSystem->unk_7C = FieldSystem_InitCommUnionRoom(fieldSystem);
-        fieldSystem->unk_80 = sub_0205C22C(fieldSystem->unk_7C);
+        fieldSystem->unionRoom = FieldSystem_InitCommUnionRoom(fieldSystem);
+        fieldSystem->unionRoomPlayers = sub_0205C22C(fieldSystem->unionRoom);
         FieldTransition_StartMap(task);
         (*state)++;
         break;
@@ -1432,11 +1432,11 @@ void sub_020545EC(FieldSystem *fieldSystem)
 
     mapChangeData->location = *location;
     sub_0205B388(fieldSystem);
-    sub_0205C2E0(fieldSystem->unk_80);
+    sub_0205C2E0(fieldSystem->unionRoomPlayers);
     fieldSystem->mapLoadType = MAP_LOAD_TYPE_OVERWORLD;
 
     FieldSystem_CreateTask(fieldSystem, sub_02054538, mapChangeData);
-    fieldSystem->unk_7C = NULL;
+    fieldSystem->unionRoom = NULL;
 }
 
 static BOOL sub_02054648(FieldTask *task)
@@ -1498,8 +1498,8 @@ void sub_02054708(FieldTask *task)
 
     Location_Set(&mapChangeData->location, MAP_HEADER_UNION_ROOM, -1, 8, 14, 0);
 
-    fieldSystem->unk_7C = FieldSystem_InitCommUnionRoom(fieldSystem);
-    fieldSystem->unk_80 = sub_0205C22C(fieldSystem->unk_7C);
+    fieldSystem->unionRoom = FieldSystem_InitCommUnionRoom(fieldSystem);
+    fieldSystem->unionRoomPlayers = sub_0205C22C(fieldSystem->unionRoom);
     fieldSystem->mapLoadType = MAP_LOAD_TYPE_UNION;
 
     FieldTask_InitCall(task, sub_02054648, mapChangeData);

@@ -11,12 +11,11 @@
 #include "field/field_system_sub2_t.h"
 #include "functypes/funcptr_020EC560.h"
 #include "functypes/funcptr_020EC57C.h"
+#include "overlay005/entrance_animation.h"
+#include "overlay005/entrance_animation_decl.h"
 #include "overlay005/fieldmap.h"
 #include "overlay005/hblank_system.h"
 #include "overlay005/map_name_popup.h"
-#include "overlay005/ov5_021D431C.h"
-#include "overlay005/struct_ov5_021D432C_decl.h"
-#include "overlay005/struct_ov5_021D4E00_decl.h"
 
 #include "camera.h"
 #include "field_bgm.h"
@@ -123,13 +122,13 @@ static BOOL sub_02056B70(FieldTask *taskMan)
 
     switch (v1->unk_00) {
     case 0:
-        HBlankSystem_Stop(fieldSystem->unk_04->hBlankSystem);
+        HBlankSystem_Stop(fieldSystem->fieldMapSubsystems->hBlankSystem);
         StartScreenFade(v1->unk_04, v1->unk_08, v1->unk_0C, v1->unk_10, v1->unk_14, v1->unk_18, v1->heapID);
         v1->unk_00++;
         break;
     case 1:
         if (IsScreenFadeDone()) {
-            HBlankSystem_Start(fieldSystem->unk_04->hBlankSystem);
+            HBlankSystem_Start(fieldSystem->fieldMapSubsystems->hBlankSystem);
             Heap_Free(v1);
             return 1;
         }
@@ -276,20 +275,20 @@ static BOOL sub_02056E20(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     UnkStruct_02056BDC *v1 = FieldTask_GetEnv(taskMan);
-    UnkStruct_ov5_021D432C *v2;
+    EntranceAnimation *v2;
 
     switch (v1->unk_04) {
     case 0:
-        v1->unk_1C = ov5_021D431C();
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
-        ov5_021D4334(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
+        v1->unk_1C = EntranceAnimation_New();
+        v2 = (EntranceAnimation *)v1->unk_1C;
+        EntranceAnimation_SetPosition(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
         (v1->unk_04)++;
         break;
     case 1:
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
+        v2 = (EntranceAnimation *)v1->unk_1C;
 
-        if (ov5_021D433C(fieldSystem, v2)) {
-            ov5_021D432C(v1->unk_1C);
+        if (EntranceAnimation_EnterDoor(fieldSystem, v2)) {
+            EntranceAnimation_Free(v1->unk_1C);
             (v1->unk_04)++;
         }
         break;
@@ -308,20 +307,20 @@ static BOOL sub_02056EA4(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     UnkStruct_02056BDC *v1 = FieldTask_GetEnv(taskMan);
-    UnkStruct_ov5_021D432C *v2;
+    EntranceAnimation *v2;
 
     switch (v1->unk_04) {
     case 0:
-        v1->unk_1C = ov5_021D431C();
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
-        ov5_021D4334(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
+        v1->unk_1C = EntranceAnimation_New();
+        v2 = (EntranceAnimation *)v1->unk_1C;
+        EntranceAnimation_SetPosition(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
         (v1->unk_04)++;
         break;
     case 1:
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
+        v2 = (EntranceAnimation *)v1->unk_1C;
 
-        if (ov5_021D4A24(fieldSystem, v2, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar))) {
-            ov5_021D432C(v1->unk_1C);
+        if (EntranceAnimation_DepartByEscalator(fieldSystem, v2, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar))) {
+            EntranceAnimation_Free(v1->unk_1C);
             (v1->unk_04)++;
         }
         break;
@@ -385,10 +384,10 @@ static BOOL sub_02056FC0(FieldTask *taskMan)
 
     switch (v1->unk_04) {
     case 0: {
-        UnkStruct_ov5_021D4E00 *v3;
+        EntranceFade *v3;
 
-        v3 = ov5_021D4E00();
-        FieldTask_InitCall(taskMan, ov5_021D4FA0, v3);
+        v3 = EntranceFade_New();
+        FieldTask_InitCall(taskMan, EntranceFade_DepartWithCircle, v3);
         v1->unk_04++;
     } break;
     case 1:
@@ -406,10 +405,10 @@ static BOOL sub_02057008(FieldTask *taskMan)
 
     switch (v1->unk_04) {
     case 0: {
-        UnkStruct_ov5_021D4E00 *v3;
+        EntranceFade *v3;
 
-        v3 = ov5_021D4E00();
-        FieldTask_InitCall(taskMan, ov5_021D4F14, v3);
+        v3 = EntranceFade_New();
+        FieldTask_InitCall(taskMan, EntranceFade_DepartToWhite, v3);
         v1->unk_04++;
     } break;
     case 1:
@@ -424,7 +423,7 @@ static BOOL sub_02057050(FieldTask *taskMan)
     MapObject *mapObj;
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     UnkStruct_02056BDC *v2 = FieldTask_GetEnv(taskMan);
-    UnkStruct_ov5_021D432C *v3;
+    EntranceAnimation *v3;
 
     switch (v2->unk_04) {
     case 0: {
@@ -437,24 +436,24 @@ static BOOL sub_02057050(FieldTask *taskMan)
             MapObject_SetHidden(v5, 1);
             (v2->unk_04) = 1;
         } else {
-            UnkStruct_ov5_021D4E00 *v6;
+            EntranceFade *v6;
 
-            v6 = ov5_021D4E00();
-            FieldTask_InitCall(taskMan, ov5_021D5020, v6);
+            v6 = EntranceFade_New();
+            FieldTask_InitCall(taskMan, EntranceFade_ArriveWithWipe, v6);
             (v2->unk_04) = 3;
         }
     } break;
     case 1:
-        v2->unk_1C = (UnkStruct_ov5_021D432C *)ov5_021D431C();
-        v3 = (UnkStruct_ov5_021D432C *)v2->unk_1C;
-        ov5_021D4334(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v3);
+        v2->unk_1C = (EntranceAnimation *)EntranceAnimation_New();
+        v3 = (EntranceAnimation *)v2->unk_1C;
+        EntranceAnimation_SetPosition(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v3);
         (v2->unk_04)++;
         break;
     case 2:
-        v3 = (UnkStruct_ov5_021D432C *)v2->unk_1C;
+        v3 = (EntranceAnimation *)v2->unk_1C;
 
-        if (ov5_021D453C(fieldSystem, v3)) {
-            ov5_021D432C(v3);
+        if (EntranceAnimation_ExitDoor(fieldSystem, v3)) {
+            EntranceAnimation_Free(v3);
             {
                 MapObject *v7 = PlayerAvatar_GetMapObject(fieldSystem->playerAvatar);
 
@@ -475,7 +474,7 @@ static BOOL sub_0205711C(FieldTask *taskMan)
     MapObject *mapObj;
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     UnkStruct_02056BDC *v2 = FieldTask_GetEnv(taskMan);
-    UnkStruct_ov5_021D432C *v3;
+    EntranceAnimation *v3;
 
     switch (v2->unk_04) {
     case 0: {
@@ -489,10 +488,10 @@ static BOOL sub_0205711C(FieldTask *taskMan)
             v2->unk_04 = 1;
             FieldTask_InitJump(taskMan, sub_02057050, v2);
         } else {
-            UnkStruct_ov5_021D4E00 *v6;
+            EntranceFade *v6;
 
-            v6 = ov5_021D4E00();
-            FieldTask_InitCall(taskMan, ov5_021D5150, v6);
+            v6 = EntranceFade_New();
+            FieldTask_InitCall(taskMan, EntranceFade_Arrive, v6);
             (v2->unk_04)++;
         }
     } break;
@@ -507,20 +506,20 @@ static BOOL sub_020571A0(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     UnkStruct_02056BDC *v1 = FieldTask_GetEnv(taskMan);
-    UnkStruct_ov5_021D432C *v2;
+    EntranceAnimation *v2;
 
     switch (v1->unk_04) {
     case 0:
-        v1->unk_1C = ov5_021D431C();
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
-        ov5_021D4334(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
+        v1->unk_1C = EntranceAnimation_New();
+        v2 = (EntranceAnimation *)v1->unk_1C;
+        EntranceAnimation_SetPosition(PlayerAvatar_GetXPos(fieldSystem->playerAvatar), PlayerAvatar_GetZPos(fieldSystem->playerAvatar), v2);
         (v1->unk_04)++;
         break;
     case 1:
-        v2 = (UnkStruct_ov5_021D432C *)v1->unk_1C;
+        v2 = (EntranceAnimation *)v1->unk_1C;
 
-        if (ov5_021D4858(fieldSystem, v2, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar))) {
-            ov5_021D432C(v1->unk_1C);
+        if (EntranceAnimation_ArriveByEscalator(fieldSystem, v2, PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar))) {
+            EntranceAnimation_Free(v1->unk_1C);
             (v1->unk_04)++;
         }
         break;
@@ -589,10 +588,10 @@ static BOOL sub_020572B8(FieldTask *taskMan)
 
     switch (v1->unk_04) {
     case 0: {
-        UnkStruct_ov5_021D4E00 *v3;
+        EntranceFade *v3;
 
-        v3 = ov5_021D4E00();
-        FieldTask_InitCall(taskMan, ov5_021D4E10, v3);
+        v3 = EntranceFade_New();
+        FieldTask_InitCall(taskMan, EntranceFade_ArriveFromWhite, v3);
         v1->unk_04++;
     } break;
     case 1:

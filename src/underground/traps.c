@@ -9,9 +9,9 @@
 #include "generated/traps.h"
 
 #include "field/field_system.h"
-#include "overlay005/ov5_021EAFA4.h"
 #include "overlay005/ov5_021F4E08.h"
 #include "overlay005/ov5_021F55CC.h"
+#include "overlay005/touch_projection.h"
 #include "underground/manager.h"
 #include "underground/menus.h"
 #include "underground/mining.h"
@@ -864,7 +864,7 @@ void TrapsEnv_Init(void *dest, FieldSystem *fieldSystem)
         trapsEnv->helpedNetIDs[netID] = NETID_NONE;
     }
 
-    fieldSystem->unk_8C = ov5_021EB0C8(fieldSystem->camera);
+    fieldSystem->touchProjection = TouchProjection_New(fieldSystem->camera);
 
     Traps_InitRadarSpriteResources();
     Traps_LoadCurrentPlayerPlacedTraps();
@@ -872,7 +872,7 @@ void TrapsEnv_Init(void *dest, FieldSystem *fieldSystem)
 
 void Traps_DisableTrapGraphics(void)
 {
-    ov5_021EB184(&trapsEnv->fieldSystem->unk_8C);
+    TouchProjection_Free(&trapsEnv->fieldSystem->touchProjection);
     Traps_DeleteRadarSpriteResources();
     Traps_StopAllLinkSpinTasks();
 
@@ -897,7 +897,7 @@ void Traps_DisableTrapGraphics(void)
 
 void Traps_EnableTrapGraphics(void)
 {
-    trapsEnv->fieldSystem->unk_8C = ov5_021EB0C8(trapsEnv->fieldSystem->camera);
+    trapsEnv->fieldSystem->touchProjection = TouchProjection_New(trapsEnv->fieldSystem->camera);
     trapsEnv->graphicsDisabled = FALSE;
 
     Traps_LoadCurrentPlayerPlacedTraps();
@@ -916,7 +916,7 @@ void TrapsEnv_Free(void)
     Traps_StopAllLinkSpinTasks();
     Traps_DeleteRadarSpriteResources();
 
-    ov5_021EB184(&trapsEnv->fieldSystem->unk_8C);
+    TouchProjection_Free(&trapsEnv->fieldSystem->touchProjection);
 
     if (trapsEnv->retrievedTrapCount >= 10) {
         sub_0206DEEC(trapsEnv->fieldSystem, trapsEnv->retrievedTrapID, trapsEnv->retrievedTrapCount);

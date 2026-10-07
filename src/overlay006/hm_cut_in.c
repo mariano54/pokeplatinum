@@ -9,7 +9,7 @@
 #include "struct_decls/map_object.h"
 
 #include "field/field_system.h"
-#include "overlay005/ov5_021F0EB0.h"
+#include "overlay005/camera_distance_animation.h"
 
 #include "bg_window.h"
 #include "character_sprite.h"
@@ -657,7 +657,7 @@ static void FlyLanding_SetTasksDone(OverworldAnimManager *param0)
     }
 
     if (v0->task) {
-        ov5_021F0EFC(v0->task);
+        CameraDistanceAnimation_Free(v0->task);
     }
 
     OverworldAnimManager_Finish(param0);
@@ -731,9 +731,9 @@ static void FlyLanding_InitEnv(OverworldAnimManager *param0)
     Sprite_SetDrawFlag(env->birdSprite, TRUE);
 
     env->unk_6C = PushPlayerUp(env->resourcesWithPlayer.unk_00, env->resourcesWithPlayer.playerSprite);
-    env->task = ov5_021F0EB0(env->resourcesWithPlayer.fieldSystem, HEAP_ID_FIELD1);
+    env->task = CameraDistanceAnimation_New(env->resourcesWithPlayer.fieldSystem, HEAP_ID_FIELD1);
 
-    ov5_021F0F10(env->task, 1, -(FX32_ONE * 120), 12);
+    CameraDistanceAnimation_Start(env->task, CAMERA_DISTANCE_ANIMATION_OFFSET, -(FX32_ONE * 120), 12);
 
     Sprite *playerSprite;
     VecFx32 playerTranslation = { 0, 0, 0 };
@@ -812,7 +812,7 @@ static int FlyLanding_SetUpSprites(FlyLandingEnvExtended *env)
 static int FlyLanding_SetUpEnv(FlyLandingEnvExtended *env)
 {
     FlyLanding_SetUpPlayerAnimEnv(env->unk_6C);
-    ov5_021F0F10(env->task, 2, 0, 12);
+    CameraDistanceAnimation_Start(env->task, CAMERA_DISTANCE_ANIMATION_RESTORE, 0, 12);
 
     env->scaleDelta = 0x400;
     env->angleParam = FX32_ONE * 128;
@@ -984,7 +984,7 @@ static int FlyLandingAnim_HidePlayerMapObjAndSprite(FlyLandingEnvExtended *env)
         Sprite_SetDrawFlag(env->resourcesWithPlayer.playerSprite, FALSE);
     }
 
-    if (env->subState > 15 && ov5_021F0EF0(env->task) == TRUE) {
+    if (env->subState > 15 && CameraDistanceAnimation_IsDone(env->task) == TRUE) {
         env->subState = 0;
         env->state++;
         env->hasEndedIfTwo = 2;
@@ -2342,7 +2342,7 @@ static void FlyAway_SetTasksDone(HMCutIn *cutIn)
     }
 
     if (env->task) {
-        ov5_021F0EFC(env->task);
+        CameraDistanceAnimation_Free(env->task);
     }
 
     OverworldAnimManager_Finish(cutIn->unk_250);
@@ -2528,9 +2528,9 @@ static void Fly_PrepareBirdForDescent(HMCutIn *cutIn)
 
     env->unk_60 = PushPlayerUp(cutIn->unk_244, cutIn->playerSprite);
     cutIn->forceDrawPlayerSprite = TRUE;
-    env->task = ov5_021F0EB0(cutIn->fieldSystem, HEAP_ID_FIELD1);
+    env->task = CameraDistanceAnimation_New(cutIn->fieldSystem, HEAP_ID_FIELD1);
 
-    ov5_021F0F10(env->task, 1, FX32_CONST(-120), 12);
+    CameraDistanceAnimation_Start(env->task, CAMERA_DISTANCE_ANIMATION_OFFSET, FX32_CONST(-120), 12);
 
     Sprite *playerSprite;
     VecFx32 playerTranslation = VEC_FX32(0, 0, 0);
@@ -2641,7 +2641,7 @@ static int FlyPickUpPlayer_PrepareForTakeoff(FlyTaskEnv *flyTaskEnv)
     flyTaskEnv->playerOffsetY = playerY - birdY;
 
     FlyPickUpPlayer_TransferPlayerAnimEnv(flyTaskEnv->unk_60);
-    ov5_021F0F10(flyTaskEnv->task, 2, 0, 12);
+    CameraDistanceAnimation_Start(flyTaskEnv->task, CAMERA_DISTANCE_ANIMATION_RESTORE, 0, 12);
 
     flyTaskEnv->scaleDelta = FX32_CONST(1. / 16);
     flyTaskEnv->angleParam = FX32_CONST(128);

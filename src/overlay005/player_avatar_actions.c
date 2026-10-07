@@ -15,11 +15,11 @@
 #include "field/field_system.h"
 #include "overlay005/dist_world_surf_mount_renderer.h"
 #include "overlay005/field_effect_manager.h"
+#include "overlay005/field_map_task_decl.h"
 #include "overlay005/map_object_anim_cmd.h"
 #include "overlay005/ov5_021EB1A0.h"
 #include "overlay005/ov5_021ECE40.h"
 #include "overlay005/ov5_021F2850.h"
-#include "overlay005/struct_ov5_021D1BEC_decl.h"
 #include "overlay005/surf_mount_renderer.h"
 #include "overlay006/hm_cut_in.h"
 #include "overlay006/ov6_02248050.h"
@@ -76,7 +76,7 @@ typedef struct RockClimbTaskEnv {
     MapObject *playerObject;
     OverworldAnimManager *unk_18;
     MonRideTask monRideTask;
-    UnkStruct_ov5_021D1BEC *unk_2C;
+    FieldMapTask *unk_2C;
 } RockClimbTaskEnv;
 
 typedef struct WaterfallTaskEnv {
@@ -93,7 +93,7 @@ typedef struct WaterfallTaskEnv {
     PlayerAvatar *playerAvatar;
     MapObject *playerObject;
     MonRideTask monRideTask;
-    UnkStruct_ov5_021D1BEC *unk_50;
+    FieldMapTask *unk_50;
 } WaterfallTaskEnv;
 
 typedef struct {

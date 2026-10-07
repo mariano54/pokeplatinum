@@ -1338,7 +1338,7 @@ static BOOL FieldTask_CanalaveGym_MovePlatformUpDown(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     int *state = FieldTask_GetEnv(taskMan);
-    CanalaveGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    CanalaveGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     switch (*state) {
     case 0:
@@ -1396,7 +1396,7 @@ static BOOL FieldTask_CanalaveGym_MovePlatformEastWest(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     int *state = FieldTask_GetEnv(taskMan);
-    CanalaveGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    CanalaveGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     MapObject *playerObj = PlayerAvatar_GetMapObject(fieldSystem->playerAvatar);
 
     switch (*state) {
@@ -1469,7 +1469,7 @@ static BOOL FieldTask_CanalaveGym_MovePlatformNorthSouth(FieldTask *taskMan)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(taskMan);
     int *state = FieldTask_GetEnv(taskMan);
-    CanalaveGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    CanalaveGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     MapObject *playerObj = PlayerAvatar_GetMapObject(fieldSystem->playerAvatar);
 
     switch (*state) {
@@ -1547,9 +1547,9 @@ void CanalaveGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
     PersistedMapFeatures *mapFeatures = MiscSaveBlock_GetPersistedMapFeatures(FieldSystem_GetSaveData(fieldSystem));
     CanalaveGymPersistedFeature *feature = PersistedMapFeatures_GetBuffer(mapFeatures, DYNAMIC_MAP_FEATURES_CANALAVE_GYM);
 
-    fieldSystem->unk_04->dynamicMapFeaturesData = Heap_Alloc(HEAP_ID_FIELD1, sizeof(CanalaveGymSystem));
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = Heap_Alloc(HEAP_ID_FIELD1, sizeof(CanalaveGymSystem));
 
-    gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     gymSystem->fieldSystem = fieldSystem;
 
     VecFx32 floorPosition = { FX32_CONST(256), 0, FX32_CONST(256) };
@@ -1612,7 +1612,7 @@ BOOL CanalaveGym_CheckIfPlayerOnPlatform(FieldSystem *fieldSystem)
         return FALSE;
     }
 
-    CanalaveGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    CanalaveGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     if (gymSystem == NULL) {
         return FALSE;
@@ -1629,9 +1629,9 @@ BOOL CanalaveGym_CheckIfPlayerOnPlatform(FieldSystem *fieldSystem)
 
 void CanalaveGym_DynamicMapFeaturesFree(FieldSystem *fieldSystem)
 {
-    CanalaveGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    CanalaveGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     Heap_Free(gymSystem);
-    fieldSystem->unk_04->dynamicMapFeaturesData = NULL;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = NULL;
 }
 
 BOOL CanalaveGym_DynamicMapFeaturesCheckCollision(FieldSystem *fieldSystem, const int tileX, const int tileZ, const fx32 height, BOOL *isColliding)
@@ -2088,8 +2088,8 @@ void SunyshoreGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
     PersistedMapFeatures *mapFeatures = MiscSaveBlock_GetPersistedMapFeatures(FieldSystem_GetSaveData(fieldSystem));
     SunyshoreGymPersistedFeatures *features = PersistedMapFeatures_GetBuffer(mapFeatures, DYNAMIC_MAP_FEATURES_SUNYSHORE_GYM);
 
-    fieldSystem->unk_04->dynamicMapFeaturesData = Heap_Alloc(HEAP_ID_FIELD1, sizeof(SunyshoreGymSystem));
-    gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = Heap_Alloc(HEAP_ID_FIELD1, sizeof(SunyshoreGymSystem));
+    gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     gymSystem->roomID = features->roomID;
     gymSystem->rotationState = features->rotationState;
@@ -2122,14 +2122,14 @@ void SunyshoreGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
 void SunyshoreGym_DynamicMapFeaturesFree(FieldSystem *fieldSystem)
 {
-    SunyshoreGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    SunyshoreGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     Heap_Free(gymSystem);
-    fieldSystem->unk_04->dynamicMapFeaturesData = NULL;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = NULL;
 }
 
 BOOL SunyshoreGym_DynamicMapFeaturesCheckCollision(FieldSystem *fieldSystem, const int tileX, const int tileZ, const fx32 height, BOOL *isColliding)
 {
-    SunyshoreGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    SunyshoreGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     int numRegions = sSunyshoreCollisionLists[gymSystem->roomID].numRegions;
     int rotationState = gymSystem->rotationState;
     u8 const *collisionList = sSunyshoreCollisionLists[gymSystem->roomID].regionsList[rotationState];
@@ -2151,7 +2151,7 @@ void SunyshoreGym_PressButton(FieldSystem *fieldSystem, const u8 buttonType)
 {
     PersistedMapFeatures *mapFeatures = MiscSaveBlock_GetPersistedMapFeatures(FieldSystem_GetSaveData(fieldSystem));
     SunyshoreGymPersistedFeatures *feature = PersistedMapFeatures_GetBuffer(mapFeatures, DYNAMIC_MAP_FEATURES_SUNYSHORE_GYM);
-    SunyshoreGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    SunyshoreGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     int *state = Heap_AllocAtEnd(HEAP_ID_FIELD2, sizeof(int));
     *state = 0;
 
@@ -2189,7 +2189,7 @@ static BOOL FieldTask_SunyshoreGym_RotateGears(FieldTask *task)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(task);
     int *state = FieldTask_GetEnv(task);
-    SunyshoreGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    SunyshoreGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     switch (*state) {
     case 0: {
@@ -2492,7 +2492,7 @@ void EternaGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
     EternaGymSystem *gymSystem = Heap_Alloc(HEAP_ID_FIELD1, sizeof(EternaGymSystem));
 
     memset(gymSystem, 0, sizeof(EternaGymSystem));
-    fieldSystem->unk_04->dynamicMapFeaturesData = gymSystem;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = gymSystem;
 
     gymSystem->fieldSystem = fieldSystem;
 
@@ -2526,9 +2526,9 @@ void EternaGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
 void EternaGym_DynamicMapFeaturesFree(FieldSystem *fieldSystem)
 {
-    EternaGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    EternaGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     Heap_Free(gymSystem);
-    fieldSystem->unk_04->dynamicMapFeaturesData = NULL;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = NULL;
 }
 
 BOOL EternaGym_DynamicMapFeaturesCheckCollision(FieldSystem *fieldSystem, const int tileX, const int tileZ, const fx32 height, BOOL *outIsColliding)
@@ -2912,7 +2912,7 @@ BOOL EternaGym_AdvanceClockState(FieldSystem *fieldSystem, Window *window, Messa
     eternaClockPersisted->state++;
     SetEternaGymFlowerClockState(fieldSystem, eternaClockPersisted->state);
 
-    EternaGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    EternaGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
     const EternaGymClockTime *newClockTime = &sEternaGymClockTimes[eternaClockPersisted->state];
 
     EternaGymClockUpdateManager *clockMan = Heap_Alloc(HEAP_ID_FIELD2, sizeof(EternaGymClockUpdateManager));
@@ -3034,7 +3034,7 @@ void VeilstoneGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
     memset(gymSystem, 0, sizeof(VeilstoneGymSystem));
 
-    fieldSystem->unk_04->dynamicMapFeaturesData = gymSystem;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = gymSystem;
     gymSystem->fieldSystem = fieldSystem;
 
     FieldEffectManager_InitRenderer(fieldSystem->fieldEffMan, FIELD_EFFECT_RENDERER_VEILSTONE_GYM_OBJECTS);
@@ -3051,10 +3051,10 @@ void VeilstoneGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
 void VeilstoneGym_DynamicMapFeaturesFree(FieldSystem *fieldSystem)
 {
-    VeilstoneGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    VeilstoneGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     Heap_Free(gymSystem);
-    fieldSystem->unk_04->dynamicMapFeaturesData = NULL;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = NULL;
 }
 
 BOOL VeilstoneGym_DynamicMapFeaturesCheckCollision(FieldSystem *fieldSystem, const int tileX, const int tileZ, const fx32 height, BOOL *isColliding)
@@ -3552,7 +3552,7 @@ BOOL VeilstoneGym_HitPunchingBag(FieldSystem *fieldSystem)
 
     int x, z, bagTravelDistance;
     int playerDir = PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar);
-    VeilstoneGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    VeilstoneGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     PlayerAvatar_MoveCoordsInDirection(fieldSystem->playerAvatar, playerDir, &x, &z);
 
@@ -3782,7 +3782,7 @@ void HearthomeGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
     memset(gymSystem, 0, sizeof(HearthomeGymSystem));
 
     gymSystem->fieldSystem = fieldSystem;
-    fieldSystem->unk_04->dynamicMapFeaturesData = gymSystem;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = gymSystem;
 
     HearthomeGym_InitFog(gymSystem);
     FieldEffectManager_InitRenderer(fieldSystem->fieldEffMan, 32);
@@ -3862,13 +3862,13 @@ void HearthomeGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
 void HearthomeGym_DynamicMapFeaturesFree(FieldSystem *fieldSystem)
 {
-    HearthomeGymSystem *gymSystem = fieldSystem->unk_04->dynamicMapFeaturesData;
+    HearthomeGymSystem *gymSystem = fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData;
 
     SysTask_Done(gymSystem->emptyTask);
     HearthomeGym_FreeTrainers(gymSystem);
     Heap_Free(gymSystem);
 
-    fieldSystem->unk_04->dynamicMapFeaturesData = NULL;
+    fieldSystem->fieldMapSubsystems->dynamicMapFeaturesData = NULL;
 }
 
 static void HearthomeGym_EmptyTask(SysTask *task, void *data)

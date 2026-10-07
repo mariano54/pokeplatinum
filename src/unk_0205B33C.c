@@ -112,7 +112,7 @@ UnkStruct_0205B43C *FieldSystem_InitCommUnionRoom(FieldSystem *fieldSystem)
 
     GF_ASSERT(fieldSystem != NULL);
 
-    if (fieldSystem->unk_7C != NULL) {
+    if (fieldSystem->unionRoom != NULL) {
         return NULL;
     }
 
@@ -123,7 +123,7 @@ UnkStruct_0205B43C *FieldSystem_InitCommUnionRoom(FieldSystem *fieldSystem)
     v0 = sub_0205B3A0(fieldSystem);
 
     if (v0 == NULL) {
-        v0 = fieldSystem->unk_7C;
+        v0 = fieldSystem->unionRoom;
     }
 
     CommFieldCmd_Init((void *)fieldSystem);
@@ -135,11 +135,11 @@ UnkStruct_0205B43C *FieldSystem_InitCommUnionRoom(FieldSystem *fieldSystem)
 
 void sub_0205B388(FieldSystem *fieldSystem)
 {
-    if (fieldSystem->unk_7C == NULL) {
+    if (fieldSystem->unionRoom == NULL) {
         return;
     }
 
-    sub_0205B5B4(fieldSystem->unk_7C, sub_0205B5FC, 5);
+    sub_0205B5B4(fieldSystem->unionRoom, sub_0205B5FC, 5);
 }
 
 static UnkStruct_0205B43C *sub_0205B3A0(FieldSystem *fieldSystem)
@@ -148,7 +148,7 @@ static UnkStruct_0205B43C *sub_0205B3A0(FieldSystem *fieldSystem)
     SaveData *saveData;
     UnkStruct_0205B43C *v2 = NULL;
 
-    if (fieldSystem->unk_7C != NULL) {
+    if (fieldSystem->unionRoom != NULL) {
         return NULL;
     }
 
@@ -635,8 +635,8 @@ void sub_0205B990(int param0, int param1, void *param2, void *param3)
 {
     FieldSystem *fieldSystem = (FieldSystem *)param3;
 
-    sub_0205B5B4(fieldSystem->unk_7C, sub_0205B43C, 2);
-    sub_0205C160(fieldSystem->unk_7C);
+    sub_0205B5B4(fieldSystem->unionRoom, sub_0205B43C, 2);
+    sub_0205C160(fieldSystem->unionRoom);
 }
 
 static int Unk_021C0858;
@@ -646,8 +646,8 @@ void sub_0205B9AC(int param0, int param1, void *param2, void *param3)
     FieldSystem *fieldSystem = (FieldSystem *)param3;
     u8 *v1 = (u8 *)param2;
 
-    if (fieldSystem->unk_7C->unk_44 == 0) {
-        fieldSystem->unk_7C->unk_30 = *v1;
+    if (fieldSystem->unionRoom->unk_44 == 0) {
+        fieldSystem->unionRoom->unk_30 = *v1;
         Unk_021C0858 = *v1;
     }
 }
@@ -657,8 +657,8 @@ void sub_0205B9C4(int param0, int param1, void *param2, void *param3)
     FieldSystem *fieldSystem = (FieldSystem *)param3;
     u8 *v1 = (u8 *)param2;
 
-    fieldSystem->unk_7C->unk_2C = 1;
-    fieldSystem->unk_7C->unk_40 = *v1;
+    fieldSystem->unionRoom->unk_2C = 1;
+    fieldSystem->unionRoom->unk_40 = *v1;
 
     if (*v1 == 4) {
         CommManager_StartDrawServer();
@@ -669,7 +669,7 @@ void sub_0205B9E0(int param0, int param1, void *param2, void *param3)
 {
     FieldSystem *fieldSystem = (FieldSystem *)param3;
 
-    fieldSystem->unk_7C->unk_44 = 1;
+    fieldSystem->unionRoom->unk_44 = 1;
 }
 
 int sub_0205B9E8(UnkStruct_0205B43C *param0)
@@ -712,7 +712,7 @@ void sub_0205BA08(int param0, int param1, void *param2, void *param3)
 u8 *sub_0205BA5C(int param0, void *param1, int param2)
 {
     FieldSystem *fieldSystem = (FieldSystem *)param1;
-    UnkStruct_0205B43C *v1 = fieldSystem->unk_7C;
+    UnkStruct_0205B43C *v1 = fieldSystem->unionRoom;
 
     return (u8 *)v1->unk_188[param0];
 }
@@ -720,7 +720,7 @@ u8 *sub_0205BA5C(int param0, void *param1, int param2)
 void sub_0205BA6C(int param0, int param1, void *param2, void *param3)
 {
     FieldSystem *fieldSystem = (FieldSystem *)param3;
-    UnkStruct_0205B43C *v1 = fieldSystem->unk_7C;
+    UnkStruct_0205B43C *v1 = fieldSystem->unionRoom;
     u8 *v2 = (u8 *)param2;
 
     v1->unk_176[param0] = *v2;

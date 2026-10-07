@@ -18,8 +18,8 @@
 #include "overlay005/map_prop.h"
 #include "overlay005/map_prop_animation.h"
 #include "overlay005/model_attributes.h"
-#include "overlay005/ov5_021EAFA4.h"
 #include "overlay005/signpost.h"
+#include "overlay005/touch_projection.h"
 #include "overlay056/struct_ov56_02256468_decl.h"
 #include "overlay066/struct_ov66_0222DCE0_sub1.h"
 #include "underground/struct_underground_top_screen_context_decl.h"
@@ -75,14 +75,14 @@ typedef struct MapObjectsToPreload {
 
 typedef struct FieldSystem_t {
     FieldProcessManager *processManager;
-    FieldSystem_sub2 *unk_04;
+    FieldSystem_sub2 *fieldMapSubsystems;
     BgConfig *bgConfig;
     SaveData *saveData;
     FieldTask *task;
     MapHeaderData *mapHeaderData;
     int bottomScreen;
     Location *location;
-    int unk_20;
+    int useCameraRoll;
     Camera *camera;
     LandDataManager *landDataMan;
     MapMatrix *mapMatrix;
@@ -105,25 +105,25 @@ typedef struct FieldSystem_t {
     int mapLoadType;
     const MapLoadMode *mapLoadMode;
     FieldWildBattleMetadata wildBattleMetadata;
-    UnkStruct_0205B43C *unk_7C;
-    UnkStruct_0205C22C *unk_80;
-    UnkStruct_ov56_02256468 *unk_84;
+    UnkStruct_0205B43C *unionRoom;
+    UnkStruct_0205C22C *unionRoomPlayers;
+    UnkStruct_ov56_02256468 *unionRoomBottomScreen;
     TradeRoom *tradeRoom;
-    UnkStruct_ov5_021EB0E0 *unk_8C;
+    TouchProjection *touchProjection;
     int menuCursorPos;
     RadarChain *chain;
     BagCursor *bagCursor;
     JournalEntry *journalEntry;
     DynamicTerrainHeightManager *dynamicTerrainHeightMan;
     MapPropManager *mapPropManager;
-    HoneyTreeShakeList *unk_A8;
+    HoneyTreeShakeList *honeyTreeShakeList;
     BattleTower *battleTower;
     const BattleRegulation *battleRegulation;
     PokedexMemory *pokedexMemory;
     BOOL temporaryMapChange;
     u8 *battleSubscreenCursorOn;
-    u32 unk_C0;
-    UnkStruct_ov66_0222DCE0_sub1 unk_C4;
+    u32 mapUpdateFlags;
+    UnkStruct_ov66_0222DCE0_sub1 wifiPlazaLastVisit;
 } FieldSystem;
 
 #endif // POKEPLATINUM_FIELD_SYSTEM_H

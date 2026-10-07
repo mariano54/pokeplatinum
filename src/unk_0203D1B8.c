@@ -1082,7 +1082,7 @@ void sub_0203DDFC(FieldSystem *fieldSystem)
 {
     UnkStruct_0203DDFC *v0 = Heap_Alloc(HEAP_ID_FIELD3, sizeof(UnkStruct_0203DDFC));
 
-    v0->unk_00 = fieldSystem->unk_80;
+    v0->unk_00 = fieldSystem->unionRoomPlayers;
     v0->unk_04 = fieldSystem->journalEntry;
     v0->options = SaveData_GetOptions(fieldSystem->saveData);
 
@@ -1094,7 +1094,7 @@ void *sub_0203DE34(FieldSystem *fieldSystem)
     UnkStruct_0203DE34 *v0 = Heap_Alloc(HEAP_ID_FIELD2, sizeof(UnkStruct_0203DE34));
 
     v0->saveData = fieldSystem->saveData;
-    v0->unk_04 = fieldSystem->unk_80;
+    v0->unk_04 = fieldSystem->unionRoomPlayers;
     v0->options = SaveData_GetOptions(fieldSystem->saveData);
     v0->records = SaveData_GetGameRecords(fieldSystem->saveData);
     v0->journalEntry = fieldSystem->journalEntry;

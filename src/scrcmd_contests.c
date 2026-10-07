@@ -366,13 +366,13 @@ static BOOL IsContestCameraFlashTaskDone(ScriptContext *ctx)
 
 BOOL ScrCmd_StopHBlank(ScriptContext *ctx)
 {
-    HBlankSystem_Stop(ctx->fieldSystem->unk_04->hBlankSystem);
+    HBlankSystem_Stop(ctx->fieldSystem->fieldMapSubsystems->hBlankSystem);
     return FALSE;
 }
 
 BOOL ScrCmd_StartHBlank(ScriptContext *ctx)
 {
-    HBlankSystem_Start(ctx->fieldSystem->unk_04->hBlankSystem);
+    HBlankSystem_Start(ctx->fieldSystem->fieldMapSubsystems->hBlankSystem);
     return FALSE;
 }
 

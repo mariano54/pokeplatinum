@@ -8,7 +8,7 @@
 #include "generated/map_headers.h"
 
 #include "applications/poketch/poketch_system.h"
-#include "overlay005/ov5_021EA714.h"
+#include "overlay005/field_poketch.h"
 #include "overlay005/save_info_window.h"
 
 #include "bg_window.h"

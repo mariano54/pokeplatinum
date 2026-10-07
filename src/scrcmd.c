@@ -51,16 +51,16 @@
 #include "field/field_system.h"
 #include "field/field_system_sub2_t.h"
 #include "overlay005/enable_poketch_task.h"
+#include "overlay005/entrance_animation.h"
 #include "overlay005/field_menu.h"
 #include "overlay005/footprint_type.h"
 #include "overlay005/honey_tree.h"
 #include "overlay005/land_data.h"
 #include "overlay005/map_object_anim_cmd.h"
-#include "overlay005/ov5_021D431C.h"
 #include "overlay005/ov5_021D5EB8.h"
-#include "overlay005/ov5_021EA874.h"
 #include "overlay005/ov5_021ECC20.h"
 #include "overlay005/ov5_021F6454.h"
+#include "overlay005/pal_pad_registration.h"
 #include "overlay005/player_avatar_actions.h"
 #include "overlay005/save_info_window.h"
 #include "overlay005/scrcmd_move_tutor.h"
@@ -1901,7 +1901,7 @@ static BOOL ResumeOnSelectionOrDisconnect(ScriptContext *ctx)
     FieldMenuManager **fieldMenuMan = FieldSystem_GetScriptMemberPtr(fieldSystem, SCRIPT_MANAGER_FIELD_MENU_MANAGER);
 
     if (*selectedOptionPtr == LIST_MENU_NO_SELECTION_YET) {
-        if (sub_0205B9E8(fieldSystem->unk_7C)) {
+        if (sub_0205B9E8(fieldSystem->unionRoom)) {
             *selectedOptionPtr = 8;
             FieldMenuManager_DeleteWithMenu(*fieldMenuMan);
             return TRUE;
@@ -2967,7 +2967,7 @@ static UnkStruct_02041DC8 *sub_02041DC8(enum HeapID heapID, FieldSystem *fieldSy
 
 static BOOL ScrCmd_0A2(ScriptContext *ctx)
 {
-    ov5_021EAF50(ctx->fieldSystem);
+    PalPadRegistration_Start(ctx->fieldSystem);
     return TRUE;
 }
 
@@ -3659,7 +3659,7 @@ static BOOL ScrCmd_0C3(ScriptContext *ctx)
     FieldOverworldState *fieldState = SaveData_GetFieldOverworldState(ctx->fieldSystem->saveData);
 
     FieldOverworldState_SetWeather(fieldState, OVERWORLD_WEATHER_CLEAR);
-    ov5_021D5F7C(ctx->fieldSystem->unk_04->unk_0C, FieldOverworldState_GetWeather(fieldState));
+    ov5_021D5F7C(ctx->fieldSystem->fieldMapSubsystems->weather, FieldOverworldState_GetWeather(fieldState));
 
     return TRUE;
 }
@@ -3669,7 +3669,7 @@ static BOOL ScrCmd_0C4(ScriptContext *ctx)
     FieldOverworldState *fieldState = SaveData_GetFieldOverworldState(ctx->fieldSystem->saveData);
 
     FieldOverworldState_SetWeather(fieldState, OVERWORLD_WEATHER_CLEAR);
-    ov5_021D5F7C(ctx->fieldSystem->unk_04->unk_0C, FieldOverworldState_GetWeather(fieldState));
+    ov5_021D5F7C(ctx->fieldSystem->fieldMapSubsystems->weather, FieldOverworldState_GetWeather(fieldState));
 
     return TRUE;
 }
@@ -4213,7 +4213,7 @@ static BOOL ScrCmd_GetUnionRoomTealaMessage(ScriptContext *ctx)
     FieldSystem *fieldSystem = ctx->fieldSystem;
     StringTemplate **strTemplate = FieldSystem_GetScriptMemberPtr(fieldSystem, SCRIPT_MANAGER_STR_TEMPLATE);
 
-    *destVar = UnionRoom_GetTealaMessage(ctx->fieldSystem->unk_7C, *strTemplate);
+    *destVar = UnionRoom_GetTealaMessage(ctx->fieldSystem->unionRoom, *strTemplate);
     return FALSE;
 }
 
@@ -4263,7 +4263,7 @@ static BOOL ScrCmd_13E(ScriptContext *ctx)
 {
     FieldSystem *fieldSystem = ctx->fieldSystem;
 
-    sub_0205C2B0(fieldSystem->unk_80);
+    sub_0205C2B0(fieldSystem->unionRoomPlayers);
     CommManager_UnionRestartSearch();
     ScriptContext_Pause(ctx, sub_020437E8);
 
@@ -4282,7 +4282,7 @@ static BOOL ScrCmd_GetUnionRoomMessage(ScriptContext *ctx)
     u16 *destVar = ScriptContext_GetVarPointer(ctx);
     StringTemplate **strTemplate = FieldSystem_GetScriptMemberPtr(ctx->fieldSystem, SCRIPT_MANAGER_STR_TEMPLATE);
 
-    *destVar = UnionRoom_GetMessage(ctx->fieldSystem->unk_7C, MapObject_GetLocalID(*mapObj), msgType, *strTemplate);
+    *destVar = UnionRoom_GetMessage(ctx->fieldSystem->unionRoom, MapObject_GetLocalID(*mapObj), msgType, *strTemplate);
     return FALSE;
 }
 
@@ -4290,7 +4290,7 @@ static BOOL ScrCmd_2BA(ScriptContext *ctx)
 {
     u16 *v2 = ScriptContext_GetVarPointer(ctx);
 
-    *v2 = sub_0205BA7C(ctx->fieldSystem->unk_7C);
+    *v2 = sub_0205BA7C(ctx->fieldSystem->unionRoom);
 
     if (*v2 != 0) {
         void **v1 = FieldSystem_GetScriptMemberPtr(ctx->fieldSystem, SCRIPT_MANAGER_PARTY_MANAGEMENT_DATA);
@@ -4307,7 +4307,7 @@ static BOOL ScrCmd_140(ScriptContext *ctx)
     MapObject **v1 = FieldSystem_GetScriptMemberPtr(fieldSystem, SCRIPT_MANAGER_TARGET_OBJECT);
     u16 *v2 = ScriptContext_GetVarPointer(ctx);
 
-    *v2 = sub_0205B780(fieldSystem->unk_7C, MapObject_GetLocalID(*v1));
+    *v2 = sub_0205B780(fieldSystem->unionRoom, MapObject_GetLocalID(*v1));
     return FALSE;
 }
 
@@ -4318,7 +4318,7 @@ static BOOL ScrCmd_146(ScriptContext *ctx)
     u16 v2 = ScriptContext_GetVar(ctx);
     u16 *v3 = ScriptContext_GetVarPointer(ctx);
 
-    *v3 = sub_0205B804(fieldSystem->unk_7C, MapObject_GetLocalID(*v1), v2);
+    *v3 = sub_0205B804(fieldSystem->unionRoom, MapObject_GetLocalID(*v1), v2);
     return FALSE;
 }
 
@@ -4335,7 +4335,7 @@ static BOOL ScrCmd_141(ScriptContext *ctx)
 static BOOL sub_02043938(ScriptContext *ctx)
 {
     FieldSystem *fieldSystem = ctx->fieldSystem;
-    u32 v1 = sub_0205B8D8(fieldSystem->unk_7C);
+    u32 v1 = sub_0205B8D8(fieldSystem->unionRoom);
     u16 *v2 = FieldSystem_GetVarPointer(fieldSystem, ctx->data[0]);
 
     if (v1 == 0) {
@@ -4349,7 +4349,7 @@ static BOOL sub_02043938(ScriptContext *ctx)
 static BOOL ScrCmd_142(ScriptContext *ctx)
 {
     FieldSystem *fieldSystem = ctx->fieldSystem;
-    UnkStruct_0205C22C *v1 = fieldSystem->unk_80;
+    UnkStruct_0205C22C *v1 = fieldSystem->unionRoomPlayers;
 
     sub_0205C820(fieldSystem->mapObjMan, v1);
     return FALSE;
@@ -4376,7 +4376,7 @@ static BOOL ScrCmd_143(ScriptContext *ctx)
     u16 v1 = ScriptContext_GetVar(ctx);
     u16 v2 = ScriptContext_GetVar(ctx);
 
-    sub_0205B930(fieldSystem->unk_7C, v1, v2);
+    sub_0205B930(fieldSystem->unionRoom, v1, v2);
     return FALSE;
 }
 
@@ -4393,12 +4393,12 @@ static BOOL ScrCmd_144(ScriptContext *ctx)
 static BOOL sub_020439F4(ScriptContext *ctx)
 {
     u16 *v0 = FieldSystem_GetVarPointer(ctx->fieldSystem, ctx->data[0]);
-    u32 v1 = sub_0205B8DC(ctx->fieldSystem->unk_7C);
+    u32 v1 = sub_0205B8DC(ctx->fieldSystem->unionRoom);
 
     if (v1 >= 1) {
         *v0 = v1;
 
-        sub_0205C154(ctx->fieldSystem->unk_7C);
+        sub_0205C154(ctx->fieldSystem->unionRoom);
         return TRUE;
     }
 
@@ -4419,10 +4419,10 @@ static BOOL ScrCmd_145(ScriptContext *ctx)
 static BOOL sub_02043A4C(ScriptContext *ctx)
 {
     u16 *v0 = FieldSystem_GetVarPointer(ctx->fieldSystem, ctx->data[0]);
-    u32 v1 = sub_0205B91C(ctx->fieldSystem->unk_7C);
+    u32 v1 = sub_0205B91C(ctx->fieldSystem->unionRoom);
 
     if (gSystem.pressedKeys & PAD_BUTTON_B) {
-        v1 = sub_0205B9EC(ctx->fieldSystem->unk_7C, 8);
+        v1 = sub_0205B9EC(ctx->fieldSystem->unionRoom, 8);
     }
 
     if (v1 != 0) {
@@ -6608,8 +6608,8 @@ static void sub_020462C0(SysTask *ctx, void *param1)
 {
     FieldSystem *fieldSystem = param1;
 
-    if (fieldSystem->unk_04->unk_0C) {
-        ov5_021D5F24(fieldSystem->unk_04->unk_0C, 26);
+    if (fieldSystem->fieldMapSubsystems->weather) {
+        ov5_021D5F24(fieldSystem->fieldMapSubsystems->weather, 26);
         SysTask_Done(ctx);
     }
 }
@@ -6627,7 +6627,7 @@ static BOOL ScrCmd_Unused_2CE(ScriptContext *ctx)
     FieldSystem *fieldSystem = ctx->fieldSystem;
     u16 v1 = FieldOverworldState_GetWeather(SaveData_GetFieldOverworldState(fieldSystem->saveData));
 
-    ov5_021D5F24(fieldSystem->unk_04->unk_0C, v1);
+    ov5_021D5F24(fieldSystem->fieldMapSubsystems->weather, v1);
     return TRUE;
 }
 
@@ -7078,7 +7078,7 @@ static BOOL ScrCmd_CheckNoWiFiPlazaCooldown(ScriptContext *ctx)
     u16 *destVar = ScriptContext_GetVarPointer(ctx);
 
     s64 timestamp = GetTimestamp();
-    s64 v3 = timestamp - fieldSystem->unk_C4.unk_00;
+    s64 v3 = timestamp - fieldSystem->wifiPlazaLastVisit.unk_00;
 
     if (v3 >= 120) {
         *destVar = TRUE;

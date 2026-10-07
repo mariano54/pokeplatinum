@@ -1,0 +1,6 @@
+#ifndef POKEPLATINUM_FIELD_MAP_TASK_DECL_H
+#define POKEPLATINUM_FIELD_MAP_TASK_DECL_H
+
+typedef struct FieldMapTask FieldMapTask;
+
+#endif // POKEPLATINUM_FIELD_MAP_TASK_DECL_H

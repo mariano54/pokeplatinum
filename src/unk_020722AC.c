@@ -5,8 +5,8 @@
 #include "applications/party_menu/defs.h"
 #include "applications/party_menu/main.h"
 #include "field/field_system.h"
+#include "overlay005/entrance_animation.h"
 #include "overlay005/map_prop_animation.h"
-#include "overlay005/ov5_021D431C.h"
 #include "overlay006/pc_animation.h"
 
 #include "bag.h"

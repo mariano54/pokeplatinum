@@ -279,6 +279,6 @@ void FieldSystem_RequestLocationName(FieldSystem *fieldSystem)
             mapLabelWindowID--;
         }
 
-        MapNamePopUp_Show(fieldSystem->unk_04->mapPopup, mapLabelTextID, mapLabelWindowID);
+        MapNamePopUp_Show(fieldSystem->fieldMapSubsystems->mapPopup, mapLabelTextID, mapLabelWindowID);
     }
 }

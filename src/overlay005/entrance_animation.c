@@ -1,4 +1,4 @@
-#include "overlay005/ov5_021D431C.h"
+#include "overlay005/entrance_animation.h"
 
 #include <nitro.h>
 #include <string.h>
@@ -26,7 +26,7 @@
 
 #include "res/field/props/models/prop_models.naix"
 
-typedef struct UnkStruct_ov5_021D432C_t {
+typedef struct EntranceAnimation {
     int unk_00;
     TerrainCollisionHitbox unk_04;
     int unk_14;
@@ -36,39 +36,39 @@ typedef struct UnkStruct_ov5_021D432C_t {
     u8 unk_1E;
     BOOL unk_20;
     u16 unk_24;
-} UnkStruct_ov5_021D432C;
+} EntranceAnimation;
 
-typedef struct UnkStruct_ov5_021D4E00_t {
+typedef struct EntranceFade {
     int unk_00;
     u8 unk_04;
     BOOL unk_08;
     u16 unk_0C;
-} UnkStruct_ov5_021D4E00;
+} EntranceFade;
 
-static void ov5_021D4798(Camera *camera, u8 *param1);
-static void ov5_021D47DC(Camera *camera, u8 *param1);
+static void StepCameraZoomIn(Camera *camera, u8 *param1);
+static void StepCameraZoomOut(Camera *camera, u8 *param1);
 static u8 DoorAnimation_GetSoundEffectType(const int doorModelID);
 
-UnkStruct_ov5_021D432C *ov5_021D431C(void)
+EntranceAnimation *EntranceAnimation_New(void)
 {
-    UnkStruct_ov5_021D432C *v0 = Heap_AllocAtEnd(HEAP_ID_FIELD1, sizeof(UnkStruct_ov5_021D432C));
+    EntranceAnimation *v0 = Heap_AllocAtEnd(HEAP_ID_FIELD1, sizeof(EntranceAnimation));
     v0->unk_00 = 0;
 
     return v0;
 }
 
-void ov5_021D432C(UnkStruct_ov5_021D432C *param0)
+void EntranceAnimation_Free(EntranceAnimation *param0)
 {
     Heap_Free(param0);
 }
 
-void ov5_021D4334(const int param0, const int param1, UnkStruct_ov5_021D432C *param2)
+void EntranceAnimation_SetPosition(const int param0, const int param1, EntranceAnimation *param2)
 {
     param2->unk_14 = param0;
     param2->unk_18 = param1;
 }
 
-BOOL ov5_021D433C(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1)
+BOOL EntranceAnimation_EnterDoor(FieldSystem *fieldSystem, EntranceAnimation *param1)
 {
     MapObject *v0;
 
@@ -221,13 +221,13 @@ BOOL ov5_021D433C(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1)
     }
 
     if (param1->unk_20) {
-        ov5_021D4798(fieldSystem->camera, &param1->unk_1D);
+        StepCameraZoomIn(fieldSystem->camera, &param1->unk_1D);
     }
 
     return 0;
 }
 
-BOOL ov5_021D453C(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1)
+BOOL EntranceAnimation_ExitDoor(FieldSystem *fieldSystem, EntranceAnimation *param1)
 {
     MapObject *v0;
 
@@ -397,13 +397,13 @@ BOOL ov5_021D453C(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1)
     }
 
     if (param1->unk_20) {
-        ov5_021D47DC(fieldSystem->camera, &param1->unk_1D);
+        StepCameraZoomOut(fieldSystem->camera, &param1->unk_1D);
     }
 
     return 0;
 }
 
-static void ov5_021D4798(Camera *camera, u8 *param1)
+static void StepCameraZoomIn(Camera *camera, u8 *param1)
 {
     u8 v0;
     u16 v1;
@@ -433,7 +433,7 @@ static void ov5_021D4798(Camera *camera, u8 *param1)
     }
 }
 
-static void ov5_021D47DC(Camera *camera, u8 *param1)
+static void StepCameraZoomOut(Camera *camera, u8 *param1)
 {
     u8 v0;
     u16 v1;
@@ -476,7 +476,7 @@ static u8 DoorAnimation_GetSoundEffectType(const int doorModelID)
     return DOOR_SOUND_EFFECT_TYPE_HINGED;
 }
 
-BOOL ov5_021D4858(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1, const u8 param2)
+BOOL EntranceAnimation_ArriveByEscalator(FieldSystem *fieldSystem, EntranceAnimation *param1, const u8 param2)
 {
     MapObject *v0;
 
@@ -593,7 +593,7 @@ BOOL ov5_021D4858(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1, cons
     return 0;
 }
 
-BOOL ov5_021D4A24(FieldSystem *fieldSystem, UnkStruct_ov5_021D432C *param1, const u8 param2)
+BOOL EntranceAnimation_DepartByEscalator(FieldSystem *fieldSystem, EntranceAnimation *param1, const u8 param2)
 {
     MapObject *v0;
 
@@ -830,7 +830,7 @@ void FieldSystem_UnloadAnimation(FieldSystem *fieldSystem, const u8 tag)
     MapPropOneShotAnimationManager_UnloadAnimation(fieldSystem->mapPropAnimMan, fieldSystem->mapPropOneShotAnimMan, tag);
 }
 
-void ov5_021D4D78(const int param0, const int param1, const int param2, FieldSystem *fieldSystem)
+void BikeSlope_PlayPropAnimation(const int param0, const int param1, const int param2, FieldSystem *fieldSystem)
 {
     BOOL v0;
     MapProp *v1;
@@ -864,19 +864,19 @@ void ov5_021D4D78(const int param0, const int param1, const int param2, FieldSys
     }
 }
 
-UnkStruct_ov5_021D4E00 *ov5_021D4E00(void)
+EntranceFade *EntranceFade_New(void)
 {
-    UnkStruct_ov5_021D4E00 *v0 = Heap_AllocAtEnd(HEAP_ID_FIELD1, sizeof(UnkStruct_ov5_021D4E00));
+    EntranceFade *v0 = Heap_AllocAtEnd(HEAP_ID_FIELD1, sizeof(EntranceFade));
     v0->unk_00 = 0;
 
     return v0;
 }
 
-BOOL ov5_021D4E10(FieldTask *param0)
+BOOL EntranceFade_ArriveFromWhite(FieldTask *param0)
 {
     MapObject *v0;
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
-    UnkStruct_ov5_021D4E00 *v2 = FieldTask_GetEnv(param0);
+    EntranceFade *v2 = FieldTask_GetEnv(param0);
 
     switch (v2->unk_00) {
     case 0:
@@ -924,16 +924,16 @@ BOOL ov5_021D4E10(FieldTask *param0)
     }
 
     if (v2->unk_08) {
-        ov5_021D47DC(fieldSystem->camera, &v2->unk_04);
+        StepCameraZoomOut(fieldSystem->camera, &v2->unk_04);
     }
 
     return 0;
 }
 
-BOOL ov5_021D4F14(FieldTask *param0)
+BOOL EntranceFade_DepartToWhite(FieldTask *param0)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
-    UnkStruct_ov5_021D4E00 *v1 = FieldTask_GetEnv(param0);
+    EntranceFade *v1 = FieldTask_GetEnv(param0);
 
     switch (v1->unk_00) {
     case 0: {
@@ -961,16 +961,16 @@ BOOL ov5_021D4F14(FieldTask *param0)
     }
 
     if (v1->unk_08) {
-        ov5_021D4798(fieldSystem->camera, &v1->unk_04);
+        StepCameraZoomIn(fieldSystem->camera, &v1->unk_04);
     }
 
     return 0;
 }
 
-BOOL ov5_021D4FA0(FieldTask *param0)
+BOOL EntranceFade_DepartWithCircle(FieldTask *param0)
 {
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
-    UnkStruct_ov5_021D4E00 *v1 = FieldTask_GetEnv(param0);
+    EntranceFade *v1 = FieldTask_GetEnv(param0);
 
     switch (v1->unk_00) {
     case 0: {
@@ -992,17 +992,17 @@ BOOL ov5_021D4FA0(FieldTask *param0)
     }
 
     if (v1->unk_08) {
-        ov5_021D4798(fieldSystem->camera, &v1->unk_04);
+        StepCameraZoomIn(fieldSystem->camera, &v1->unk_04);
     }
 
     return 0;
 }
 
-BOOL ov5_021D5020(FieldTask *param0)
+BOOL EntranceFade_ArriveWithWipe(FieldTask *param0)
 {
     MapObject *v0;
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
-    UnkStruct_ov5_021D4E00 *v2 = FieldTask_GetEnv(param0);
+    EntranceFade *v2 = FieldTask_GetEnv(param0);
 
     switch (v2->unk_00) {
     case 0: {
@@ -1071,17 +1071,17 @@ BOOL ov5_021D5020(FieldTask *param0)
     }
 
     if (v2->unk_08) {
-        ov5_021D47DC(fieldSystem->camera, &v2->unk_04);
+        StepCameraZoomOut(fieldSystem->camera, &v2->unk_04);
     }
 
     return 0;
 }
 
-BOOL ov5_021D5150(FieldTask *param0)
+BOOL EntranceFade_Arrive(FieldTask *param0)
 {
     MapObject *v0;
     FieldSystem *fieldSystem = FieldTask_GetFieldSystem(param0);
-    UnkStruct_ov5_021D4E00 *v2 = FieldTask_GetEnv(param0);
+    EntranceFade *v2 = FieldTask_GetEnv(param0);
 
     switch (v2->unk_00) {
     case 0: {

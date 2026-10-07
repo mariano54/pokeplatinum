@@ -1,0 +1,7 @@
+#ifndef POKEPLATINUM_ENTRANCE_ANIMATION_DECL_H
+#define POKEPLATINUM_ENTRANCE_ANIMATION_DECL_H
+
+typedef struct EntranceAnimation EntranceAnimation;
+typedef struct EntranceFade EntranceFade;
+
+#endif // POKEPLATINUM_ENTRANCE_ANIMATION_DECL_H

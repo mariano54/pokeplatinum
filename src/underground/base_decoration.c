@@ -8,11 +8,10 @@
 #include "field/field_system.h"
 #include "field/field_system_sub2_t.h"
 #include "overlay005/area_data.h"
+#include "overlay005/field_map_task_decl.h"
+#include "overlay005/field_map_task_manager.h"
 #include "overlay005/map_prop.h"
-#include "overlay005/ov5_021D1A94.h"
-#include "overlay005/ov5_021EAFA4.h"
-#include "overlay005/struct_ov5_021D1BEC_decl.h"
-#include "overlay006/struct_ov6_0223E6EC.h"
+#include "overlay005/touch_projection.h"
 #include "underground/decoration_menu.h"
 #include "underground/secret_bases.h"
 
@@ -90,7 +89,7 @@ typedef struct BaseDecorationContext {
     FieldSystem *fieldSystem;
     DecorationMenu *decorationMenu;
     DecorationGoodsMenu *decorationGoodsMenu;
-    UnkStruct_ov5_021D1BEC *unk_50C;
+    FieldMapTask *unk_50C;
     u8 padding[8];
     u16 menuListPos;
     u16 goodsMenuListPos;
@@ -185,12 +184,12 @@ static void PropBlinkContext_Init(int propIndex, int interval, PropBlinkContext 
 static void BaseDecoration_HandlePropBlink(FieldSystem *fieldSystem, PropBlinkContext *ctx);
 static void PropBlinkContext_ShowProp(FieldSystem *fieldSystem, PropBlinkContext *ctx);
 static int PropBlinkContext_GetPropIndex(PropBlinkContext *ctx);
-static void ov23_022562AC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2);
-static void ov23_022562B8(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2);
-static void ov23_022562BC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2);
-static void ov23_022562C8(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2);
+static void ov23_022562AC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2);
+static void ov23_022562B8(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2);
+static void ov23_022562BC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2);
+static void ov23_022562C8(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2);
 
-static const UnkStruct_ov6_0223E6EC Unk_ov23_02256B88 = {
+static const FieldMapTaskTemplate Unk_ov23_02256B88 = {
     0x0,
     sizeof(DecorateCursor),
     ov23_022562AC,
@@ -294,7 +293,7 @@ static BOOL BaseDecoration_DecorationMenuTask(FieldTask *task)
         if (IsScreenFadeDone()) {
             DecorationGoodsMenu_Free(ctx->decorationGoodsMenu);
             DecorationMenu_Free(ctx->decorationMenu);
-            ov5_021D1BEC(ctx->unk_50C);
+            FieldMapTask_Remove(ctx->unk_50C);
             Heap_Free(ctx);
             return TRUE;
         }
@@ -367,8 +366,8 @@ void BaseDecoration_StartDecorationMenuTask(FieldSystem *fieldSystem, FieldTask 
     BaseDecoration_UpdateState(DECORATION_STATE_INIT, ctx);
 
     ctx->fieldSystem = fieldSystem;
-    ctx->unk_50C = ov5_021D1B6C(fieldSystem->unk_04->unk_04, &Unk_ov23_02256B88);
-    ctx->cursor = ov5_021D1C2C(ctx->unk_50C);
+    ctx->unk_50C = FieldMapTaskManager_Add(fieldSystem->fieldMapSubsystems->fieldMapTaskMan, &Unk_ov23_02256B88);
+    ctx->cursor = FieldMapTask_GetData(ctx->unk_50C);
 
     FieldTask_InitCall(task, BaseDecoration_DecorationMenuTask, ctx);
 }
@@ -1271,11 +1270,11 @@ static void BaseDecoration_UpdatePropPositionFromTouchInput(FieldSystem *fieldSy
 {
     PositionRect goodPosition;
     VecFx32 propPosition;
-    UnkStruct_ov5_021EB0E0 *v6 = fieldSystem->unk_8C;
+    TouchProjection *v6 = fieldSystem->touchProjection;
 
     BaseDecoration_StoreTouchCoordinates(gSystem.touchX, gSystem.touchY, touchInput);
 
-    propPosition = ov5_GetPositionFromTouchCoordinates(touchInput->x, touchInput->y, v6);
+    propPosition = TouchProjection_GetGroundPosition(touchInput->x, touchInput->y, v6);
     int x = propPosition.x / MAP_OBJECT_TILE_SIZE;
     int z = propPosition.z / MAP_OBJECT_TILE_SIZE;
 
@@ -1306,11 +1305,11 @@ static void BaseDecoration_UpdateCursorPositionFromTouchInput(FieldSystem *field
 {
     PositionRect position;
     VecFx32 modelPosition;
-    UnkStruct_ov5_021EB0E0 *v4 = fieldSystem->unk_8C;
+    TouchProjection *v4 = fieldSystem->touchProjection;
 
     BaseDecoration_StoreTouchCoordinates(gSystem.touchX, gSystem.touchY, touchInput);
 
-    modelPosition = ov5_GetPositionFromTouchCoordinates(touchInput->x, touchInput->y, v4);
+    modelPosition = TouchProjection_GetGroundPosition(touchInput->x, touchInput->y, v4);
     int x = modelPosition.x / MAP_OBJECT_TILE_SIZE;
     int z = modelPosition.z / MAP_OBJECT_TILE_SIZE;
 
@@ -1483,24 +1482,24 @@ static int PropBlinkContext_GetPropIndex(PropBlinkContext *ctx)
     return ctx->propIndex;
 }
 
-static void ov23_022562AC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov23_022562AC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     DecorateCursor *cursor = (DecorateCursor *)param2;
     DecorateCursor_Init(cursor);
 }
 
-static void ov23_022562B8(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov23_022562B8(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     return;
 }
 
-static void ov23_022562BC(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov23_022562BC(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     DecorateCursor *cursor = (DecorateCursor *)(param2);
     DecorateCursor_FreeModelFile(cursor);
 }
 
-static void ov23_022562C8(UnkStruct_ov5_021D1BEC *param0, FieldSystem *fieldSystem, void *param2)
+static void ov23_022562C8(FieldMapTask *param0, FieldSystem *fieldSystem, void *param2)
 {
     DecorateCursor *cursor = (DecorateCursor *)(param2);
 

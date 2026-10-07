@@ -45,7 +45,7 @@ static BOOL sub_020574CC(FieldTask *param0)
     case 0: {
         v1->unk_04.saveData = fieldSystem->saveData;
         v1->unk_04.unk_08 = v1->unk_02;
-        v1->unk_04.unk_00 = &fieldSystem->unk_C4;
+        v1->unk_04.unk_00 = &fieldSystem->wifiPlazaLastVisit;
         FieldTask_RunApplication(param0, &Unk_020ED4CC, &v1->unk_04);
         v1->unk_00++;
     } break;

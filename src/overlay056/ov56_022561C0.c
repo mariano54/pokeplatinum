@@ -130,7 +130,7 @@ static void ov56_022561C0(SysTask *param0, void *param1)
     BgConfig *v1 = v0->unk_14;
     int v2;
 
-    if (v0->fieldSystem->unk_80 == NULL) {
+    if (v0->fieldSystem->unionRoomPlayers == NULL) {
         return;
     }
 
@@ -222,12 +222,12 @@ UnkStruct_ov56_02256468 *ov56_02256410(FieldSystem *fieldSystem)
 
     v0->fieldSystem = fieldSystem;
     v0->unk_14 = fieldSystem->bgConfig;
-    v0->unk_04 = fieldSystem->unk_80;
-    v0->unk_08 = fieldSystem->unk_7C;
+    v0->unk_04 = fieldSystem->unionRoomPlayers;
+    v0->unk_08 = fieldSystem->unionRoom;
     v0->unk_10 = SaveData_GetTrainerInfo(fieldSystem->saveData);
     v0->unk_00 = 0;
     v0->unk_2F8 = v1;
-    v0->unk_2D4 = fieldSystem->unk_80->unk_478;
+    v0->unk_2D4 = fieldSystem->unionRoomPlayers->unk_478;
 
     return v0;
 }

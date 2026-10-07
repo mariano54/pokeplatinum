@@ -30,7 +30,8 @@ encoding the command uses:
     VTX_16 -2.0 0.09375 1.375   (any position in [-8, 8), multiples of 1/4096)
     VTX_10 / VTX_XY / VTX_XZ / VTX_YZ / VTX_DIFF x y z
     VTX x y z                   (let the packer choose the smallest encoding)
-    MTX_RESTORE 1
+    MTX_RESTORE 1               (load a matrix-stack slot, skinned models)
+    MTX_SCALE 1.0 1.0 1.0       (fx32 scale factors)
     END_VTXS
     NOP                         (explicit no-op slots inside the packed stream)
     CMD 0xNN 0x... ...          (any other command, raw parameter words)
@@ -174,6 +175,9 @@ def decode_dl(dl):
         elif op == 0x14:
             lines.append(f"MTX_RESTORE {p[0]}")
             continue
+        elif op == 0x1B:
+            lines.append("MTX_SCALE " + " ".join(fmt_num(sext(v, 32), FX) for v in p))
+            continue
         # Anything else (or a command with stray high bits) stays raw.
         lines.append(f"CMD {op:#04x}" + "".join(f" {v:#010x}" for v in p))
     return lines
@@ -245,6 +249,10 @@ def encode_dl(lines, where="display list"):
             continue
         if name == "MTX_RESTORE":
             cmds.append((0x14, [int(args[0], 0)]))
+            continue
+        if name == "MTX_SCALE":
+            vals = [_check_range(parse_num(a, FX, ctx), -(1 << 31), (1 << 31) - 1, ctx) for a in args]
+            cmds.append((0x1B, [v & 0xFFFFFFFF for v in vals]))
             continue
         raise ModelError(f"{ctx}: unknown command {tok[0]}")
 

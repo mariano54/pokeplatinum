@@ -11,6 +11,7 @@ encdata_ex_trophy_garden_py = find_program('encdata_ex_trophy_garden.py', native
 encdata_ex_great_marsh_py = find_program('encdata_ex_great_marsh.py', native: true)
 lighting_py = find_program('lighting.py', native: true)
 map_data_py = find_program('map_data.py', native: true)
+map_header_names_py = find_program('map_header_names.py', native: true)
 map_matrix_py = find_program('map_matrix.py', native: true)
 map_object_preloads_py = find_program('map_object_preloads.py', native: true)
 prop_material_shapes_py = find_program('prop_material_shapes.py', native: true)

@@ -296,7 +296,7 @@ res/pokemon/ppark.narc,/arc/ppark.narc
 res/prebuilt/arc/ship_demo.narc,/arc/ship_demo.narc
 res/prebuilt/arc/ship_demo_pl.narc,/arc/ship_demo_pl.narc
 res/prebuilt/arc/tv.narc,/arc/tv.narc
-res/prebuilt/fielddata/maptable/mapname.bin,/fielddata/maptable/mapname.bin
+res/field/mapname.bin,/fielddata/maptable/mapname.bin
 res/prebuilt/poketool/pokezukan.narc,/poketool/pokezukan.narc
 res/pokemon/national_to_regional.narc,/poketool/pl_pokezukan.narc
 res/pokemon/regional_to_national.narc,/poketool/shinzukan.narc

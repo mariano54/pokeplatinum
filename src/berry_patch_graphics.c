@@ -43,14 +43,14 @@ BOOL BerryPatchGraphics_IsBerryPatch(int graphicsID)
 
 int BerryPatchGraphics_GetCurrentGraphicsResourceID(const MapObject *mapObject)
 {
-    BerryPatchData *patchData = sub_02062A78((MapObject *)mapObject);
+    BerryPatchData *patchData = MapObject_GetMovementTypeData((MapObject *)mapObject);
 
     if (patchData->growthStage == BERRY_GROWTH_STAGE_NONE) {
         return 0xffff;
     }
 
-    if (sub_02062DFC(mapObject) == 1) {
-        BerryPatchGraphics *graphicsData = sub_02062AF0((MapObject *)mapObject);
+    if (MapObject_IsDrawInitialized(mapObject) == 1) {
+        BerryPatchGraphics *graphicsData = MapObject_GetDrawData((MapObject *)mapObject);
 
         if (graphicsData->lastGrowthStage != BERRY_GROWTH_STAGE_NONE) {
             return graphicsData->graphicsResourceID;
@@ -62,19 +62,19 @@ int BerryPatchGraphics_GetCurrentGraphicsResourceID(const MapObject *mapObject)
 
 void BerryPatchGraphics_MarkForUpdate(MapObject *mapObject)
 {
-    BerryPatchData *patchData = sub_02062A78(mapObject);
+    BerryPatchData *patchData = MapObject_GetMovementTypeData(mapObject);
     patchData->needsUpdate = TRUE;
 }
 
 void BerryPatchGraphics_NewData(MapObject *mapObject)
 {
-    BerryPatchData *patchData = sub_02062A54(mapObject, sizeof(BerryPatchData));
+    BerryPatchData *patchData = MapObject_InitMovementTypeData(mapObject, sizeof(BerryPatchData));
     patchData->growthStage = BERRY_GROWTH_STAGE_NONE;
 }
 
 void BerryPatchGraphics_UpdateGrowthStage(MapObject *mapObject)
 {
-    BerryPatchData *patchData = sub_02062A78(mapObject);
+    BerryPatchData *patchData = MapObject_GetMovementTypeData(mapObject);
     patchData->growthStage = BerryPatches_GetGrowthStage(MapObject_FieldSystem(mapObject), mapObject);
 }
 
@@ -85,7 +85,7 @@ void BerryPatchGraphics_NoOp(MapObject *mapObject)
 
 void BerryPatchGraphics_NewGraphics(MapObject *mapObject)
 {
-    BerryPatchGraphics *graphicsData = sub_02062ACC(mapObject, sizeof(BerryPatchGraphics));
+    BerryPatchGraphics *graphicsData = MapObject_InitDrawData(mapObject, sizeof(BerryPatchGraphics));
 
     graphicsData->graphicsResourceID = 0xffff;
     graphicsData->lastGrowthStage = BERRY_GROWTH_STAGE_NONE;
@@ -95,8 +95,8 @@ void BerryPatchGraphics_NewGraphics(MapObject *mapObject)
 
 void BerryPatchGraphics_UpdateGraphics(MapObject *mapObject)
 {
-    BerryPatchData *patchData = sub_02062A78(mapObject);
-    BerryPatchGraphics *graphicsData = sub_02062AF0(mapObject);
+    BerryPatchData *patchData = MapObject_GetMovementTypeData(mapObject);
+    BerryPatchGraphics *graphicsData = MapObject_GetDrawData(mapObject);
     u32 currentGrowthStage = BerryPatches_GetGrowthStage(MapObject_FieldSystem(mapObject), mapObject);
 
     if (ov5_021EDD94(mapObject) == 1) {
@@ -143,13 +143,13 @@ void BerryPatchGraphics_UpdateGraphics(MapObject *mapObject)
 
 void BerryPatchGraphics_FreeGraphics(MapObject *mapObject)
 {
-    BerryPatchGraphics *graphicsData = sub_02062AF0(mapObject);
+    BerryPatchGraphics *graphicsData = MapObject_GetDrawData(mapObject);
     ov5_021ECFD8(mapObject, &graphicsData->graphicsObject, graphicsData->graphicsResourceID);
 }
 
 void BerryPatchGraphics_PauseGraphics(MapObject *mapObject)
 {
-    BerryPatchGraphics *graphicsData = sub_02062AF0(mapObject);
+    BerryPatchGraphics *graphicsData = MapObject_GetDrawData(mapObject);
 
     if (graphicsData->graphicsObject != NULL) {
         ov5_021ED01C(graphicsData->graphicsObject, &graphicsData->graphicsState);
@@ -161,7 +161,7 @@ void BerryPatchGraphics_PauseGraphics(MapObject *mapObject)
 
 void BerryPatchGraphics_ResumeGraphics(MapObject *mapObject)
 {
-    BerryPatchGraphics *graphicsData = sub_02062AF0(mapObject);
+    BerryPatchGraphics *graphicsData = MapObject_GetDrawData(mapObject);
 
     if (ov5_021EDD94(mapObject) == 1) {
         return;
@@ -218,8 +218,8 @@ Billboard *BerryPatchGraphics_GetGraphicsObject(MapObject *mapObject)
 
     GF_ASSERT(BerryPatchGraphics_IsBerryPatch(MapObject_GetGraphicsID(mapObject)));
 
-    if (sub_02062D4C(mapObject) == 1) {
-        BerryPatchGraphics *graphicsData = sub_02062AF0(mapObject);
+    if (MapObject_CheckDrawInitializedFlag(mapObject) == 1) {
+        BerryPatchGraphics *graphicsData = MapObject_GetDrawData(mapObject);
 
         graphicsObject = graphicsData->graphicsObject;
     }

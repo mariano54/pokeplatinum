@@ -146,13 +146,13 @@ static int sub_020674A8(MapObject *param0)
 
 static void sub_020674AC(MapObject *param0)
 {
-    UnkStruct_020674AC *v0 = sub_02062A7C(param0, (sizeof(UnkStruct_020674AC)));
+    UnkStruct_020674AC *v0 = MapObject_InitTrainerTypeData(param0, (sizeof(UnkStruct_020674AC)));
     v0->unk_03 = MapObject_GetDataAt(param0, 1);
 }
 
 static int sub_020674C4(MapObject *param0)
 {
-    UnkStruct_020674AC *v0 = sub_02062AA0(param0);
+    UnkStruct_020674AC *v0 = MapObject_GetTrainerTypeData(param0);
 
     switch (v0->unk_00) {
     case 0:
@@ -190,7 +190,7 @@ static int sub_020674C4(MapObject *param0)
 
 static int sub_02067540(MapObject *param0)
 {
-    UnkStruct_020674AC *v0 = sub_02062AA0(param0);
+    UnkStruct_020674AC *v0 = MapObject_GetTrainerTypeData(param0);
 
     switch (v0->unk_01) {
     case 0: {
@@ -249,7 +249,7 @@ static int sub_02067540(MapObject *param0)
 static void sub_0206762C(MapObject *param0)
 {
     int v0;
-    UnkStruct_0206762C *v1 = sub_02062A7C(param0, (sizeof(UnkStruct_0206762C)));
+    UnkStruct_0206762C *v1 = MapObject_InitTrainerTypeData(param0, (sizeof(UnkStruct_0206762C)));
     v1->unk_03 = MapObject_GetDataAt(param0, 1);
 
     v0 = MapObject_GetTrainerType(param0);
@@ -265,7 +265,7 @@ static void sub_0206762C(MapObject *param0)
 
 static int sub_02067658(MapObject *param0)
 {
-    UnkStruct_0206762C *v0 = sub_02062AA0(param0);
+    UnkStruct_0206762C *v0 = MapObject_GetTrainerTypeData(param0);
 
     switch (v0->unk_00) {
     case 0:
@@ -310,7 +310,7 @@ static int sub_020676D4(MapObject *param0)
         { 0, 3, 1, 2 },
     };
 
-    v0 = sub_02062AA0(param0);
+    v0 = MapObject_GetTrainerTypeData(param0);
 
     switch (v0->unk_01) {
     case 0: {

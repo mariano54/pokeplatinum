@@ -139,13 +139,13 @@ Billboard *ov5_021EB1A0(MapObject *mapObj)
     case OBJ_EVENT_GFX_PLAYER_F_POKETCH_HEARTHOME_GYM: {
         UnkStruct_ov5_021EBA0C *v1;
 
-        v1 = sub_02062AF0(mapObj);
+        v1 = MapObject_GetDrawData(mapObj);
         return v1->unk_04;
     }
     case OBJ_EVENT_GFX_MAGIKARP: {
         UnkStruct_ov5_021EB7F8 *v2;
 
-        v2 = sub_02062AF0(mapObj);
+        v2 = MapObject_GetDrawData(mapObj);
         return v2->unk_04;
     }
     case OBJ_EVENT_GFX_UXIE:
@@ -156,7 +156,7 @@ Billboard *ov5_021EB1A0(MapObject *mapObj)
     case OBJ_EVENT_GFX_DIST_WORLD_B1F_MESPRIT: {
         UnkStruct_ov5_021EC804 *v3;
 
-        v3 = sub_02062AF0(mapObj);
+        v3 = MapObject_GetDrawData(mapObj);
         return v3->unk_04;
     }
     case OBJ_EVENT_GFX_BERRY_SOIL: {
@@ -170,7 +170,7 @@ Billboard *ov5_021EB1A0(MapObject *mapObj)
         if (v4->modelType == 1) {
             UnkStruct_ov5_021EB2EC *v5;
 
-            v5 = sub_02062AF0(mapObj);
+            v5 = MapObject_GetDrawData(mapObj);
             return v5->unk_04;
         }
     }
@@ -181,25 +181,25 @@ Billboard *ov5_021EB1A0(MapObject *mapObj)
 
 void ov5_021EB2EC(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB2EC *v0 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EB2EC)));
+    UnkStruct_ov5_021EB2EC *v0 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EB2EC)));
     v0->unk_02 = -1;
 
     ov5_021ECF04(mapObj, &v0->unk_04);
 
     if (v0->unk_04 != NULL) {
-        sub_02062B68(mapObj);
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 
 void ov5_021EB314(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB2EC *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v0 = MapObject_GetDrawData(mapObj);
     ov5_021ECFA4(mapObj, &v0->unk_04);
 }
 
 void ov5_021EB328(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB2EC *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_04 != NULL) {
         ov5_021ED01C(v0->unk_04, &v0->unk_08);
@@ -212,7 +212,7 @@ void ov5_021EB328(MapObject *mapObj)
 void ov5_021EB354(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EB2EC *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -233,10 +233,10 @@ void ov5_021EB354(MapObject *mapObj)
 void ov5_021EB398(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EB2EC *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -247,13 +247,13 @@ void ov5_021EB398(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     GF_ASSERT(v1 < (0x8 + 1));
     Unk_ov5_021FF3D4[v1](mapObj, v3, v2, v0);
 
     v2->unk_02 = v0;
-    v2->unk_03 = sub_02062A14(mapObj);
+    v2->unk_03 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -265,7 +265,7 @@ void ov5_021EB40C(MapObject *mapObj)
     UnkStruct_ov5_021EB2EC *v2;
     Billboard *v3;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -287,7 +287,7 @@ void ov5_021EB438(MapObject *mapObj)
     UnkStruct_ov5_021EB2EC *v2;
     Billboard *v3;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -497,10 +497,10 @@ static void (*const Unk_ov5_021FF3D4[])(
 void ov5_021EB720(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EB2EC *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -511,14 +511,14 @@ void ov5_021EB720(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     GF_ASSERT(v1 < (0x9 + 1));
 
     Unk_ov5_021FF420[v1](mapObj, v3, v2, v0);
 
     v2->unk_02 = v0;
-    v2->unk_03 = sub_02062A14(mapObj);
+    v2->unk_03 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -563,7 +563,7 @@ static void (*const Unk_ov5_021FF420[])(MapObject *, Billboard *, UnkStruct_ov5_
 
 void ov5_021EB7F8(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB7F8 *v0 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EB7F8)));
+    UnkStruct_ov5_021EB7F8 *v0 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EB7F8)));
 
     v0->unk_00 = -1;
     v0->unk_02 = LCRNG_Next() % 16;
@@ -571,19 +571,19 @@ void ov5_021EB7F8(MapObject *mapObj)
     ov5_021ECF04(mapObj, &v0->unk_04);
 
     if (v0->unk_04 != NULL) {
-        sub_02062B68(mapObj);
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 
 void ov5_021EB834(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB7F8 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB7F8 *v0 = MapObject_GetDrawData(mapObj);
     ov5_021ECFA4(mapObj, &v0->unk_04);
 }
 
 void ov5_021EB848(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EB7F8 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB7F8 *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_04 != NULL) {
         ov5_021ED01C(v0->unk_04, &v0->unk_08);
@@ -596,7 +596,7 @@ void ov5_021EB848(MapObject *mapObj)
 void ov5_021EB874(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EB7F8 *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB7F8 *v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -616,10 +616,10 @@ void ov5_021EB874(MapObject *mapObj)
 void ov5_021EB8B8(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EB7F8 *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB7F8 *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -630,7 +630,7 @@ void ov5_021EB8B8(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     if (v2->unk_02) {
         v2->unk_02--;
@@ -646,7 +646,7 @@ void ov5_021EB8B8(MapObject *mapObj)
     }
 
     v2->unk_00 = v0;
-    v2->unk_03 = sub_02062A14(mapObj);
+    v2->unk_03 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -655,10 +655,10 @@ void ov5_021EB8B8(MapObject *mapObj)
 void ov5_021EB944(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EB2EC *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -669,7 +669,7 @@ void ov5_021EB944(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     switch (v1) {
     case 0x0: {
@@ -709,7 +709,7 @@ void ov5_021EB944(MapObject *mapObj)
     }
 
     v2->unk_02 = v0;
-    v2->unk_03 = sub_02062A14(mapObj);
+    v2->unk_03 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -717,13 +717,13 @@ void ov5_021EB944(MapObject *mapObj)
 
 void ov5_021EBA0C(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EBA0C *v0 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EBA0C)));
+    UnkStruct_ov5_021EBA0C *v0 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EBA0C)));
     v0->unk_00 = -1;
 
     ov5_021ECF04(mapObj, &v0->unk_04);
 
     if (v0->unk_04 != NULL) {
-        sub_02062B68(mapObj);
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 
@@ -732,7 +732,7 @@ void ov5_021EBA34(MapObject *mapObj)
     UnkStruct_ov5_021EBA0C *v0;
     VecFx32 v1 = { 0, 0, 0 };
 
-    v0 = sub_02062AF0(mapObj);
+    v0 = MapObject_GetDrawData(mapObj);
 
     ov5_021ECFA4(mapObj, &v0->unk_04);
     MapObject_SetSpriteJumpOffset(mapObj, &v1);
@@ -740,7 +740,7 @@ void ov5_021EBA34(MapObject *mapObj)
 
 void ov5_021EBA60(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EBA0C *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_04 != NULL) {
         ov5_021ED01C(v0->unk_04, &v0->unk_08);
@@ -753,7 +753,7 @@ void ov5_021EBA60(MapObject *mapObj)
 void ov5_021EBA8C(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EBA0C *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -773,10 +773,10 @@ void ov5_021EBA8C(MapObject *mapObj)
 void ov5_021EBAD0(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -787,13 +787,13 @@ void ov5_021EBAD0(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     GF_ASSERT(v1 < ((0x8 + 1) + 1));
     Unk_ov5_021FF3F8[v1](mapObj, v3, v2, v0);
 
     v2->unk_00 = v0;
-    v2->unk_02 = sub_02062A14(mapObj);
+    v2->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -1029,10 +1029,10 @@ static void (*const Unk_ov5_021FF3F8[])(
 void ov5_021EBF50(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1043,7 +1043,7 @@ void ov5_021EBF50(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     GF_ASSERT(v1 < (((0x8 + 1) + 1) + 1));
 
@@ -1148,17 +1148,17 @@ static const int Unk_ov5_021FF34C[] = {
 void ov5_021EC15C(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if ((v3 == NULL) || (ov5_021EDD94(mapObj) == 1)) {
         return;
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     GF_ASSERT(v1 < (0x3 + 1));
 
@@ -1166,7 +1166,7 @@ void ov5_021EC15C(MapObject *mapObj)
     ov5_021EC374(mapObj, v3, v0);
 
     v2->unk_00 = v0;
-    v2->unk_02 = sub_02062A14(mapObj);
+    v2->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -1306,10 +1306,10 @@ static void (*const Unk_ov5_021FF31C[])(MapObject *, Billboard *, UnkStruct_ov5_
 void ov5_021EC3F0(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EBA0C *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v1 = MapObject_GetDrawData(mapObj);
     Billboard *v2 = v1->unk_04;
 
-    v1 = sub_02062AF0(mapObj);
+    v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1322,7 +1322,7 @@ void ov5_021EC3F0(MapObject *mapObj)
     v0 = MapObject_GetFacingDir(mapObj);
 
     v1->unk_00 = v0;
-    v1->unk_02 = sub_02062A14(mapObj);
+    v1->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 
     {
         int v3 = ov5_021EDF18(v0);
@@ -1339,10 +1339,10 @@ void ov5_021EC3F0(MapObject *mapObj)
 void ov5_021EC454(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EBA0C *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v1 = MapObject_GetDrawData(mapObj);
     Billboard *v2 = v1->unk_04;
 
-    v1 = sub_02062AF0(mapObj);
+    v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1355,7 +1355,7 @@ void ov5_021EC454(MapObject *mapObj)
     v0 = MapObject_GetFacingDir(mapObj);
 
     v1->unk_00 = v0;
-    v1->unk_02 = sub_02062A14(mapObj);
+    v1->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 
     if (Billboard_GetAnimNum(v2) != 0) {
         Billboard_SetAnimNum(v2, 0);
@@ -1371,10 +1371,10 @@ void ov5_021EC454(MapObject *mapObj)
 void ov5_021EC4BC(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1385,7 +1385,7 @@ void ov5_021EC4BC(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     switch (v1) {
     case 0x0:
@@ -1406,7 +1406,7 @@ void ov5_021EC4BC(MapObject *mapObj)
     }
 
     v2->unk_00 = v0;
-    v2->unk_02 = sub_02062A14(mapObj);
+    v2->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 
     ov5_021EDEB4(mapObj, v3);
     ov5_021EC6C0(mapObj, v3);
@@ -1415,10 +1415,10 @@ void ov5_021EC4BC(MapObject *mapObj)
 void ov5_021EC554(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1441,16 +1441,16 @@ void ov5_021EC554(MapObject *mapObj)
     ov5_021EC6C0(mapObj, v3);
 
     v2->unk_00 = v0;
-    v2->unk_02 = sub_02062A14(mapObj);
+    v2->unk_02 = MapObject_GetSpriteAnimCode(mapObj);
 }
 
 void ov5_021EC5C0(MapObject *mapObj)
 {
     int v0, v1;
-    UnkStruct_ov5_021EBA0C *v2 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EBA0C *v2 = MapObject_GetDrawData(mapObj);
     Billboard *v3 = v2->unk_04;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1461,7 +1461,7 @@ void ov5_021EC5C0(MapObject *mapObj)
     }
 
     v0 = MapObject_GetFacingDir(mapObj);
-    v1 = sub_02062A14(mapObj);
+    v1 = MapObject_GetSpriteAnimCode(mapObj);
 
     if (v1 != v2->unk_02) {
         if (v1 == 0x0) {
@@ -1559,7 +1559,7 @@ static void ov5_021EC700(u32 param0, VecFx32 *param1)
 void ov5_021EC734(MapObject *mapObj)
 {
     VecFx32 v0;
-    UnkStruct_ov5_021EC760 *v1 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EC760)));
+    UnkStruct_ov5_021EC760 *v1 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EC760)));
     ov5_021EC700(MapObject_GetEffectiveGraphicsID(mapObj), &v0);
     v1->unk_00 = ov5_021F121C(mapObj, &v0);
 }
@@ -1571,7 +1571,7 @@ void ov5_021EC75C(MapObject *mapObj)
 
 void ov5_021EC760(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC760 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC760 *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_00 != NULL) {
         FieldEffectManager_FinishAnimManager(v0->unk_00);
@@ -1581,7 +1581,7 @@ void ov5_021EC760(MapObject *mapObj)
 
 void ov5_021EC778(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC760 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC760 *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_00 != NULL) {
         FieldEffectManager_FinishAnimManager(v0->unk_00);
@@ -1592,27 +1592,27 @@ void ov5_021EC778(MapObject *mapObj)
 void ov5_021EC790(MapObject *mapObj)
 {
     VecFx32 v0;
-    UnkStruct_ov5_021EC760 *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC760 *v1 = MapObject_GetDrawData(mapObj);
     ov5_021EC700(MapObject_GetEffectiveGraphicsID(mapObj), &v0);
     v1->unk_00 = ov5_021F121C(mapObj, &v0);
 }
 
 void ov5_021EC7B8(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC760 *v0 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EC760)));
+    UnkStruct_ov5_021EC760 *v0 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EC760)));
     v0->unk_00 = ov5_021F2438(mapObj);
 }
 
 void ov5_021EC7D0(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC760 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC760 *v0 = MapObject_GetDrawData(mapObj);
     GF_ASSERT(v0->unk_00 == NULL);
     v0->unk_00 = ov5_021F2438(mapObj);
 }
 
 void ov5_021EC7F0(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC760 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC760 *v0 = MapObject_GetDrawData(mapObj);
     ov5_021F247C(v0->unk_00);
     v0->unk_00 = NULL;
 }
@@ -1628,26 +1628,26 @@ static void ov5_021EC804(Billboard *param0, void *param1)
 
 void ov5_021EC824(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC804 *v0 = sub_02062ACC(mapObj, sizeof(UnkStruct_ov5_021EC804));
+    UnkStruct_ov5_021EC804 *v0 = MapObject_InitDrawData(mapObj, sizeof(UnkStruct_ov5_021EC804));
     v0->unk_02 = -1;
 
     ov5_021ECF04(mapObj, &v0->unk_04);
 
     if (v0->unk_04 != NULL) {
         Billboard_SetCallback(v0->unk_04, ov5_021EC804, v0);
-        sub_02062B68(mapObj);
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 
 void ov5_021EC858(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC804 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC804 *v0 = MapObject_GetDrawData(mapObj);
     ov5_021ECFA4(mapObj, &v0->unk_04);
 }
 
 void ov5_021EC86C(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC804 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC804 *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_04 != NULL) {
         ov5_021ED01C(v0->unk_04, &v0->unk_08);
@@ -1660,7 +1660,7 @@ void ov5_021EC86C(MapObject *mapObj)
 void ov5_021EC898(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EB2EC *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EB2EC *v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1684,7 +1684,7 @@ void ov5_021EC8EC(MapObject *mapObj)
     UnkStruct_ov5_021EC804 *v2;
     Billboard *v3;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1710,23 +1710,23 @@ void ov5_021EC8EC(MapObject *mapObj)
 
 void ov5_021EC938(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC938 *v0 = sub_02062ACC(mapObj, (sizeof(UnkStruct_ov5_021EC938)));
+    UnkStruct_ov5_021EC938 *v0 = MapObject_InitDrawData(mapObj, (sizeof(UnkStruct_ov5_021EC938)));
     ov5_021ECF04(mapObj, &v0->unk_08);
 
     if (v0->unk_08 != NULL) {
-        sub_02062B68(mapObj);
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 
 void ov5_021EC95C(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC938 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC938 *v0 = MapObject_GetDrawData(mapObj);
     ov5_021ECFA4(mapObj, &v0->unk_08);
 }
 
 void ov5_021EC970(MapObject *mapObj)
 {
-    UnkStruct_ov5_021EC938 *v0 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC938 *v0 = MapObject_GetDrawData(mapObj);
 
     if (v0->unk_08 != NULL) {
         ov5_021ED01C(v0->unk_08, &v0->unk_0C);
@@ -1739,7 +1739,7 @@ void ov5_021EC970(MapObject *mapObj)
 void ov5_021EC9A0(MapObject *mapObj)
 {
     int v0;
-    UnkStruct_ov5_021EC938 *v1 = sub_02062AF0(mapObj);
+    UnkStruct_ov5_021EC938 *v1 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;
@@ -1762,7 +1762,7 @@ void ov5_021EC9E8(MapObject *mapObj)
     UnkStruct_ov5_021EC938 *v2;
     Billboard *v3;
 
-    v2 = sub_02062AF0(mapObj);
+    v2 = MapObject_GetDrawData(mapObj);
 
     if (ov5_021EDD94(mapObj) == 1) {
         return;

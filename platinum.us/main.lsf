@@ -480,7 +480,7 @@ Overlay overlay5
 	Object main.nef.p/src_overlay005_enable_poketch_task.c.o
 	Object main.nef.p/src_overlay005_encounter_effect.c.o
 	Object main.nef.p/src_overlay005_field_effect_manager.c.o
-	Object main.nef.p/src_overlay005_ov5_021DFB54.c.o
+	Object main.nef.p/src_overlay005_player_avatar_actions.c.o
 	Object main.nef.p/src_overlay005_ov5_021E1154.c.o
 	Object main.nef.p/src_overlay005_ov5_021E135C.c.o
 	Object main.nef.p/src_overlay005_map_prop.c.o

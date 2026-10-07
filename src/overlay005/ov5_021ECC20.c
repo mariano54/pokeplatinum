@@ -29,7 +29,7 @@ void ov5_021ECC20(MapObjectManager *param0, int param1, int param2, const int *p
 
     v0 = MapObjectMan_GetMaxObjects(param0);
     v1 = MapObjectMan_GetTaskBasePriority(param0) - 1;
-    v2 = sub_0206285C(param0);
+    v2 = MapObjectMan_GetRenderManager(param0);
 
     ov5_021ECE40(v2, param0, v0, v1, param1, param2, param3, param4);
     MapObjectMan_SetStatusFlagOn(param0, (1 << 0));
@@ -40,7 +40,7 @@ void ov5_021ECC78(MapObjectManager *param0)
     int v0 = MapObjectMan_IsDrawInitialized(param0);
     GF_ASSERT(v0 == 1);
 
-    ov5_021ECE94(sub_0206285C(param0));
+    ov5_021ECE94(MapObjectMan_GetRenderManager(param0));
 
     MapObjectMan_SetStatusFlagOff(param0, (1 << 0));
     ov5_021ECCBC(param0);
@@ -70,8 +70,8 @@ void MapObject_Draw(MapObject *param0)
         return;
     }
 
-    if ((MapObject_IsMovementPaused(param0) == 0) || sub_02062F7C(param0)) {
-        sub_02062B68(param0);
+    if ((MapObject_IsMovementPaused(param0) == 0) || MapObject_IsMovementActionSet(param0)) {
+        MapObject_CallDrawFunc(param0);
     }
 }
 
@@ -102,7 +102,7 @@ static const ObjectEventGfxRenderDetailsEntry *ov5_021ECD10(int param0)
 int ov5_021ECD38(const MapObject *param0)
 {
     if (MapObject_IsMovementPaused(param0) == 1) {
-        if (sub_02062F7C(param0) == 0) {
+        if (MapObject_IsMovementActionSet(param0) == 0) {
             return 1;
         }
     }
@@ -149,8 +149,8 @@ void ov5_021ECDFC(MapObject *mapObj, int dir)
 {
     MapObject_TryFace(mapObj, dir);
 
-    if (sub_02062D4C(mapObj) == 1) {
-        sub_02062B68(mapObj);
+    if (MapObject_CheckDrawInitializedFlag(mapObj) == 1) {
+        MapObject_CallDrawFunc(mapObj);
     }
 }
 

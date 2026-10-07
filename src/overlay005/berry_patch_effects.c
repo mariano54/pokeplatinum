@@ -154,7 +154,7 @@ static void BerryPatchMoistureEffect_Update(OverworldAnimManager *effectTask, vo
     BerryPatchMoistureEffect *berryPatchEffect = effectData;
     MapObject *mapObject = berryPatchEffect->context.mapObject;
 
-    if (!sub_02062764(mapObject, berryPatchEffect->localID, berryPatchEffect->mapHeaderID)) {
+    if (!MapObject_MatchesLocalIDAndMap(mapObject, berryPatchEffect->localID, berryPatchEffect->mapHeaderID)) {
         FieldEffectManager_FinishAnimManager(effectTask);
         return;
     }

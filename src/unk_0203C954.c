@@ -49,7 +49,7 @@ static u8 sub_0203C9B0(PlayerAvatar *playerAvatar, MapObject *param1)
 {
     MapObject *v0 = PlayerAvatar_GetMapObject(playerAvatar);
 
-    if (sub_020630DC(v0) == sub_020630DC(param1)) {
+    if (MapObject_GetYFromPos(v0) == MapObject_GetYFromPos(param1)) {
         return 1;
     }
 
@@ -82,7 +82,7 @@ void sub_0203C9D4(FieldSystem *fieldSystem, MapObject **param1)
         }
     }
 
-    *param1 = sub_0206326C(fieldSystem->mapObjMan, v0, v1, 0);
+    *param1 = MapObjectMan_FindObjectAtCoords(fieldSystem->mapObjMan, v0, v1, 0);
 }
 
 u8 sub_0203CA40(FieldSystem *fieldSystem, MapObject **param1)
@@ -90,7 +90,7 @@ u8 sub_0203CA40(FieldSystem *fieldSystem, MapObject **param1)
     sub_0203C9D4(fieldSystem, param1);
 
     if (*param1 != NULL) {
-        if ((sub_02062D9C(*param1) == 1) && (sub_0203C9B0(fieldSystem->playerAvatar, *param1) == 1)) {
+        if ((MapObject_IsInteractable(*param1) == 1) && (sub_0203C9B0(fieldSystem->playerAvatar, *param1) == 1)) {
             return 1;
         }
     }

@@ -8,8 +8,8 @@
 #include "struct_decls/map_object.h"
 
 #include "field/field_system.h"
-#include "overlay005/ov5_021DFB54.h"
 #include "overlay005/ov5_021F5A10.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay006/wild_encounters.h"
 
 #include "bg_window.h"
@@ -220,7 +220,7 @@ static BOOL FishingTask_PreparePlayerAvatar(FishingTask *fishingTask, PlayerAvat
         sub_020656AC(playerMapObject);
         PlayerAvatar_SetTransitionState(playerAvatar, PLAYER_TRANSITION_FISHING);
         PlayerAvatar_RequestChangeState(playerAvatar);
-        sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_01);
+        MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_01);
         fishingTask->fishingTask = FUNC_FishingTask_CastRod;
     }
 
@@ -271,7 +271,7 @@ static BOOL FishingTask_WaitForFish(FishingTask *fishingTask, PlayerAvatar *play
         return FALSE;
     }
 
-    sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_02);
+    MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_02);
 
     fishingTask->unk_24 = ov5_021F5D8C(playerMapObject, 0, 1, 0);
     fishingTask->fishingTask = FUNC_FishingTask_CheckForReelInFish;
@@ -300,7 +300,7 @@ static BOOL FishingTask_CheckForReelInFish(FishingTask *fishingTask, PlayerAvata
 static BOOL FishingTask_CaughtFish(FishingTask *fishingTask, PlayerAvatar *playerAvatar, MapObject *playerMapObject)
 {
     ov5_021F5C58(fishingTask->unk_24);
-    sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_03);
+    MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_03);
 
     fishingTask->counter = 0;
     fishingTask->fishingTask = FUNC_FishingTask_ReelFishIn;
@@ -346,7 +346,7 @@ static BOOL FishingTask_SetCaughtFish(FishingTask *fishingTask, PlayerAvatar *pl
 
 static BOOL FishingTask_ReeledInEarly(FishingTask *fishingTask, PlayerAvatar *playerAvatar, MapObject *playerMapObject)
 {
-    sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_00);
     PrintFishingMessage(fishingTask, CommonStrings_Text_ReeledItInTooQuickly);
 
     fishingTask->counter = 16;
@@ -357,7 +357,7 @@ static BOOL FishingTask_ReeledInEarly(FishingTask *fishingTask, PlayerAvatar *pl
 
 static BOOL FishingTask_FishGotAway(FishingTask *fishingTask, PlayerAvatar *playerAvatar, MapObject *playerMapObject)
 {
-    sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_00);
     PrintFishingMessage(fishingTask, CommonStrings_Text_ThePokemonGotAway);
 
     fishingTask->counter = 16;
@@ -391,7 +391,7 @@ static BOOL FishingTask_WaitForNoFish(FishingTask *fishingTask, PlayerAvatar *pl
         return FALSE;
     }
 
-    sub_02062A0C(playerMapObject, MAP_OBJ_UNK_A0_00);
+    MapObject_SetSpriteAnimCode(playerMapObject, MAP_OBJ_UNK_A0_00);
     PrintFishingMessage(fishingTask, CommonStrings_Text_NotEvenANibble);
 
     fishingTask->counter = 16;

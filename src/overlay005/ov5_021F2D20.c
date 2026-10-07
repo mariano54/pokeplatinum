@@ -211,7 +211,7 @@ static void ov5_021F2FAC(OverworldAnimManager *param0, void *param1)
     UnkStruct_021F2FA0 *v1 = param1;
     MapObject *v2 = v1->unk_18.unk_18;
 
-    if (sub_020627B4(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
+    if (MapObject_MatchesGfxLocalIDAndMap(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }
@@ -246,7 +246,7 @@ static void ov5_021F2FAC(OverworldAnimManager *param0, void *param1)
         Billboard_SetFrameNum(v1->unk_34, (12 * FX32_ONE));
         v1->unk_00 = 2;
     case 2:
-        if (sub_020627B4(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
+        if (MapObject_MatchesGfxLocalIDAndMap(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
             FieldEffectManager_FinishAnimManager(param0);
             return;
         }
@@ -272,7 +272,7 @@ static void ov5_021F308C(OverworldAnimManager *param0, void *param1)
     UnkStruct_021F2FA0 *v1 = param1;
     MapObject *v2 = v1->unk_18.unk_18;
 
-    if (sub_020627B4(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
+    if (MapObject_MatchesGfxLocalIDAndMap(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }

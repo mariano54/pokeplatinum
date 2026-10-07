@@ -14,8 +14,8 @@
 #include "overlay005/field_control.h"
 #include "overlay005/fieldmap.h"
 #include "overlay005/map_name_popup.h"
-#include "overlay005/ov5_021DFB54.h"
 #include "overlay005/ov5_021EA714.h"
+#include "overlay005/player_avatar_actions.h"
 #include "overlay005/signpost.h"
 
 #include "bag.h"
@@ -284,7 +284,7 @@ static void HandleFieldInput(FieldSystem *fieldSystem)
             if (FieldInput_Process_BattleTower(&fieldInput, fieldSystem) == TRUE) {
                 MapNamePopUp_Hide(fieldSystem->unk_04->mapPopup);
                 Signpost_DoCommand(fieldSystem, SIGNPOST_CMD_REMOVE);
-                ov5_021E0EEC(fieldSystem->playerAvatar);
+                PlayerAvatar_TryStopLookingAtPoketch(fieldSystem->playerAvatar);
                 FieldSystem_SendPoketchEvent(fieldSystem, POKETCH_EVENT_SLEEP, 1);
             } else {
                 if (gSystem.pressedKeys & PAD_BUTTON_A) {
@@ -308,7 +308,7 @@ static void HandleFieldInput(FieldSystem *fieldSystem)
                 MapNamePopUp_Hide(fieldSystem->unk_04->mapPopup);
                 Signpost_DoCommand(fieldSystem, SIGNPOST_CMD_REMOVE);
                 PlayerAvatar_ClearMoveState(fieldSystem->playerAvatar);
-                ov5_021E0EEC(fieldSystem->playerAvatar);
+                PlayerAvatar_TryStopLookingAtPoketch(fieldSystem->playerAvatar);
                 FieldSystem_SendPoketchEvent(fieldSystem, POKETCH_EVENT_SLEEP, 1);
             } else {
                 if (gSystem.pressedKeys & PAD_BUTTON_A) {

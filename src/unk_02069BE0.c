@@ -77,23 +77,23 @@ int (*const Unk_020EF8DC[])(MapObject *, UnkStruct_0206A0BC *);
 
 void sub_02069BE0(MapObject *mapObj)
 {
-    UnkStruct_02069CA8 *v0 = sub_02062A54(mapObj, (sizeof(UnkStruct_02069CA8)));
+    UnkStruct_02069CA8 *v0 = MapObject_InitMovementTypeData(mapObj, (sizeof(UnkStruct_02069CA8)));
 
     sub_02069CA8(mapObj, v0);
-    sub_02062A0C(mapObj, 0);
-    sub_02062D10(mapObj);
-    sub_02062D80(mapObj, 0);
+    MapObject_SetSpriteAnimCode(mapObj, 0);
+    MapObject_ClearMoving(mapObj);
+    MapObject_SetCollisionEnabled(mapObj, 0);
 }
 
 void sub_02069C0C(MapObject *mapObj)
 {
-    UnkStruct_02069CA8 *v0 = sub_02062A78(mapObj);
+    UnkStruct_02069CA8 *v0 = MapObject_GetMovementTypeData(mapObj);
 
     if (sub_02069CA8(mapObj, v0) == 0) {
         return;
     }
 
-    sub_02062D80(mapObj, 0);
+    MapObject_SetCollisionEnabled(mapObj, 0);
 
     while (Unk_020EF8D4[v0->unk_00](mapObj, v0) == 1) {
         (void)0;
@@ -107,14 +107,14 @@ void sub_02069C44(MapObject *mapObj)
 
 static int sub_02069C48(MapObject *mapObj, UnkStruct_02069CA8 *param1)
 {
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
 
     if (sub_02069CFC(mapObj, param1) == 1) {
         sub_02069D30(mapObj, param1);
 
         if (sub_02069D8C(mapObj) == 1) {
-            sub_02062D04(mapObj);
+            MapObject_SetMoving(mapObj);
             param1->unk_00++;
             return TRUE;
         }
@@ -126,7 +126,7 @@ static int sub_02069C48(MapObject *mapObj, UnkStruct_02069CA8 *param1)
 static int sub_02069C8C(MapObject *mapObj, UnkStruct_02069CA8 *param1)
 {
     if (sub_020658DC(mapObj) == 1) {
-        sub_02062D10(mapObj);
+        MapObject_ClearMoving(mapObj);
         param1->unk_00 = 0;
     }
 
@@ -242,18 +242,18 @@ static int sub_02069D8C(MapObject *mapObj)
 
 void sub_02069DF4(MapObject *mapObj)
 {
-    UnkStruct_02069F48 *v0 = sub_02062A54(mapObj, (sizeof(UnkStruct_02069F48)));
+    UnkStruct_02069F48 *v0 = MapObject_InitMovementTypeData(mapObj, (sizeof(UnkStruct_02069F48)));
 
     sub_02069F48(mapObj, v0);
-    sub_02062A0C(mapObj, 0x0);
-    sub_02062D10(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, 0x0);
+    MapObject_ClearMoving(mapObj);
 
     v0->unk_01 = 0;
 }
 
 void sub_02069E1C(MapObject *mapObj)
 {
-    UnkStruct_02069F48 *v0 = sub_02062A78(mapObj);
+    UnkStruct_02069F48 *v0 = MapObject_GetMovementTypeData(mapObj);
 
     if (sub_02069F48(mapObj, v0) == 0) {
         return;
@@ -271,18 +271,18 @@ void sub_02069E4C(MapObject *mapObj)
 
 void sub_02069E50(MapObject *mapObj)
 {
-    UnkStruct_02069F48 *v0 = sub_02062A78(mapObj);
+    UnkStruct_02069F48 *v0 = MapObject_GetMovementTypeData(mapObj);
     v0->unk_01 = 0;
 }
 
 static int sub_02069E5C(MapObject *mapObj, UnkStruct_02069F48 *param1)
 {
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
 
     if (sub_02069FE8(mapObj, param1) == 1) {
         if (sub_0206A034(mapObj, param1) == 1) {
-            sub_02062D04(mapObj);
+            MapObject_SetMoving(mapObj);
             param1->unk_00++;
             return 1;
         }
@@ -297,7 +297,7 @@ static int sub_02069E98(MapObject *mapObj, UnkStruct_02069F48 *param1)
         return 0;
     }
 
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     param1->unk_00 = 0;
     return 0;
 }
@@ -418,12 +418,12 @@ static int sub_0206A034(MapObject *mapObj, UnkStruct_02069F48 *param1)
 
 static void sub_0206A0BC(MapObject *mapObj, int param1)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A54(mapObj, (sizeof(UnkStruct_0206A0BC)));
+    UnkStruct_0206A0BC *v0 = MapObject_InitMovementTypeData(mapObj, (sizeof(UnkStruct_0206A0BC)));
 
     v0->unk_01 = param1;
 
-    sub_02062A0C(mapObj, 0x0);
-    sub_02062D10(mapObj);
+    MapObject_SetSpriteAnimCode(mapObj, 0x0);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetStatusFlagOn(mapObj, MAP_OBJ_STATUS_HIDE_SHADOW);
 
     VecFx32 v1 = { 0, FX32_ONE * -32, 0 };
@@ -453,7 +453,7 @@ void sub_0206A128(MapObject *mapObj)
 
 void sub_0206A134(MapObject *mapObj)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A0BC *v0 = MapObject_GetMovementTypeData(mapObj);
 
     while (Unk_020EF8DC[v0->unk_00](mapObj, v0) == 1) {
         (void)0;
@@ -471,7 +471,7 @@ void sub_0206A158(MapObject *mapObj)
 
 void sub_0206A168(MapObject *mapObj)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A0BC *v0 = MapObject_GetMovementTypeData(mapObj);
 
     v0->unk_00 = 0;
     sub_0206A218(mapObj, NULL);
@@ -492,7 +492,7 @@ static int sub_0206A1AC(MapObject *mapObj, UnkStruct_0206A0BC *param1)
         sub_0206A218(mapObj, v0);
     }
 
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
     param1->unk_00++;
 
@@ -505,7 +505,7 @@ static int sub_0206A1DC(MapObject *mapObj, UnkStruct_0206A0BC *param1)
         OverworldAnimManager *v0 = sub_0206A224(mapObj);
 
         if (v0 == NULL) {
-            if (sub_02062DFC(mapObj) == 1) {
+            if (MapObject_IsDrawInitialized(mapObj) == 1) {
                 v0 = ov5_021F3D90(mapObj, param1->unk_01);
                 sub_0206A218(mapObj, v0);
             }
@@ -524,19 +524,19 @@ static int (*const Unk_020EF8DC[])(MapObject *, UnkStruct_0206A0BC *) = {
 
 void sub_0206A218(MapObject *mapObj, OverworldAnimManager *param1)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A0BC *v0 = MapObject_GetMovementTypeData(mapObj);
     v0->unk_04 = param1;
 }
 
 OverworldAnimManager *sub_0206A224(MapObject *mapObj)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A0BC *v0 = MapObject_GetMovementTypeData(mapObj);
     return v0->unk_04;
 }
 
 void sub_0206A230(MapObject *mapObj)
 {
-    UnkStruct_0206A0BC *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A0BC *v0 = MapObject_GetMovementTypeData(mapObj);
     v0->unk_02 = 1;
 }
 
@@ -544,7 +544,7 @@ static int (*const Unk_020EF918[5])(MapObject *, UnkStruct_0206A23C *);
 
 static void sub_0206A23C(MapObject *mapObj, int param1, u32 param2)
 {
-    UnkStruct_0206A23C *v0 = sub_02062A54(mapObj, (sizeof(UnkStruct_0206A23C)));
+    UnkStruct_0206A23C *v0 = MapObject_InitMovementTypeData(mapObj, (sizeof(UnkStruct_0206A23C)));
 
     v0->unk_01 = -1;
     v0->unk_02 = param2;
@@ -594,7 +594,7 @@ void sub_0206A2B0(MapObject *mapObj)
 
 void sub_0206A2BC(MapObject *mapObj)
 {
-    UnkStruct_0206A23C *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A23C *v0 = MapObject_GetMovementTypeData(mapObj);
 
     while (Unk_020EF918[v0->unk_00](mapObj, v0) == 1) {
         (void)0;
@@ -608,7 +608,7 @@ static int sub_0206A2E0(MapObject *mapObj, UnkStruct_0206A23C *param1)
     v0 = MovementAction_TurnActionTowardsDir(v0, MOVEMENT_ACTION_FACE_NORTH);
 
     sub_02065668(mapObj, v0);
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
 
     param1->unk_00 = 1;
@@ -633,7 +633,7 @@ static int sub_0206A324(MapObject *mapObj, UnkStruct_0206A23C *param1)
         param1->unk_01 = PlayerAvatar_GetFacingDir(fieldSystem->playerAvatar);
     }
 
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
 
     param1->unk_00 = 3;
@@ -666,7 +666,7 @@ static void sub_0206A37C(MapObject *mapObj, int param1, int param2, u32 param3)
         param2 = MovementAction_TurnActionTowardsDir(param1, MOVEMENT_ACTION_FACE_NORTH);
     } else {
         param2 = MovementAction_TurnActionTowardsDir(param1, param2);
-        sub_02062D04(mapObj);
+        MapObject_SetMoving(mapObj);
     }
 
     sub_02065668(mapObj, param2);
@@ -712,7 +712,7 @@ static int sub_0206A454(MapObject *mapObj, UnkStruct_0206A23C *param1)
         return 0;
     }
 
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     MapObject_SetEndMovementOff(mapObj);
 
     param1->unk_00 = 2;
@@ -731,7 +731,7 @@ static int (*const Unk_020EF90C[3])(MapObject *, UnkStruct_0206A47C *);
 
 static void sub_0206A47C(MapObject *mapObj, int param1, int param2)
 {
-    UnkStruct_0206A47C *v0 = sub_02062A54(mapObj, (sizeof(UnkStruct_0206A47C)));
+    UnkStruct_0206A47C *v0 = MapObject_InitMovementTypeData(mapObj, (sizeof(UnkStruct_0206A47C)));
 
     v0->unk_04 = param1;
     v0->unk_08 = param2;
@@ -759,7 +759,7 @@ void sub_0206A4B4(MapObject *mapObj)
 
 void sub_0206A4C0(MapObject *mapObj)
 {
-    UnkStruct_0206A47C *v0 = sub_02062A78(mapObj);
+    UnkStruct_0206A47C *v0 = MapObject_GetMovementTypeData(mapObj);
 
     while (Unk_020EF90C[v0->unk_00](mapObj, v0) == 1) {
         (void)0;
@@ -768,7 +768,7 @@ void sub_0206A4C0(MapObject *mapObj)
 
 static int sub_0206A4E4(MapObject *mapObj, UnkStruct_0206A47C *param1)
 {
-    sub_02062D10(mapObj);
+    MapObject_ClearMoving(mapObj);
     param1->unk_00++;
     return 1;
 }
@@ -929,7 +929,7 @@ static int sub_0206A630(MapObject *mapObj, UnkStruct_0206A47C *param1, int param
 
     if (v0 == 0) {
         param2 = MovementAction_TurnActionTowardsDir(dir, param2);
-        sub_02062D04(mapObj);
+        MapObject_SetMoving(mapObj);
         sub_02065668(mapObj, param2);
         return 1;
     }
@@ -950,7 +950,7 @@ static int sub_0206A630(MapObject *mapObj, UnkStruct_0206A47C *param1, int param
 
         if (v0 == 0) {
             param2 = MovementAction_TurnActionTowardsDir(dir, param2);
-            sub_02062D04(mapObj);
+            MapObject_SetMoving(mapObj);
             sub_02065668(mapObj, param2);
             return 1;
         }
@@ -969,7 +969,7 @@ static int sub_0206A630(MapObject *mapObj, UnkStruct_0206A47C *param1, int param
 
         if (v0 == 0) {
             param2 = MovementAction_TurnActionTowardsDir(dir, param2);
-            sub_02062D04(mapObj);
+            MapObject_SetMoving(mapObj);
             sub_02065668(mapObj, param2);
             return 1;
         }

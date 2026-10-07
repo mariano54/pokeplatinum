@@ -2600,7 +2600,7 @@ static void EternaGym_SetupCameraMoveAwayFromPlayer(FieldSystem *fieldSystem, Et
 
     MapObject_RecalculateObjectHeight(cameraMan->cameraObj);
     MapObject_SetHidden(cameraMan->cameraObj, TRUE);
-    sub_02062D80(cameraMan->cameraObj, FALSE);
+    MapObject_SetCollisionEnabled(cameraMan->cameraObj, FALSE);
     MapObject_SetHeightCalculationDisabled(cameraMan->cameraObj, TRUE);
 
     const VecFx32 *cameraPos = MapObject_GetPos(cameraMan->cameraObj);
@@ -3600,7 +3600,7 @@ static void VeilstoneGym_InitCameraManager(FieldSystem *fieldSystem, VeilstoneGy
 
     MapObject_RecalculateObjectHeight(cameraMan->cameraObj);
     MapObject_SetHidden(cameraMan->cameraObj, TRUE);
-    sub_02062D80(cameraMan->cameraObj, FALSE);
+    MapObject_SetCollisionEnabled(cameraMan->cameraObj, FALSE);
     MapObject_SetHeightCalculationDisabled(cameraMan->cameraObj, TRUE);
 
     const VecFx32 *cameraPos = MapObject_GetPos(cameraMan->cameraObj);
@@ -3786,7 +3786,7 @@ void HearthomeGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
     HearthomeGym_InitFog(gymSystem);
     FieldEffectManager_InitRenderer(fieldSystem->fieldEffMan, 32);
-    MapObjectMan_SetEndMovement(fieldSystem->mapObjMan, FALSE);
+    MapObjectMan_SetShadowsEnabled(fieldSystem->mapObjMan, FALSE);
 
     int graphicsID = OBJ_EVENT_GFX_PLAYER_M_HEARTHOME_GYM;
     PlayerAvatar *playerAvatar = fieldSystem->playerAvatar;
@@ -3796,7 +3796,7 @@ void HearthomeGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
         graphicsID = OBJ_EVENT_GFX_PLAYER_F_HEARTHOME_GYM;
     }
 
-    sub_02061AD4(playerObj, graphicsID);
+    MapObject_ChangeGraphics(playerObj, graphicsID);
 
     ov5_021F5AA4(fieldSystem, TRUE);
     HearthomeGym_InitTrainers(gymSystem);
@@ -3832,7 +3832,7 @@ void HearthomeGym_DynamicMapFeaturesInit(FieldSystem *fieldSystem)
 
                 features->clueX += room->offsetX;
                 features->clueZ += room->offsetZ;
-            } while (sub_0206326C(fieldSystem->mapObjMan, features->clueX, features->clueZ, 0) != NULL);
+            } while (MapObjectMan_FindObjectAtCoords(fieldSystem->mapObjMan, features->clueX, features->clueZ, 0) != NULL);
 
             GF_ASSERT(features->correctDoorID < room->firstDoorID + room->numExitDoors);
             GF_ASSERT(features->clueX < room->offsetX + room->sizeX);

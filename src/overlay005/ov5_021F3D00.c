@@ -134,7 +134,7 @@ static void ov5_021F3E30(OverworldAnimManager *param0, void *param1)
     UnkStruct_ov5_021F3E00 *v0 = param1;
     MapObject *v1 = v0->unk_10.unk_0C;
 
-    if (sub_02062764(v1, v0->unk_08, v0->unk_0C) == 1) {
+    if (MapObject_MatchesLocalIDAndMap(v1, v0->unk_08, v0->unk_0C) == 1) {
         sub_0206A218(v1, NULL);
     }
 }

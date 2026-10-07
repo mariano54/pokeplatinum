@@ -74,7 +74,7 @@ enum TrackType {
 
 typedef struct ObjectEventGfxRendererEntry {
     enum ObjectEventGfx graphicsID;
-    const UnkStruct_ov5_021FB0F0 *renderer;
+    const ObjectEventGfxRenderer *renderer;
 } ObjectEventGfxRendererEntry;
 
 typedef struct ObjectEventGfxFileEntry {
@@ -103,7 +103,7 @@ typedef struct ObjectEventGfxFieldAnimsInitialPosEntry {
     VecFx32 initialPos;
 } ObjectEventGfxFieldAnimsInitialPosEntry;
 
-extern const UnkStruct_ov5_021FB0F0 gInvisibleObjectEventGfxRenderer;
+extern const ObjectEventGfxRenderer gInvisibleObjectEventGfxRenderer;
 
 extern const ObjectEventGfxRendererEntry gObjectEventGfxRenderersTable[];
 extern const ObjectEventGfxFileEntry gObjectEventGfxTexturesTable[];

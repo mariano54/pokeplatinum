@@ -164,7 +164,7 @@ static void ov5_021F18E0(OverworldAnimManager *param0, void *param1)
         v0 = BerryPatchGraphics_GetCurrentGraphicsResourceID(v1->unk_14.unk_0C);
     }
 
-    if ((v1->unk_08 != v0) || (sub_02062764(v2, v1->unk_00, v1->unk_04) == 0) || (sub_02062F64(v2) == 0)) {
+    if ((v1->unk_08 != v0) || (MapObject_MatchesLocalIDAndMap(v2, v1->unk_00, v1->unk_04) == 0) || (MapObject_IsReflectionActive(v2) == 0)) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }
@@ -205,7 +205,7 @@ static void ov5_021F1978(OverworldAnimManager *param0, void *param1)
             v2 = BerryPatchGraphics_GetCurrentGraphicsResourceID(v0->unk_14.unk_0C);
         }
 
-        if ((v0->unk_08 != v2) || (sub_02062764(v1, v0->unk_00, v0->unk_04) == 0) || (sub_02062F64(v1) == 0)) {
+        if ((v0->unk_08 != v2) || (MapObject_MatchesLocalIDAndMap(v1, v0->unk_00, v0->unk_04) == 0) || (MapObject_IsReflectionActive(v1) == 0)) {
             FieldEffectManager_FinishAnimManager(param0);
             return;
         }

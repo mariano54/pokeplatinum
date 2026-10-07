@@ -13,7 +13,7 @@
 
 #include "field/field_system.h"
 #include "overlay005/map_object_anim_cmd.h"
-#include "overlay005/ov5_021DFB54.h"
+#include "overlay005/player_avatar_actions.h"
 
 #include "bag.h"
 #include "field_task.h"

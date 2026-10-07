@@ -14,18 +14,18 @@
 
 static const UnkStruct_020EDF0C Unk_020EDF0C = {
     0x0,
-    sub_020633E0,
-    sub_020633E4,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveInitNoOp,
+    MapObject_MoveNoOp,
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE58 = {
     0x1,
-    sub_020633E0,
-    sub_020633E4,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveInitNoOp,
+    MapObject_MoveNoOp,
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE308 = {
@@ -33,39 +33,39 @@ static const UnkStruct_020EDF0C Unk_020EE308 = {
     sub_0206453C,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE2F4 = {
     0x3,
     sub_02064628,
     sub_02064690,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE2E0 = {
     0x3,
     sub_02064638,
     sub_02064690,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDEE4 = {
     0x3,
     sub_02064648,
     sub_02064690,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE2B8 = {
     0x3,
     sub_02064658,
     sub_02064690,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE94 = {
@@ -73,7 +73,7 @@ static const UnkStruct_020EDF0C Unk_020EDE94 = {
     sub_02064548,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDEBC = {
@@ -81,7 +81,7 @@ static const UnkStruct_020EDF0C Unk_020EDEBC = {
     sub_02064554,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDED0 = {
@@ -89,7 +89,7 @@ static const UnkStruct_020EDF0C Unk_020EDED0 = {
     sub_02064560,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE268 = {
@@ -97,7 +97,7 @@ static const UnkStruct_020EDF0C Unk_020EE268 = {
     sub_0206456C,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE254 = {
@@ -105,7 +105,7 @@ static const UnkStruct_020EDF0C Unk_020EE254 = {
     sub_02064578,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE240 = {
@@ -113,7 +113,7 @@ static const UnkStruct_020EDF0C Unk_020EE240 = {
     sub_02064584,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF70 = {
@@ -121,7 +121,7 @@ static const UnkStruct_020EDF0C Unk_020EDF70 = {
     sub_02064590,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE218 = {
@@ -129,7 +129,7 @@ static const UnkStruct_020EDF0C Unk_020EE218 = {
     sub_0206459C,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE204 = {
@@ -137,7 +137,7 @@ static const UnkStruct_020EDF0C Unk_020EE204 = {
     sub_020645A8,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDFC0 = {
@@ -145,263 +145,263 @@ static const UnkStruct_020EDF0C Unk_020EDFC0 = {
     sub_020645B4,
     sub_020645C0,
     sub_02064624,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDFD4 = {
     0x3,
     sub_0206493C,
     sub_02064918,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE1C8 = {
     0x3,
     sub_02064948,
     sub_02064918,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE1B4 = {
     0x3,
     sub_02064954,
     sub_02064918,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE1A0 = {
     0x3,
     sub_02064960,
     sub_02064918,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE024 = {
     0x3,
     sub_02064990,
     sub_020649A8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE178 = {
     0x3,
     sub_0206499C,
     sub_020649A8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE164 = {
     0x3,
     sub_02064AF0,
     sub_02064AFC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE060 = {
     0x3,
     sub_02064C28,
     sub_02064C48,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE074 = {
     0x3,
     sub_02064DC8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE128 = {
     0x3,
     sub_02064DD8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE114 = {
     0x3,
     sub_02064DE8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE0B0 = {
     0x3,
     sub_02064DF8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE0C4 = {
     0x3,
     sub_02064E08,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE0EC = {
     0x3,
     sub_02064E18,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE100 = {
     0x3,
     sub_02064E28,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE13C = {
     0x3,
     sub_02064E38,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE150 = {
     0x3,
     sub_02064E48,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE18C = {
     0x3,
     sub_02064E58,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE1DC = {
     0x3,
     sub_02064E68,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE1F0 = {
     0x3,
     sub_02064E78,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE22C = {
     0x3,
     sub_02064E88,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE27C = {
     0x3,
     sub_02064E98,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE290 = {
     0x3,
     sub_02064EA8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE2A4 = {
     0x3,
     sub_02064EB8,
     sub_02064EC8,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE2CC = {
     0x3,
     sub_0206505C,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDFE8 = {
     0x3,
     sub_0206506C,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDDCC = {
     0x3,
     sub_0206507C,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDDE0 = {
     0x3,
     sub_0206508C,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDDF4 = {
     0x3,
     sub_0206509C,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF98 = {
     0x3,
     sub_020650AC,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE08 = {
     0x3,
     sub_020650BC,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE1C = {
     0x3,
     sub_020650CC,
     sub_020650DC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE30 = {
@@ -409,7 +409,7 @@ static const UnkStruct_020EDF0C Unk_020EDE30 = {
     BerryPatchGraphics_NewData,
     BerryPatchGraphics_UpdateGrowthStage,
     BerryPatchGraphics_NoOp,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF48 = {
@@ -417,7 +417,7 @@ static const UnkStruct_020EDF0C Unk_020EDF48 = {
     sub_02069BE0,
     sub_02069C0C,
     sub_02069C44,
-    sub_020633EC
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDE44 = {
@@ -464,96 +464,96 @@ static const UnkStruct_020EDF0C Unk_020EDEA8 = {
     0x37,
     sub_0206A25C,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF34 = {
     0x38,
     sub_0206A268,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF5C = {
     0x39,
     sub_0206A274,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDF84 = {
     0x3A,
     sub_0206A280,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDFAC = {
     0x3B,
     sub_0206A28C,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EDFFC = {
     0x3C,
     sub_0206A298,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE010 = {
     0x3D,
     sub_0206A2A4,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE038 = {
     0x3E,
     sub_0206A2B0,
     sub_0206A2BC,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE04C = {
     0x3f,
     sub_0206A490,
     sub_0206A4C0,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE088 = {
     0x40,
     sub_0206A49C,
     sub_0206A4C0,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE09C = {
     0x41,
     sub_0206A4A8,
     sub_0206A4C0,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 static const UnkStruct_020EDF0C Unk_020EE0D8 = {
     0x42,
     sub_0206A4B4,
     sub_0206A4C0,
-    sub_020633E8,
-    sub_020633EC
+    MapObject_MoveDeleteNoOp,
+    MapObject_MoveRestoreNoOp
 };
 
 const UnkStruct_020EDF0C *const Unk_020EE3A8[] = {

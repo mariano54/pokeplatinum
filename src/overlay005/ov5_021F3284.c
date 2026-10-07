@@ -125,7 +125,7 @@ static void ov5_021F33D0(OverworldAnimManager *param0, void *param1)
     UnkStruct_ov5_021F336C *v2 = param1;
     MapObject *v3 = v2->unk_14.unk_0C;
 
-    if (sub_020627B4(v3, v2->unk_04, v2->unk_08, v2->unk_0C) == 0) {
+    if (MapObject_MatchesGfxLocalIDAndMap(v3, v2->unk_04, v2->unk_08, v2->unk_0C) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }
@@ -133,7 +133,7 @@ static void ov5_021F33D0(OverworldAnimManager *param0, void *param1)
     v1 = OverworldAnimManager_GetUserInt(param0);
 
     if (v1 == 1) {
-        if (sub_02062EC8(v3) == 0) {
+        if (MapObject_IsShallowWaterEffectActive(v3) == 0) {
             FieldEffectManager_FinishAnimManager(param0);
             return;
         }
@@ -162,7 +162,7 @@ static void ov5_021F3448(OverworldAnimManager *param0, void *param1)
     UnkStruct_ov5_021F336C *v1 = param1;
     MapObject *v2 = v1->unk_14.unk_0C;
 
-    if (sub_020627B4(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
+    if (MapObject_MatchesGfxLocalIDAndMap(v2, v1->unk_04, v1->unk_08, v1->unk_0C) == 0) {
         FieldEffectManager_FinishAnimManager(param0);
         return;
     }

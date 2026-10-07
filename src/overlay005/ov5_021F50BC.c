@@ -126,7 +126,7 @@ static void ov5_021F51A4(OverworldAnimManager *param0, void *param1)
     v0 = param1;
     v1 = v0->unk_30.unk_08;
 
-    GF_ASSERT(sub_02062764(v1, v0->unk_08, v0->unk_0C) != 0);
+    GF_ASSERT(MapObject_MatchesLocalIDAndMap(v1, v0->unk_08, v0->unk_0C) != 0);
 
     switch (v0->unk_00) {
     case 0:

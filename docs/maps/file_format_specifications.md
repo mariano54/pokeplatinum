@@ -347,7 +347,9 @@ Here's the description of each bit in the `flags` field:
 ## Map prop material & shapes (`build_model_matshp.dat`)
 
 This file is _not_ a NARC file, but a binary file containing the material and
-shape (mesh) IDs for each map prop model.
+shape (mesh) IDs for each map prop model. In this repository, it is built from
+`res/field/props/material_shapes.json` by `tools/jsoncnv/prop_material_shapes.py`;
+models without IDs get an `idsIndex` of `0xFFFF`.
 
 | Name               | Offset   | Size                    | Type                                    | Description                                         | Value                             |
 | ------------------ | -------- | ----------------------- | --------------------------------------- | --------------------------------------------------- | --------------------------------- |

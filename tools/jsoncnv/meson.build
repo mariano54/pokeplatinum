@@ -12,4 +12,5 @@ encdata_ex_great_marsh_py = find_program('encdata_ex_great_marsh.py', native: tr
 lighting_py = find_program('lighting.py', native: true)
 map_data_py = find_program('map_data.py', native: true)
 map_matrix_py = find_program('map_matrix.py', native: true)
+prop_material_shapes_py = find_program('prop_material_shapes.py', native: true)
 prop_model_set_py = find_program('prop_model_set.py', native: true)

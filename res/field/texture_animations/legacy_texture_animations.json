@@ -1,0 +1,13 @@
+[
+    {"path": "data/minimum.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9]]},
+    {"path": "data/minirhana.nsbtx", "frames": [[0, 16], [1, 16], [2, 16], [1, 16]]},
+    {"path": "data/miniasasea.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9]]},
+    {"path": "data/minihamabe.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9]]},
+    {"path": "data/miniasahamabe.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9]]},
+    {"path": "data/t3_fl_b.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9]]},
+    {"path": "data/t3_fl_p.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9]]},
+    {"path": "data/t3_fl_r.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9]]},
+    {"path": "data/t3_fl_y.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9]]},
+    {"path": "data/dun_sea.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9], [4, 9], [5, 9], [6, 9], [7, 9]]},
+    {"path": "data/lake_anim.nsbtx", "frames": [[0, 9], [1, 9], [2, 9], [3, 9]]}
+]

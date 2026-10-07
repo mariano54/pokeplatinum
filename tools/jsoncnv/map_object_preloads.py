@@ -13,6 +13,7 @@ import struct
 import sys
 
 from convert import from_object_event_gfx
+from narc import pack_narc
 
 SENTINEL = 0xFFFF
 MAX_MAP_OBJECTS_TO_PRELOAD = 24
@@ -25,18 +26,6 @@ def pack_list(names: list[str]) -> bytes:
     if len(ids) % 2:
         ids.append(0)
     return struct.pack(f'<{len(ids)}H', *ids)
-
-
-def pack_narc(members: list[bytes]) -> bytes:
-    offsets, start = [], 0
-    for member in members:
-        offsets.append((start, start + len(member)))
-        start += len(member)
-    btaf = b'BTAF' + struct.pack('<IHH', 12 + 8 * len(members), len(members), 0) + b''.join(struct.pack('<II', *o) for o in offsets)
-    btnf = b'BTNF' + struct.pack('<IIHH', 16, 4, 0, 1)
-    gmif = b'GMIF' + struct.pack('<I', 8 + start) + b''.join(members)
-    size = 16 + len(btaf) + len(btnf) + len(gmif)
-    return b'NARC' + struct.pack('<HHIHH', 0xFFFE, 0x0100, size, 16, 3) + btaf + btnf + gmif
 
 
 def main():

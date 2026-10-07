@@ -8,6 +8,7 @@ subdir('props')
 subdir('maps') # after props: map data refers to map prop models by name
 subdir('area_data')
 subdir('scripts')
+subdir('texture_animations')
 
 # Game Freak's internal name for each map header (fielddata/maptable/mapname.bin).
 nitrofs_files += custom_target('mapname.bin',
